@@ -28,12 +28,14 @@
     <ClInclude Include="include\order-p3\Population.h" />
     <ClInclude Include="include\order-p3\Pyramid.h" />
     <ClInclude Include="include\order-p3\RandomKeyEncoder.h" />
-    <ClInclude Include="include\order-p3\Solution.h" />
+    <ClInclude Include="include\order-p3\solution\BinarySolution.h" />
+    <ClInclude Include="include\order-p3\solution\Solution.h" />
     <ClInclude Include="include\order-p3\Timer.h" />
     <ClInclude Include="include\order-p3\Util.h" />
     <ClInclude Include="include\order-p3\VectorHasher.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\BinarySolution.cpp" />
     <ClCompile Include="src\Configuration.cpp" />
     <ClCompile Include="src\Evaluation.cpp" />
     <ClCompile Include="src\Evaluator.cpp" />
@@ -43,7 +45,6 @@
     <ClCompile Include="src\Population.cpp" />
     <ClCompile Include="src\Pyramid.cpp" />
     <ClCompile Include="src\RandomKeyEncoder.cpp" />
-    <ClCompile Include="src\Solution.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Util.cpp" />
     <ClCompile Include="src\VectorHasher.cpp" />

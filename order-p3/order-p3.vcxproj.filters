@@ -48,10 +48,13 @@
     <ClInclude Include="include\order-p3\VectorHasher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\order-p3\Solution.h">
+    <ClInclude Include="include\order-p3\RandomKeyEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\order-p3\RandomKeyEncoder.h">
+    <ClInclude Include="include\order-p3\solution\Solution.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\order-p3\solution\BinarySolution.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -89,10 +92,10 @@
     <ClCompile Include="src\VectorHasher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Solution.cpp">
+    <ClCompile Include="src\RandomKeyEncoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\RandomKeyEncoder.cpp">
+    <ClCompile Include="src\BinarySolution.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
