@@ -1,10 +1,16 @@
 #include "../include/order-p3/RandomKeyEncoder.h"
 
 
-RandomKeyEncoder::RandomKeyEncoder(double lowerBound, double upperBound) {
-	this->lowerBound = lowerBound;
-	this->upperBound = upperBound;
-	initializeRandomEngine();
+RandomKeyEncoder::RandomKeyEncoder(double lowerBound, double upperBound, int numberOfGenes)
+	: lowerBound(lowerBound),
+	upperBound(upperBound),
+	numberOfGenes(numberOfGenes)
+{
+	initializeRandom();
+}
+
+std::vector<double> RandomKeyEncoder::getRandomEncoding() {
+	return getRandomEncoding(this->numberOfGenes);
 }
 
 std::vector<double> RandomKeyEncoder::getRandomEncoding(int numberOfGenes) {
@@ -17,6 +23,10 @@ std::vector<double> RandomKeyEncoder::getRandomEncoding(int numberOfGenes) {
 
 double RandomKeyEncoder::getRandomKey() {
 	return this->keyDistribution(this->randomEngine);
+}
+
+int RandomKeyEncoder::getNumberOfGenes() const {
+	return numberOfGenes;
 }
 
 void RandomKeyEncoder::initializeRandom() {

@@ -51,6 +51,12 @@
     <ClInclude Include="include\order-p3\old\VectorHasher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\order-p3\Solution.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\order-p3\RandomKeyDecoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RandomKeyEncoder.cpp">
@@ -87,6 +93,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\old\VectorHasher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Solution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RandomKeyDecoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
