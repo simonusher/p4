@@ -19,35 +19,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\order-p3\Configuration.h" />
-    <ClInclude Include="include\order-p3\Evaluation.h" />
-    <ClInclude Include="include\order-p3\Evaluator.h" />
-    <ClInclude Include="include\order-p3\Linkage.h" />
-    <ClInclude Include="include\order-p3\Optimizer.h" />
-    <ClInclude Include="include\order-p3\PairHasher.h" />
-    <ClInclude Include="include\order-p3\Population.h" />
-    <ClInclude Include="include\order-p3\Pyramid.h" />
+    <ClInclude Include="include\order-p3\old\Configuration.h" />
+    <ClInclude Include="include\order-p3\old\Evaluation.h" />
+    <ClInclude Include="include\order-p3\old\Evaluator.h" />
+    <ClInclude Include="include\order-p3\old\Linkage.h" />
+    <ClInclude Include="include\order-p3\old\Optimizer.h" />
+    <ClInclude Include="include\order-p3\old\PairHasher.h" />
+    <ClInclude Include="include\order-p3\old\Population.h" />
+    <ClInclude Include="include\order-p3\old\Pyramid.h" />
     <ClInclude Include="include\order-p3\RandomKeyEncoder.h" />
-    <ClInclude Include="include\order-p3\solution\BinarySolution.h" />
-    <ClInclude Include="include\order-p3\solution\Solution.h" />
-    <ClInclude Include="include\order-p3\Timer.h" />
-    <ClInclude Include="include\order-p3\Util.h" />
-    <ClInclude Include="include\order-p3\VectorHasher.h" />
+    <ClInclude Include="include\order-p3\old\Timer.h" />
+    <ClInclude Include="include\order-p3\old\Util.h" />
+    <ClInclude Include="include\order-p3\old\VectorHasher.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\BinarySolution.cpp" />
-    <ClCompile Include="src\Configuration.cpp" />
-    <ClCompile Include="src\Evaluation.cpp" />
-    <ClCompile Include="src\Evaluator.cpp" />
-    <ClCompile Include="src\Linkage.cpp" />
-    <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\Optimizer.cpp" />
-    <ClCompile Include="src\Population.cpp" />
-    <ClCompile Include="src\Pyramid.cpp" />
+    <ClCompile Include="src\old\Configuration.cpp" />
+    <ClCompile Include="src\old\Evaluation.cpp" />
+    <ClCompile Include="src\old\Evaluator.cpp" />
+    <ClCompile Include="src\old\Linkage.cpp" />
+    <ClCompile Include="src\old\Main.cpp" />
+    <ClCompile Include="src\old\Optimizer.cpp" />
+    <ClCompile Include="src\old\Population.cpp" />
+    <ClCompile Include="src\old\Pyramid.cpp" />
     <ClCompile Include="src\RandomKeyEncoder.cpp" />
-    <ClCompile Include="src\Timer.cpp" />
-    <ClCompile Include="src\Util.cpp" />
-    <ClCompile Include="src\VectorHasher.cpp" />
+    <ClCompile Include="src\old\Timer.cpp" />
+    <ClCompile Include="src\old\Util.cpp" />
+    <ClCompile Include="src\old\VectorHasher.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

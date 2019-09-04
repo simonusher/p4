@@ -2,8 +2,8 @@
 // Created by Szymon on 24.11.2018.
 //
 
-#include "../include/order-p3/Pyramid.h"
-#include "../include/order-p3/PairHasher.h"
+#include "../../include/order-p3/old/Pyramid.h"
+#include "../../include/order-p3/old/PairHasher.h"
 
 Pyramid::Pyramid(vector<int> &geneDomain, CEvaluator& evaluator) {
     this->geneDomain = geneDomain;

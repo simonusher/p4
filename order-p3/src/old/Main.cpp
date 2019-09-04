@@ -1,6 +1,6 @@
-#include "../include/order-p3/Evaluator.h"
-#include "../include/order-p3/Optimizer.h"
-#include "../include/order-p3/Timer.h"
+#include "../../include/order-p3/old/Evaluator.h"
+#include "../../include/order-p3/old/Optimizer.h"
+#include "../../include/order-p3/old/Timer.h"
 
 #include <exception>
 #include <iostream>

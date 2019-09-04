@@ -3,7 +3,7 @@
 // Each evaluation object defines the "evaluate" function for how
 // to convert the vector of bool solution into a floating point fitness.
 
-#include "../include/order-p3/Evaluation.h"
+#include "../../include/order-p3/old/Evaluation.h"
 using namespace std;
 
 // Template specialization to convert a string to a function pointer

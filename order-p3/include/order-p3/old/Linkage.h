@@ -20,7 +20,7 @@ class Linkage {
 public:
     Linkage(int numberOfGenes, vector<int> &geneDomain);
     ~Linkage();
-	void recalculate(int currentPoplationSize, vector<int> &solution, std::mt19937& random);
+	void recalculate(int currentPopulationSize, vector<int> &solution, std::mt19937& random);
     void print();
     const vector<vector<int>> &getClusters() const;
 private:

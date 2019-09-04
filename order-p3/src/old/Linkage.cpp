@@ -2,9 +2,9 @@
 // Created by Szymon on 22.11.2018.
 //
 
-#include "../include/order-p3/Linkage.h"
+#include "../../include/order-p3/old/Linkage.h"
 #include <numeric>
-#include "../include/order-p3/VectorHasher.h"
+#include "../../include/order-p3/old/VectorHasher.h"
 
 Linkage::Linkage(int numberOfGenes, vector<int> &geneDomain) {
     this->numberOfGenes = numberOfGenes;
@@ -35,10 +35,10 @@ void Linkage::deleteMatrix(){
     delete distanceMeasureMatrix;
 }
 
-void Linkage::recalculate(int currentPoplationSize, vector<int>& solution, std::mt19937& random) {
+void Linkage::recalculate(int currentPopulationSize, vector<int>& solution, std::mt19937& random) {
 	updateGeneOccurrences(solution);
-	if(currentPoplationSize > 1) {
-		recalculateDistances(currentPoplationSize);
+	if(currentPopulationSize > 1) {
+		recalculateDistances(currentPopulationSize);
 		buildTree(random);
 	}
 }

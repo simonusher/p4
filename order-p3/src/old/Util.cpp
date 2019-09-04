@@ -3,7 +3,7 @@
 // Collection of utilities not better suited for placement
 // in other files
 
-#include "../include/order-p3/Util.h"
+#include "../../include/order-p3/old//Util.h"
 
 // Creates a new vector containing "length" number of random bits
 vector<bool> rand_vector(Random& rand, const size_t length) {
