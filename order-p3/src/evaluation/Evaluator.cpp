@@ -1,6 +1,6 @@
-#include "../../include/order-p3/old/Evaluator.h"
+#include "../../include/order-p3/evaluation/Evaluator.h"
 
-#include "../../include/order-p3/old/Configuration.h"
+#include "../../include/order-p3/evaluation/Configuration.h"
 
 #include <algorithm>
 #include <iostream>

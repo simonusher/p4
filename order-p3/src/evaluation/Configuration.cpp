@@ -4,7 +4,7 @@
 // loading dictionaries from the command line / files
 // and making the contents available using desired types.
 
-#include "../../include/order-p3/old/Configuration.h"
+#include "../../include/order-p3/evaluation/Configuration.h"
 using namespace std;
 
 // Command line arguments starting with a - are considered

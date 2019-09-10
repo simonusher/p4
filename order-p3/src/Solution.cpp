@@ -16,3 +16,10 @@ std::vector<double>& Solution::getGenotype() {
 std::vector<int>& Solution::getPhenotype() {
 	return phenotype;
 }
+
+double Solution::evaluate(CEvaluator& evaluator) {
+	this->fitness = evaluator.dEvaluate(this->phenotype);
+	return fitness;
+}
+
+double Solution::getFitness() const { return fitness; }

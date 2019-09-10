@@ -18,15 +18,6 @@
     <ClInclude Include="include\order-p3\RandomKeyEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\order-p3\old\Configuration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\order-p3\old\Evaluation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\order-p3\old\Evaluator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\order-p3\old\Linkage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -45,9 +36,6 @@
     <ClInclude Include="include\order-p3\old\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\order-p3\old\Util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\order-p3\old\VectorHasher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -57,18 +45,21 @@
     <ClInclude Include="include\order-p3\RandomKeyDecoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\order-p3\evaluation\Configuration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\order-p3\evaluation\Evaluation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\order-p3\evaluation\Evaluator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\order-p3\evaluation\Util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RandomKeyEncoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\old\Configuration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\old\Evaluation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\old\Evaluator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\old\Linkage.cpp">
@@ -89,9 +80,6 @@
     <ClCompile Include="src\old\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\old\Util.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\old\VectorHasher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -99,6 +87,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\RandomKeyDecoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\evaluation\Configuration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\evaluation\Evaluation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\evaluation\Evaluator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\evaluation\Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
