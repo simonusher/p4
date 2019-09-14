@@ -5,7 +5,7 @@
 #include "../../include/order-p3/old/Pyramid.h"
 #include "../../include/order-p3/old/PairHasher.h"
 
-Pyramid::Pyramid(vector<int> &geneDomain, CEvaluator& evaluator) {
+Pyramid::Pyramid(vector<int>& geneDomain, CEvaluator& evaluator) {
     this->geneDomain = geneDomain;
 	this->evaluator = &evaluator;
     this->generator = std::mt19937(randomDevice());

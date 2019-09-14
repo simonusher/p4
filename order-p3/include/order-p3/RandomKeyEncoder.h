@@ -6,6 +6,7 @@ public:
 	RandomKeyEncoder(double lowerBound, double upperBound, int numberOfGenes);
 	std::vector<double> getRandomEncoding();
 	std::vector<double> getRandomEncoding(int numberOfGenes);
+	std::vector<double> getEncodingForPhenotype(std::vector<int>& phenotype);
 	double getRandomKey();
 
 	int getNumberOfGenes() const;

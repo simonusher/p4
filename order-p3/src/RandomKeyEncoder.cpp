@@ -21,6 +21,16 @@ std::vector<double> RandomKeyEncoder::getRandomEncoding(int numberOfGenes) {
 	return encoding;
 }
 
+std::vector<double> RandomKeyEncoder::getEncodingForPhenotype(std::vector<int>& phenotype) {
+	std::vector<double> randomEncoding(getRandomEncoding(phenotype.size()));
+	std::sort(randomEncoding.begin(), randomEncoding.end());
+	std::vector<double> phenotypeEncoding(randomEncoding.size());
+	for (size_t i = 0; i < phenotype.size(); i++) {
+		phenotypeEncoding[i] = randomEncoding[phenotype[i]];
+	}
+	return phenotypeEncoding;
+}
+
 double RandomKeyEncoder::getRandomKey() {
 	return this->keyDistribution(this->randomEngine);
 }

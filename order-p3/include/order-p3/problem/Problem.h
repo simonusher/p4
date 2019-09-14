@@ -1,5 +1,5 @@
 #pragma once
-#include "Solution.h"
+#include "../Solution.h"
 
 class Problem {
 public:

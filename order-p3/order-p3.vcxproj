@@ -22,29 +22,32 @@
     <ClInclude Include="include\order-p3\evaluation\Configuration.h" />
     <ClInclude Include="include\order-p3\evaluation\Evaluation.h" />
     <ClInclude Include="include\order-p3\evaluation\Evaluator.h" />
+    <ClInclude Include="include\order-p3\local_optimizers\HillClimber.h" />
     <ClInclude Include="include\order-p3\old\Linkage.h" />
     <ClInclude Include="include\order-p3\old\Optimizer.h" />
     <ClInclude Include="include\order-p3\old\PairHasher.h" />
     <ClInclude Include="include\order-p3\old\Population.h" />
     <ClInclude Include="include\order-p3\old\Pyramid.h" />
-    <ClInclude Include="include\order-p3\Problem.h" />
+    <ClInclude Include="include\order-p3\problem\Problem.h" />
     <ClInclude Include="include\order-p3\RandomKeyDecoder.h" />
     <ClInclude Include="include\order-p3\RandomKeyEncoder.h" />
     <ClInclude Include="include\order-p3\old\Timer.h" />
     <ClInclude Include="include\order-p3\evaluation\Util.h" />
     <ClInclude Include="include\order-p3\old\VectorHasher.h" />
     <ClInclude Include="include\order-p3\Solution.h" />
+    <ClInclude Include="include\order-p3\SolutionFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\evaluation\Configuration.cpp" />
     <ClCompile Include="src\evaluation\Evaluation.cpp" />
     <ClCompile Include="src\evaluation\Evaluator.cpp" />
+    <ClCompile Include="src\local_optimizers\HillClimber.cpp" />
     <ClCompile Include="src\old\Linkage.cpp" />
     <ClCompile Include="src\old\Main.cpp" />
     <ClCompile Include="src\old\Optimizer.cpp" />
     <ClCompile Include="src\old\Population.cpp" />
     <ClCompile Include="src\old\Pyramid.cpp" />
-    <ClCompile Include="src\Problem.cpp" />
+    <ClCompile Include="src\problem\Problem.cpp" />
     <ClCompile Include="src\RandomKeyDecoder.cpp" />
     <ClCompile Include="src\RandomKeyEncoder.cpp" />
     <ClCompile Include="src\old\Timer.cpp" />

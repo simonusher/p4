@@ -57,7 +57,13 @@
     <ClInclude Include="include\order-p3\evaluation\Util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\order-p3\Problem.h">
+    <ClInclude Include="include\order-p3\problem\Problem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\order-p3\SolutionFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\order-p3\local_optimizers\HillClimber.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -104,7 +110,10 @@
     <ClCompile Include="src\evaluation\Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Problem.cpp">
+    <ClCompile Include="src\problem\Problem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\local_optimizers\HillClimber.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

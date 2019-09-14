@@ -7,6 +7,7 @@
 #include <random>
 #include "VectorHasher.h"
 #include "Population.h"
+#include "../SolutionFactory.h"
 
 using std::unordered_set;
 using std::vector;
@@ -40,4 +41,5 @@ private:
     unordered_set<vector<int>, VectorHasher> seen;
     vector<Population*> populations;
 	CEvaluator* evaluator;
+	SolutionFactory* solutionFactory;
 };
