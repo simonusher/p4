@@ -57,6 +57,9 @@
     <ClInclude Include="include\order-p3\evaluation\Util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\order-p3\Problem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RandomKeyEncoder.cpp">
@@ -99,6 +102,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\evaluation\Util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Problem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

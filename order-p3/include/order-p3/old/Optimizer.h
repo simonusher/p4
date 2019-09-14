@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Evaluator.h"
-
+#include "../evaluation/Evaluator.h"
 #include <random>
 #include <vector>
 #include "Pyramid.h"

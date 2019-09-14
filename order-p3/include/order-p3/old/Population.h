@@ -5,7 +5,7 @@
 #include "Linkage.h"
 #include <algorithm>
 #include <numeric>
-#include "Evaluator.h"
+#include "../evaluation/Evaluator.h"
 
 
 class Population {
