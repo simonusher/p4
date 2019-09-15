@@ -9,6 +9,6 @@ public:
 	
 	virtual void hillClimb(Solution& solution) = 0;
 	virtual void hillClimb(Solution* solution);
-private:
+protected:
 	Problem* problem;
 };

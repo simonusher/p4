@@ -15,17 +15,16 @@ void Solution::setGenotype(std::vector<double>& newGenotype, RandomKeyDecoder& d
 	decodeGenotypeToPhenotype(decoder);
 }
 
-
-std::vector<double>& Solution::getGenotype() {
+std::vector<double> Solution::getGenotype() const {
 	return genotype;
 }
 
-std::vector<int>& Solution::getPhenotype() {
+std::vector<int> Solution::getPhenotype() const {
 	return phenotype;
 }
 
-double Solution::evaluate(CEvaluator& evaluator) {
-	this->fitness = evaluator.dEvaluate(this->phenotype);
+double Solution::evaluate(Problem& problem) {
+	this->fitness = problem.evaluate(this->phenotype);
 	return fitness;
 }
 
