@@ -1,5 +1,4 @@
-#include "../include/order-p3/RandomKeyEncoder.h"
-
+#include "../../../include/order-p3/optimizer/encoding/RandomKeyEncoder.h"
 
 RandomKeyEncoder::RandomKeyEncoder(double lowerBound, double upperBound, int numberOfGenes)
 	: lowerBound(lowerBound),

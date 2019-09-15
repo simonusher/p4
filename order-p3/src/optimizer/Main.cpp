@@ -1,10 +1,9 @@
-#include "../../include/order-p3/evaluation/Evaluator.h"
-#include "../../include/order-p3/old/Optimizer.h"
-#include "../../include/order-p3/old/Timer.h"
-
 #include <exception>
 #include <iostream>
 #include <random>
+#include "../../include/order-p3/util/Timer.h"
+#include "../../include/order-p3/optimizer/Optimizer.h"
+#include "../../include/order-p3/evaluation/Evaluator.h"
 
 using namespace TimeCounters;
 

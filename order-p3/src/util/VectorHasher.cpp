@@ -2,7 +2,7 @@
 // Created by Szymon on 24.11.2018.
 //
 #pragma once
-#include "../../include/order-p3/old/VectorHasher.h"
+#include "../../include/order-p3/util/VectorHasher.h"
 
 std::size_t VectorHasher::operator()(std::vector<int> const &vec) const {
     std::size_t seed = vec.size();

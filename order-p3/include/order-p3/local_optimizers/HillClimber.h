@@ -1,6 +1,6 @@
 #pragma once
-#include "../Solution.h"
 #include "../problem/Problem.h"
+#include "../optimizer/solution/Solution.h"
 
 class HillClimber {
 public:

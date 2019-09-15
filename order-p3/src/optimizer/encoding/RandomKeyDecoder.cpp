@@ -1,4 +1,4 @@
-#include "../include/order-p3/RandomKeyDecoder.h"
+#include "../../../include/order-p3/optimizer/encoding/RandomKeyDecoder.h"
 
 std::vector<int> RandomKeyDecoder::decode(const std::vector<double>& encodedGenotype) {
 	std::vector<int> phenotype(encodedGenotype.size());

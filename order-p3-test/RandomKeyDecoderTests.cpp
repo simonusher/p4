@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../order-p3/include/order-p3/RandomKeyDecoder.h"
+#include "../order-p3/include/order-p3/optimizer/encoding/RandomKeyDecoder.h"
 
 TEST(DecodingTests, GivenCorrectVectorsPhenotypeShouldBeDecodedCorrectly) {
 	RandomKeyDecoder decoder;

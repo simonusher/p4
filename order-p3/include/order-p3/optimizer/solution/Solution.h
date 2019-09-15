@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
-#include "RandomKeyEncoder.h"
-#include "RandomKeyDecoder.h"
-#include "problem/Problem.h"
+#include "../encoding/RandomKeyEncoder.h"
+#include "../encoding/RandomKeyDecoder.h"
+#include "../../problem/Problem.h"
 
 class Solution
 {

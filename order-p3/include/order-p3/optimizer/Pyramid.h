@@ -5,9 +5,10 @@
 #include <unordered_set>
 #include <vector>
 #include <random>
-#include "VectorHasher.h"
 #include "Population.h"
-#include "../SolutionFactory.h"
+#include "../util/VectorHasher.h"
+#include "solution/SolutionFactory.h"
+#include "../util/PairHasher.h"
 
 using std::unordered_set;
 using std::vector;

@@ -2,7 +2,7 @@
 // Created by Szymon on 22.11.2018.
 //
 
-#include "../../include/order-p3/old/Population.h"
+#include "../../include/order-p3/optimizer/Population.h"
 
 Population::Population(int numberOfBits, vector<int> &geneDomain) {
     this->linkage = new Linkage(numberOfBits, geneDomain);

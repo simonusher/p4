@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../order-p3/include/order-p3/RandomKeyEncoder.h"
+#include "../order-p3/include/order-p3/optimizer/encoding/RandomKeyEncoder.h"
 
 class RandomKeyEncoderTests : public ::testing::Test {
 protected:

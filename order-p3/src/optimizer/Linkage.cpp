@@ -2,9 +2,7 @@
 // Created by Szymon on 22.11.2018.
 //
 
-#include "../../include/order-p3/old/Linkage.h"
-#include <numeric>
-#include "../../include/order-p3/old/VectorHasher.h"
+#include "../../include/order-p3/optimizer/Linkage.h"
 
 Linkage::Linkage(int numberOfGenes, vector<int> &geneDomain) {
     this->numberOfGenes = numberOfGenes;

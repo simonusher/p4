@@ -1,5 +1,4 @@
 #include "../../include/order-p3/local_optimizers/SwapHillClimber.h"
-#include "../../include/order-p3/old/PairHasher.h"
 
 SwapHillClimber::SwapHillClimber(Problem* problem, RandomKeyEncoder* encoder) : HillClimber(problem), encoder(encoder){
 	initialize();
@@ -74,8 +73,8 @@ void SwapHillClimber::initialize() {
 void SwapHillClimber::generateAllIndexPairs() {
 	const size_t numberOfGenes = problem->getProblemSize();
 	possibleIndexPairs.clear();
-	for (int i = 0; i < numberOfGenes - 1; i++) {
-		for (int j = i + 1; j < numberOfGenes; j++) {
+	for (size_t i = 0; i < numberOfGenes - 1; i++) {
+		for (size_t j = i + 1; j < numberOfGenes; j++) {
 			possibleIndexPairs.emplace_back(i, j);
 		}
 	}

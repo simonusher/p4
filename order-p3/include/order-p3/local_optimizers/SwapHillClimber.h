@@ -1,7 +1,9 @@
 #pragma once
 #include "HillClimber.h"
+#include "../../order-p3/util/PairHasher.h"
+#include "../optimizer/encoding/RandomKeyEncoder.h"
+#include "../optimizer/solution/Solution.h"
 #include <unordered_set>
-#include "../old/PairHasher.h"
 
 class SwapHillClimber: public HillClimber {
 public:

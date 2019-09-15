@@ -1,5 +1,4 @@
-#include "../include/order-p3/Solution.h"
-
+#include "../../../include/order-p3/optimizer/solution/Solution.h"
 
 Solution::Solution(RandomKeyEncoder& encoder, RandomKeyDecoder& decoder): genotype(encoder.getRandomEncoding()), phenotype(encoder.getNumberOfGenes()) {
 	decodeGenotypeToPhenotype(decoder);
