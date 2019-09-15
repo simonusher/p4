@@ -4,115 +4,75 @@
 
 #include "../../include/order-p3/optimizer/Pyramid.h"
 
-Pyramid::Pyramid(vector<int>& geneDomain, CEvaluator& evaluator) {
-    this->geneDomain = geneDomain;
-	this->evaluator = &evaluator;
-    this->generator = std::mt19937(randomDevice());
-    this->geneDistribution = std::uniform_int_distribution<>(0, geneDomain.size() - 1);
-	this->numberOfGenes = evaluator.iGetNumberOfBits();
-    this->bestFitness = -1;
+Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, LocalOptimizer* localOptimizer)
+	: problem(problem), solutionFactory(solutionFactory), localOptimizer(localOptimizer) {
+	this->generator = std::mt19937(randomDevice());
+	bestSolution = nullptr;
 }
 
-Pyramid::~Pyramid() {
-    for(int i = 0; i < populations.size(); i++){
-        delete populations[i];
-    }
+void Pyramid::runSingleIteration() {
+	Solution* newSolution = solutionFactory->nextRandomSolution();
+	newSolution->evaluate(*problem);
+	localOptimizer->optimize(newSolution);
+	tryAddSolutionToPyramid(newSolution);
 }
 
-int Pyramid::nextRandomGene() {
-    return geneDomain[geneDistribution(generator)];
+bool Pyramid::tryAddSolutionToPyramid(Solution* solution) {
+	return tryAddSolutionToPyramid(solution, 0);
 }
 
-bool Pyramid::addUnique(vector<int> &solution, int level, double fitness) {
-    seenSolution = seen.find(solution);
+bool Pyramid::tryAddSolutionToPyramid(Solution* solution, int level) {
+	bool added = addSolutionToPyramidIfUnique(solution, level);
+	if (added) {
+		for (int lev = level; lev < populations.size(); lev++) {
+			double previousFitness = solution->getFitness();
+			populations[lev]->improve(solution, *evaluator, generator);
+			if (previousFitness < solution->getFitness()) {
+				added = addSolutionToPyramidIfUnique(solution, lev + 1) || added;
+			}
+		}
+	} else {
+		delete solution;
+	}
+	return added;
+}
+
+
+bool Pyramid::addSolutionToPyramidIfUnique(Solution* solution, int level) {
+	std::vector<int> phenotype(solution->getPhenotype());
+    seenSolution = seen.find(phenotype);
     if(seenSolution != seen.end()){
         return false;
     } else {
-        seen.insert(solution);
-        if(populations.size() == level){
-			populations.push_back(new Population(numberOfGenes, geneDomain));
-        }
+        seen.insert(phenotype);
+		ensurePyramidCapacity(level);
         populations[level]->addSolution(solution, generator);
-        if(fitness > bestFitness){
-            bestSolution = solution;
-            bestFitness = fitness;
-        }
+		checkIfBest(solution);
+        
         return true;
     }
 }
 
-void Pyramid::runSingleIteration() {
-    vector<int> newSolution = nextRandomSolution();
-	double fitness = evaluator->dEvaluate(newSolution);
-    hillClimb(newSolution, fitness);
-    climb(newSolution, fitness);
-}
-
-vector<int> Pyramid::nextRandomSolution() {
-    vector<int> solution(numberOfGenes, 0);
-    for(int i = 0; i < numberOfGenes; i++){
-        solution[i] = nextRandomGene();
-    }
-    return solution;
-}
-
-void Pyramid::hillClimb(vector<int> &solution, double &fitness) {
-	vector<std::pair<int, int>> optionPairs;
-	optionPairs.reserve(solution.size() * geneDomain.size());
-	for(int i = 0; i < solution.size(); i++){
-		for(int j = 0; j < geneDomain.size(); j++)
-		{
-			optionPairs.push_back({ i, geneDomain.at(j) });
-		}
+void Pyramid::ensurePyramidCapacity(int level) {
+	if (populations.size() == level) {
+		populations.push_back(make_unique<Population>(numberOfGenes, geneDomain));
 	}
-
-	float new_fitness;
-	bool improvement;
-	std::unordered_set<std::pair<int, int>, PairHasher> tried;
-	do {
-		improvement = false;
-		std::shuffle(optionPairs.begin(), optionPairs.end(), generator);
-		for (std::pair<int, int>& optionPair : optionPairs) {
-			if (tried.count(optionPair) == 0 && solution.at(optionPair.first) != optionPair.second) {
-				std::swap(solution[optionPair.first], optionPair.second);
-				new_fitness = evaluator->dEvaluate(solution);
-				if (fitness < new_fitness) {
-					optionPair.second = solution[optionPair.first];
-					fitness = new_fitness;
-					improvement = true;
-					tried.clear();
-				}
-				else {
-					std::swap(solution[optionPair.first], optionPair.second);
-				}
-				tried.insert(optionPair);
-			}
-		}
-	} while (improvement);
 }
 
-bool Pyramid::climb(vector<int> &solution, double &fitness) {
-    return climb(solution, fitness, 0);
+void Pyramid::checkIfBest(Solution* solution) {
+	if (solution->getFitness() > bestSolution->getFitness()) {
+		bestSolution = solution;
+	}
 }
 
-bool Pyramid::climb(vector<int> &solution, double &fitness, int level) {
-    bool added = addUnique(solution, level, fitness);
-    if(added){
-        for (int lev = level; lev < populations.size(); lev++) {
-            double prev = fitness;
-            populations[lev]->improve(solution, fitness, *evaluator, generator);
-            if (prev < fitness) {
-                added = addUnique(solution, lev + 1, fitness) || added;
-            }
-        }
-    }
-    return added;
+vector<int> Pyramid::getBestSolutionPhenotype() const {
+    return bestSolution->getPhenotype();
 }
 
-const vector<int> &Pyramid::getBestSolution() const {
-    return bestSolution;
+Solution* Pyramid::getBestSolution() const {
+	return bestSolution;
 }
 
 double Pyramid::getBestFitness() const {
-    return bestFitness;
+    return bestSolution->getFitness();
 }

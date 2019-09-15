@@ -16,11 +16,10 @@ public:
     void improve(vector<int> &solution, double &fitness, CEvaluator& evaluator, std::mt19937& random);
     Linkage *getLinkage() const;
 private:
+    void recalculateLinkage(vector<int> &solution, std::mt19937& random);
     bool mix(vector<int> &solution, double &fitness, vector<int>& cluster, vector<int> &source, CEvaluator& evaluator);
+    void shuffleCheckingOrder(std::mt19937& random);
     vector<vector<int>> solutions;
     Linkage *linkage;
-    void shuffleCheckingOrder(std::mt19937& random);
     vector<int> solutionCheckingOrder;
-
-    void recalculateLinkage(vector<int> &solution, std::mt19937& random);
 };

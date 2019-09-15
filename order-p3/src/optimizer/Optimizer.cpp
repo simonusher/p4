@@ -31,6 +31,6 @@ void COptimizer::vRunIteration()
 	double newFitness = pyramid->getBestFitness();
 	if (newFitness > d_current_best_fitness) {
 		d_current_best_fitness = newFitness;
-		v_current_best = pyramid->getBestSolution();
+		v_current_best = pyramid->getBestSolutionPhenotype();
 	}
 }//void COptimizer::vRunIteration()

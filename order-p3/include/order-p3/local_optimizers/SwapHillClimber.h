@@ -1,16 +1,16 @@
 #pragma once
-#include "HillClimber.h"
+#include "LocalOptimizer.h"
 #include "../../order-p3/util/PairHasher.h"
 #include "../optimizer/encoding/RandomKeyEncoder.h"
 #include "../optimizer/solution/Solution.h"
 #include <unordered_set>
 
-class SwapHillClimber: public HillClimber {
+class SwapHillClimber: public LocalOptimizer {
 public:
 	SwapHillClimber(Problem* problem, RandomKeyEncoder* encoder);
-	void hillClimb(Solution& solution) override;
+	void optimize(Solution& solution) override;
 private:
-	void optimize(Solution& solution);
+	void hillClimb(Solution& solution);
 	void initialize();
 	void generateAllIndexPairs();
 	void initializeRandomGenerator();

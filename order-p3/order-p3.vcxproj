@@ -22,7 +22,7 @@
     <ClInclude Include="include\order-p3\evaluation\Configuration.h" />
     <ClInclude Include="include\order-p3\evaluation\Evaluation.h" />
     <ClInclude Include="include\order-p3\evaluation\Evaluator.h" />
-    <ClInclude Include="include\order-p3\local_optimizers\HillClimber.h" />
+    <ClInclude Include="include\order-p3\local_optimizers\LocalOptimizer.h" />
     <ClInclude Include="include\order-p3\local_optimizers\SwapHillClimber.h" />
     <ClInclude Include="include\order-p3\optimizer\Linkage.h" />
     <ClInclude Include="include\order-p3\optimizer\Optimizer.h" />
@@ -42,7 +42,7 @@
     <ClCompile Include="src\evaluation\Configuration.cpp" />
     <ClCompile Include="src\evaluation\Evaluation.cpp" />
     <ClCompile Include="src\evaluation\Evaluator.cpp" />
-    <ClCompile Include="src\local_optimizers\HillClimber.cpp" />
+    <ClCompile Include="src\local_optimizers\LocalOptimizer.cpp" />
     <ClCompile Include="src\local_optimizers\SwapHillClimber.cpp" />
     <ClCompile Include="src\optimizer\Linkage.cpp" />
     <ClCompile Include="src\optimizer\Main.cpp" />

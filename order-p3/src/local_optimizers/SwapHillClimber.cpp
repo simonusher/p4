@@ -1,10 +1,10 @@
 #include "../../include/order-p3/local_optimizers/SwapHillClimber.h"
 
-SwapHillClimber::SwapHillClimber(Problem* problem, RandomKeyEncoder* encoder) : HillClimber(problem), encoder(encoder){
+SwapHillClimber::SwapHillClimber(Problem* problem, RandomKeyEncoder* encoder) : LocalOptimizer(problem), encoder(encoder){
 	initialize();
 }
 
-void SwapHillClimber::hillClimb(Solution& solution) {
+void SwapHillClimber::optimize(Solution& solution) {
 	resetHelperFields();
 	initializeSolutionData(solution);
 	optimize(solution);
@@ -21,7 +21,7 @@ void SwapHillClimber::initializeSolutionData(const Solution& solution) {
 	currentFitness = solution.getFitness();
 }
 
-void SwapHillClimber::optimize(Solution& solution) {
+void SwapHillClimber::hillClimb(Solution& solution) {
 	while (improvementMadeLastIteration) {
 		runOptimizationIteration();
 	}

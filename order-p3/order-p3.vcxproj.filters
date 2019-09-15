@@ -30,9 +30,6 @@
     <ClInclude Include="include\order-p3\problem\Problem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\order-p3\local_optimizers\HillClimber.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\order-p3\local_optimizers\SwapHillClimber.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -69,6 +66,9 @@
     <ClInclude Include="include\order-p3\optimizer\solution\Solution.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\order-p3\local_optimizers\LocalOptimizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\evaluation\Configuration.cpp">
@@ -81,9 +81,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\evaluation\Util.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\local_optimizers\HillClimber.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\local_optimizers\SwapHillClimber.cpp">
@@ -117,6 +114,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\optimizer\solution\Solution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\local_optimizers\LocalOptimizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

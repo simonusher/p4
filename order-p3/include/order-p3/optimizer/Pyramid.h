@@ -9,38 +9,34 @@
 #include "../util/VectorHasher.h"
 #include "solution/SolutionFactory.h"
 #include "../util/PairHasher.h"
+#include "../local_optimizers/LocalOptimizer.h"
 
 using std::unordered_set;
 using std::vector;
 
 class Pyramid {
 public:
-    Pyramid(vector <int> &geneDomain, CEvaluator& evaluator);
-    ~Pyramid();
+	Pyramid(Problem* problem, SolutionFactory* solutionFactory, LocalOptimizer* localOptimizer);
     void runSingleIteration();
-
-    const vector<int> &getBestSolution() const;
-
+    vector<int> getBestSolutionPhenotype() const;
+	Solution* getBestSolution() const;
     double getBestFitness() const;
-	int getSeenIndividuals() const { return seen.size(); };
 
 private:
-    bool climb(vector<int>& solution, double &fitness);
-    bool climb(vector<int>& solution, double &fitness, int level);
-    vector<int> nextRandomSolution();
-    void hillClimb(vector<int> &solution, double &fitness);
-    int nextRandomGene();
-    bool addUnique(vector<int> &solution, int level, double fitness);
+    bool tryAddSolutionToPyramid(Solution* solution);
+    bool tryAddSolutionToPyramid(Solution* solution, int level);
+    bool addSolutionToPyramidIfUnique(Solution* solution, int level);
+	void ensurePyramidCapacity(int level);
+	void checkIfBest(Solution* solution);
+	
     std::random_device randomDevice;
     std::mt19937 generator;
-    std::uniform_int_distribution<> geneDistribution;
-    int numberOfGenes;
-    vector<int> geneDomain;
-    vector<int> bestSolution;
-    double bestFitness;
+	Solution* bestSolution;
     unordered_set<vector<int>, VectorHasher>::const_iterator seenSolution;
     unordered_set<vector<int>, VectorHasher> seen;
-    vector<Population*> populations;
+    vector<unique_ptr<Population>> populations;
 	CEvaluator* evaluator;
+	Problem* problem;
 	SolutionFactory* solutionFactory;
+	LocalOptimizer* localOptimizer;
 };
