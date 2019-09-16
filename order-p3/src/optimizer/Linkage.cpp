@@ -128,6 +128,9 @@ void Linkage::printClusters() {
     }
 }
 
+
+
+
 double Linkage::getDistanceMeasure(int fstGeneIndex, int sndGeneIndex) {
     if(fstGeneIndex > sndGeneIndex) {
         return getDistanceMeasure(sndGeneIndex, fstGeneIndex);
@@ -269,4 +272,41 @@ void Linkage::updateGeneOccurrences(std::vector<int>& solution) {
 			geneOccurrences[i][j][geneValuePairIndex]++;
 		}
 	}
+}
+
+void Linkage::updateRelativeOrderingInformation(Solution* newSolution) {
+	updateRelativeOrderingInformation(newSolution->getGenotypeRef());
+}
+
+void Linkage::updateRelativeOrderingInformation(vector<double>* genotype) {
+	for (size_t i = 0; i < genotype->size() - 1; i++) {
+		for (size_t j = i + 1; j < genotype->size(); j++) {
+			relativeOrderingInformation[i][j] += calculateRelativeOrderingInformation(genotype->at(i), genotype->at(j));
+		}
+	}
+}
+
+void Linkage::updateAdjacencyInformation(Solution* newSolution) {
+	updateAdjacencyInformation(newSolution->getGenotypeRef());
+}
+
+void Linkage::updateAdjacencyInformation(vector<double>* genotype) {
+	for(size_t i = 0; i < genotype->size() - 1; i++) {
+		for(size_t j = i + 1; j < genotype->size(); j++) {
+			adjacencyInformation[i][j] += calculateAdjacencyInformation(genotype->at(i), genotype->at(j));
+		}
+	}
+}
+
+double Linkage::calculateRelativeOrderingInformation(double firstGeneValue, double secondGeneValue) {
+	if(firstGeneValue < secondGeneValue) {
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
+double Linkage::calculateAdjacencyInformation(double firstGeneValue, double secondGeneValue) {
+	double difference = firstGeneValue - secondGeneValue;
+	return difference * difference;
 }

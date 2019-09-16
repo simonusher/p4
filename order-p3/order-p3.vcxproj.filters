@@ -69,6 +69,12 @@
     <ClInclude Include="include\order-p3\local_optimizers\LocalOptimizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\order-p3\optimizer\PopulationFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\order-p3\optimizer\PopulationFactoryImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\evaluation\Configuration.cpp">

@@ -14,12 +14,24 @@ void Solution::setGenotype(std::vector<double>& newGenotype, RandomKeyDecoder& d
 	decodeGenotypeToPhenotype(decoder);
 }
 
+double Solution::getRandomKey(int index) const {
+	return genotype[index];
+}
+
 std::vector<double> Solution::getGenotype() const {
 	return genotype;
 }
 
 std::vector<int> Solution::getPhenotype() const {
 	return phenotype;
+}
+
+std::vector<double>* Solution::getGenotypeRef() {
+	return &genotype;
+}
+
+std::vector<int>* Solution::getPhenotypeRef() {
+	return &phenotype;
 }
 
 double Solution::evaluate(Problem& problem) {

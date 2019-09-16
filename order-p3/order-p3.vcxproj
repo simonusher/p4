@@ -26,6 +26,8 @@
     <ClInclude Include="include\order-p3\local_optimizers\SwapHillClimber.h" />
     <ClInclude Include="include\order-p3\optimizer\Linkage.h" />
     <ClInclude Include="include\order-p3\optimizer\Optimizer.h" />
+    <ClInclude Include="include\order-p3\optimizer\PopulationFactory.h" />
+    <ClInclude Include="include\order-p3\optimizer\PopulationFactoryImpl.h" />
     <ClInclude Include="include\order-p3\util\PairHasher.h" />
     <ClInclude Include="include\order-p3\optimizer\Population.h" />
     <ClInclude Include="include\order-p3\optimizer\Pyramid.h" />

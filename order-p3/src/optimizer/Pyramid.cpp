@@ -6,7 +6,6 @@
 
 Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, LocalOptimizer* localOptimizer)
 	: problem(problem), solutionFactory(solutionFactory), localOptimizer(localOptimizer) {
-	this->generator = std::mt19937(randomDevice());
 	bestSolution = nullptr;
 }
 
@@ -26,7 +25,7 @@ bool Pyramid::tryAddSolutionToPyramid(Solution* solution, int level) {
 	if (added) {
 		for (int lev = level; lev < populations.size(); lev++) {
 			double previousFitness = solution->getFitness();
-			populations[lev]->improve(solution, *evaluator, generator);
+			populations[lev]->improve(solution, *evaluator, randomGenerator);
 			if (previousFitness < solution->getFitness()) {
 				added = addSolutionToPyramidIfUnique(solution, lev + 1) || added;
 			}
@@ -46,9 +45,8 @@ bool Pyramid::addSolutionToPyramidIfUnique(Solution* solution, int level) {
     } else {
         seen.insert(phenotype);
 		ensurePyramidCapacity(level);
-        populations[level]->addSolution(solution, generator);
+        populations[level]->addSolution(solution, randomGenerator);
 		checkIfBest(solution);
-        
         return true;
     }
 }

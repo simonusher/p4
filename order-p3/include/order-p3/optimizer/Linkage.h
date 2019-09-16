@@ -11,6 +11,7 @@
 #include <ctime>
 #include <random>
 #include <numeric>
+#include "solution/Solution.h"
 using std::vector;
 using std::string;
 using std::unordered_map;
@@ -51,4 +52,15 @@ private:
     void printDistanceMatrix();
 
     void printClusters();
+
+	void updateRelativeOrderingInformation(Solution* newSolution);
+	void updateRelativeOrderingInformation(vector<double>* genotype);
+	void updateAdjacencyInformation(Solution* newSolution);
+	void updateAdjacencyInformation(vector<double>* genotype);
+
+    static double calculateRelativeOrderingInformation(double firstGeneValue, double secondGeneValue);
+	static double calculateAdjacencyInformation(double firstGeneValue, double secondGeneValue);
+	
+	unordered_map<int, unordered_map<int, double>> relativeOrderingInformation;
+	unordered_map<int, unordered_map<int, double>> adjacencyInformation;
 };

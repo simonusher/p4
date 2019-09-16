@@ -12,20 +12,20 @@ Population::~Population() {
     delete linkage;
 }
 
-void Population::addSolution(vector<int> &solution, std::mt19937& random) {
+void Population::addSolution(vector<int> &solution) {
     solutions.push_back(solution);
-    recalculateLinkage(solution, random);
+    recalculateLinkage(solution);
 }
 
-void Population::recalculateLinkage(vector<int> &solution, std::mt19937& random) {
-	this->linkage->recalculate(this->solutions.size(), solution, random);
+void Population::recalculateLinkage(vector<int> &solution) {
+	this->linkage->recalculate(this->solutions.size(), solution, *randomGenerator);
 }
 
 Linkage *Population::getLinkage() const {
     return linkage;
 }
 
-void Population::improve(vector<int> &solution, double &fitness, CEvaluator& evaluator, std::mt19937& random) {
+void Population::improve(vector<int> &solution, double &fitness, CEvaluator& evaluator) {
     vector<vector<int>> clusters = linkage->getClusters();
     vector<int> cluster;
     bool different;

@@ -28,14 +28,11 @@ private:
     bool addSolutionToPyramidIfUnique(Solution* solution, int level);
 	void ensurePyramidCapacity(int level);
 	void checkIfBest(Solution* solution);
-	
-    std::random_device randomDevice;
-    std::mt19937 generator;
+
 	Solution* bestSolution;
     unordered_set<vector<int>, VectorHasher>::const_iterator seenSolution;
     unordered_set<vector<int>, VectorHasher> seen;
     vector<unique_ptr<Population>> populations;
-	CEvaluator* evaluator;
 	Problem* problem;
 	SolutionFactory* solutionFactory;
 	LocalOptimizer* localOptimizer;
