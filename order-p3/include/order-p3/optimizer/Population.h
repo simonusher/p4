@@ -17,7 +17,7 @@ public:
     void improve(Solution* solution);
     Linkage *getLinkage() const;
 private:
-    void recalculateLinkage(Solution* solution);
+    void recalculateLinkage(Solution* solution) const;
     void shuffleCheckingOrder();
 	vector<Solution*> solutions;
 	Problem* problem;

@@ -4,8 +4,8 @@
 
 #include "../../include/order-p3/optimizer/Pyramid.h"
 
-Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, LocalOptimizer* localOptimizer)
-	: problem(problem), solutionFactory(solutionFactory), localOptimizer(localOptimizer) {
+Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer)
+	: problem(problem), solutionFactory(solutionFactory), populationFactory(populationFactory), localOptimizer(localOptimizer) {
 	bestSolution = nullptr;
 }
 
@@ -41,6 +41,7 @@ void Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
 			addedImprovedSolution = addSolutionToPyramidIfUnique(currentlyImprovedSolution, lev + 1);
 			if (addedImprovedSolution) {
 				currentlyImprovedSolution = new Solution(*currentlyImprovedSolution);
+				addedImprovedSolution = false;
 			}
 		}
 	}
@@ -65,7 +66,7 @@ bool Pyramid::addSolutionToPyramidIfUnique(Solution* solution, int level) {
 
 void Pyramid::ensurePyramidCapacity(int level) {
 	if (populations.size() == level) {
-		populations.push_back(make_unique<Population>());
+		populations.push_back(populationFactory->newPopulation());
 	}
 }
 

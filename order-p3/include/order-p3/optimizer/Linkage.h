@@ -19,7 +19,6 @@ using std::unordered_map;
 
 class Linkage {
 public:
-	void initializeDistanceMeasures();
     Linkage(int numberOfGenes, std::mt19937& randomGenerator);
     ~Linkage();
 	void recalculate(int currentPopulationSize, Solution* newSolution);
@@ -27,13 +26,14 @@ public:
     const vector<vector<int>> &getClusters() const;
 private:
 	void recalculateDistances(int currentPopulationSize);
+	void buildTree();
     double getDistanceBetweenClusters(vector<int> &first, vector<int> &second);
 	double getDistanceBetweenClusters(vector<int> &first, vector<int> &second,
 		int firstStart, int firstEnd, int secondStart, int secondEnd);
     double getDistanceMeasure(int firstGeneIndex, int secondGeneIndex);
     void initializeDistanceMatrix();
+	void initializeDistanceMeasures();
     void deleteMatrix();
-    void buildTree();
     void clearClusters();
 
 	void createCachedDistances();

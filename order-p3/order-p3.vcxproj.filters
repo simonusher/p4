@@ -134,5 +134,8 @@
     <ClCompile Include="src\optimizer\solution\OptimalMixer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\optimizer\PopulationFactoryImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

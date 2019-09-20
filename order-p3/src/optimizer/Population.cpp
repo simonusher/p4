@@ -5,7 +5,7 @@
 #include "../../include/order-p3/optimizer/Population.h"
 
 Population::Population(Problem* problem, std::mt19937& randomGenerator) : problem(problem), randomGenerator(randomGenerator) {
-    this->linkage = new Linkage(problem->getProblemSize());
+    this->linkage = new Linkage(problem->getProblemSize(), randomGenerator);
 }
 
 Population::~Population() {
@@ -20,8 +20,8 @@ void Population::addSolution(Solution* solution) {
     recalculateLinkage(solution);
 }
 
-void Population::recalculateLinkage(Solution* solution) {
-	this->linkage->recalculate(this->solutions.size(), solution, *randomGenerator);
+void Population::recalculateLinkage(Solution* solution) const {
+	this->linkage->recalculate(this->solutions.size(), solution);
 }
 
 Linkage *Population::getLinkage() const {
@@ -47,5 +47,5 @@ void Population::shuffleCheckingOrder() {
         solutionCheckingOrder = vector<int>(solutions.size());
         std::iota(solutionCheckingOrder.begin(), solutionCheckingOrder.end(), 0);
     }
-    std::shuffle(solutionCheckingOrder.begin(), solutionCheckingOrder.end(), *randomGenerator);
+    std::shuffle(solutionCheckingOrder.begin(), solutionCheckingOrder.end(), randomGenerator);
 }

@@ -52,6 +52,7 @@
     <ClCompile Include="src\optimizer\Main.cpp" />
     <ClCompile Include="src\optimizer\Optimizer.cpp" />
     <ClCompile Include="src\optimizer\Population.cpp" />
+    <ClCompile Include="src\optimizer\PopulationFactoryImpl.cpp" />
     <ClCompile Include="src\optimizer\Pyramid.cpp" />
     <ClCompile Include="src\optimizer\encoding\RandomKeyDecoder.cpp" />
     <ClCompile Include="src\optimizer\encoding\RandomKeyEncoder.cpp" />

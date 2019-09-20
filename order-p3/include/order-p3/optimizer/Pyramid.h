@@ -10,13 +10,14 @@
 #include "solution/SolutionFactory.h"
 #include "../util/PairHasher.h"
 #include "../local_optimizers/LocalOptimizer.h"
+#include "PopulationFactory.h"
 
 using std::unordered_set;
 using std::vector;
 
 class Pyramid {
 public:
-	Pyramid(Problem* problem, SolutionFactory* solutionFactory, LocalOptimizer* localOptimizer);
+	Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer);
     void runSingleIteration();
     vector<int> getBestSolutionPhenotype() const;
 	Solution* getBestSolution() const;
@@ -33,8 +34,9 @@ private:
 	Solution* bestSolution;
     unordered_set<vector<int>, VectorHasher>::const_iterator seenSolution;
     unordered_set<vector<int>, VectorHasher> seen;
-    vector<unique_ptr<Population>> populations;
+    vector<Population*> populations;
 	Problem* problem;
 	SolutionFactory* solutionFactory;
+	PopulationFactory* populationFactory;
 	LocalOptimizer* localOptimizer;
 };
