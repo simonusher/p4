@@ -11,15 +11,15 @@ public:
 	double evaluate(Problem& problem);
 	std::vector<double> getGenotype() const;
 	std::vector<int> getPhenotype() const;
-	std::vector<double>* getGenotypeRef();
-	std::vector<int>* getPhenotypeRef();
+	std::vector<double>* getGenotypePtr();
+	std::vector<int>* getPhenotypePtr();
 	double getFitness() const;
+	void setFitness(double newFitness);
 	void setPhenotype(std::vector<int>& newPhenotype, RandomKeyEncoder& encoder);
 	void setGenotype(std::vector<double>& newGenotype, RandomKeyDecoder& decoder);
-	double getRandomKey(int index) const;
+	void recalculatePhenotype(RandomKeyDecoder& decoder);
+	void recalculateGenotype(RandomKeyEncoder& encoder);
 private:
-	void decodeGenotypeToPhenotype(RandomKeyDecoder& decoder);
-	void encodePhenotypeToGenotype(RandomKeyEncoder& encoder);
 	std::vector<double> genotype;
 	std::vector<int> phenotype;
 	double fitness;

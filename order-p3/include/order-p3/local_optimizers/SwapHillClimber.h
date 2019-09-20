@@ -15,13 +15,13 @@ private:
 	void generateAllIndexPairs();
 	void initializeRandomGenerator();
 	void resetHelperFields();
-	void initializeSolutionData(const Solution& solution);
+	void initializeSolutionData(Solution& solution);
 	void runOptimizationIteration();
 	void noteImprovement(double newFitness);
 	void trySwappingPossiblePairs();
 	void saveImprovedSolution(Solution& solution);
 	
-	std::vector<int> currentPhenotype;
+	std::vector<int>* solutionPhenotypePtr;
 	double currentFitness;
 	std::unordered_set<std::pair<int, int>, PairHasher> triedIndexPairs;
 	bool improvementMadeLastIteration;

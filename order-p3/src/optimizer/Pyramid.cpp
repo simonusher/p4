@@ -21,21 +21,33 @@ bool Pyramid::tryAddSolutionToPyramid(Solution* solution) {
 }
 
 bool Pyramid::tryAddSolutionToPyramid(Solution* solution, int level) {
-	bool added = addSolutionToPyramidIfUnique(solution, level);
-	if (added) {
-		for (int lev = level; lev < populations.size(); lev++) {
-			double previousFitness = solution->getFitness();
-			populations[lev]->improve(solution, *evaluator, randomGenerator);
-			if (previousFitness < solution->getFitness()) {
-				added = addSolutionToPyramidIfUnique(solution, lev + 1) || added;
-			}
-		}
-	} else {
+	bool addedBaseSolution = addSolutionToPyramidIfUnique(solution, level);
+	if (addedBaseSolution) {
+		tryToAddImprovedSolutions(solution, level);
+	}
+	else {
 		delete solution;
 	}
-	return added;
+	return addedBaseSolution;
 }
 
+void Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
+	Solution* currentlyImprovedSolution = new Solution(*solution);
+	bool addedImprovedSolution = false;
+	for (int lev = level; lev < populations.size(); lev++) {
+		double previousFitness = currentlyImprovedSolution->getFitness();
+		populations[lev]->improve(currentlyImprovedSolution);
+		if (previousFitness < currentlyImprovedSolution->getFitness()) {
+			addedImprovedSolution = addSolutionToPyramidIfUnique(currentlyImprovedSolution, lev + 1);
+			if (addedImprovedSolution) {
+				currentlyImprovedSolution = new Solution(*currentlyImprovedSolution);
+			}
+		}
+	}
+	if (!addedImprovedSolution) {
+		delete currentlyImprovedSolution;
+	}
+}
 
 bool Pyramid::addSolutionToPyramidIfUnique(Solution* solution, int level) {
 	std::vector<int> phenotype(solution->getPhenotype());
@@ -45,7 +57,7 @@ bool Pyramid::addSolutionToPyramidIfUnique(Solution* solution, int level) {
     } else {
         seen.insert(phenotype);
 		ensurePyramidCapacity(level);
-        populations[level]->addSolution(solution, randomGenerator);
+        populations[level]->addSolution(solution);
 		checkIfBest(solution);
         return true;
     }
@@ -53,7 +65,7 @@ bool Pyramid::addSolutionToPyramidIfUnique(Solution* solution, int level) {
 
 void Pyramid::ensurePyramidCapacity(int level) {
 	if (populations.size() == level) {
-		populations.push_back(make_unique<Population>(numberOfGenes, geneDomain));
+		populations.push_back(make_unique<Population>());
 	}
 }
 

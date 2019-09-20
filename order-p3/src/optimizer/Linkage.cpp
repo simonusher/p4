@@ -275,7 +275,7 @@ void Linkage::updateGeneOccurrences(std::vector<int>& solution) {
 }
 
 void Linkage::updateRelativeOrderingInformation(Solution* newSolution) {
-	updateRelativeOrderingInformation(newSolution->getGenotypeRef());
+	updateRelativeOrderingInformation(newSolution->getGenotypePtr());
 }
 
 void Linkage::updateRelativeOrderingInformation(vector<double>* genotype) {
@@ -287,7 +287,7 @@ void Linkage::updateRelativeOrderingInformation(vector<double>* genotype) {
 }
 
 void Linkage::updateAdjacencyInformation(Solution* newSolution) {
-	updateAdjacencyInformation(newSolution->getGenotypeRef());
+	updateAdjacencyInformation(newSolution->getGenotypePtr());
 }
 
 void Linkage::updateAdjacencyInformation(vector<double>* genotype) {

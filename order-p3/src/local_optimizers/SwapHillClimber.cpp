@@ -4,6 +4,12 @@ SwapHillClimber::SwapHillClimber(Problem* problem, RandomKeyEncoder* encoder) : 
 	initialize();
 }
 
+void SwapHillClimber::initialize() {
+	generateAllIndexPairs();
+	initializeRandomGenerator();
+	resetHelperFields();
+}
+
 void SwapHillClimber::optimize(Solution& solution) {
 	resetHelperFields();
 	initializeSolutionData(solution);
@@ -16,8 +22,8 @@ void SwapHillClimber::resetHelperFields() {
 	triedIndexPairs.clear();
 }
 
-void SwapHillClimber::initializeSolutionData(const Solution& solution) {
-	currentPhenotype = solution.getPhenotype();
+void SwapHillClimber::initializeSolutionData(Solution& solution) {
+	solutionPhenotypePtr = solution.getPhenotypePtr();
 	currentFitness = solution.getFitness();
 }
 
@@ -32,8 +38,8 @@ void SwapHillClimber::hillClimb(Solution& solution) {
 }
 
 void SwapHillClimber::saveImprovedSolution(Solution& solution) {
-	solution.setPhenotype(currentPhenotype, *encoder);
-	solution.evaluate(*problem);
+	solution.recalculateGenotype(*encoder);
+	solution.setFitness(currentFitness);
 }
 
 void SwapHillClimber::runOptimizationIteration() {
@@ -44,13 +50,13 @@ void SwapHillClimber::runOptimizationIteration() {
 
 void SwapHillClimber::trySwappingPossiblePairs() {
 	for (std::pair<int, int>& indexPair : possibleIndexPairs) {
-		std::swap(currentPhenotype[indexPair.first], currentPhenotype[indexPair.second]);
-		double newFitness = problem->evaluate(currentPhenotype);
+		std::swap((*solutionPhenotypePtr)[indexPair.first], (*solutionPhenotypePtr)[indexPair.second]);
+		double newFitness = problem->evaluate(*solutionPhenotypePtr);
 		if (currentFitness < newFitness) {
 			noteImprovement(newFitness);
 		}
 		else {
-			std::swap(currentPhenotype[indexPair.first], currentPhenotype[indexPair.second]);
+			std::swap((*solutionPhenotypePtr)[indexPair.first], (*solutionPhenotypePtr)[indexPair.second]);
 		}
 		triedIndexPairs.insert(indexPair);
 	}
@@ -61,13 +67,6 @@ void SwapHillClimber::noteImprovement(double newFitness) {
 	improvementMadeLastIteration = true;
 	anyImprovementMade = true;
 	triedIndexPairs.clear();
-}
-
-
-void SwapHillClimber::initialize() {
-	generateAllIndexPairs();
-	initializeRandomGenerator();
-	resetHelperFields();
 }
 
 void SwapHillClimber::generateAllIndexPairs() {

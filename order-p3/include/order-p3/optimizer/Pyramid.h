@@ -24,6 +24,7 @@ public:
 
 private:
     bool tryAddSolutionToPyramid(Solution* solution);
+	void tryToAddImprovedSolutions(Solution* solution, int level);
     bool tryAddSolutionToPyramid(Solution* solution, int level);
     bool addSolutionToPyramidIfUnique(Solution* solution, int level);
 	void ensurePyramidCapacity(int level);

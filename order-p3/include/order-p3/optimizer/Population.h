@@ -6,21 +6,23 @@
 #include <algorithm>
 #include <numeric>
 #include "../evaluation/Evaluator.h"
+#include "solution/SolutionMixer.h"
 
 
 class Population {
 public:
-    Population(int numberOfBits, vector<int>&geneDomain);
+    Population(Problem* problem);
     ~Population();
-    void addSolution(vector<int> &solution);
-    void improve(vector<int> &solution, double &fitness, CEvaluator& evaluator);
+    void addSolution(Solution* solution);
+    void improve(Solution* solution);
     Linkage *getLinkage() const;
 private:
-    void recalculateLinkage(vector<int> &solution);
-    bool mix(vector<int> &solution, double &fitness, vector<int>& cluster, vector<int> &source, CEvaluator& evaluator);
-    void shuffleCheckingOrder(std::mt19937& random);
-    vector<vector<int>> solutions;
+    void recalculateLinkage(Solution* solution);
+    void shuffleCheckingOrder();
+	vector<Solution*> solutions;
+	Problem* problem;
     Linkage *linkage;
     vector<int> solutionCheckingOrder;
 	std::mt19937* randomGenerator;
+	SolutionMixer* solutionMixer;
 };
