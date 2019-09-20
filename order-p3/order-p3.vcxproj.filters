@@ -81,6 +81,15 @@
     <ClInclude Include="include\order-p3\optimizer\solution\SolutionFactoryImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\order-p3\problem\travelling_thief\City.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\order-p3\problem\travelling_thief\KnapsackItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\order-p3\problem\travelling_thief\TTPProblem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\evaluation\Configuration.cpp">
@@ -135,6 +144,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\optimizer\solution\SolutionFactoryImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\problem\travelling_thief\City.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\problem\travelling_thief\KnapsackItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\problem\travelling_thief\TTPProblem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
