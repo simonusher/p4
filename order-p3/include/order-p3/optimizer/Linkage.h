@@ -19,40 +19,36 @@ using std::unordered_map;
 
 class Linkage {
 public:
-    Linkage(int numberOfGenes, vector<int> &geneDomain);
+	void initializeDistanceMeasures();
+    Linkage(int numberOfGenes, std::mt19937& randomGenerator);
     ~Linkage();
-	void recalculate(int currentPopulationSize, vector<int> &solution, std::mt19937& random);
+	void recalculate(int currentPopulationSize, Solution* newSolution);
     void print();
     const vector<vector<int>> &getClusters() const;
 private:
-	void updateGeneOccurrences(std::vector<int>& solution);
 	void recalculateDistances(int currentPopulationSize);
-	void initGeneValueIndices();
-	void initGeneOccurrences();
-	void deleteGeneOccurrences();
     double getDistanceBetweenClusters(vector<int> &first, vector<int> &second);
 	double getDistanceBetweenClusters(vector<int> &first, vector<int> &second,
 		int firstStart, int firstEnd, int secondStart, int secondEnd);
-    double getDistanceMeasure(int fstGeneIndex, int sndGeneIndex);
+    double getDistanceMeasure(int firstGeneIndex, int secondGeneIndex);
     void initializeDistanceMatrix();
     void deleteMatrix();
-    void buildTree(std::mt19937& random);
+    void buildTree();
     void clearClusters();
-    int numberOfGenes;
-    vector<vector<int>> clusters;
-    vector<int> geneDomain;
-    vector<vector<double> *> *distanceMeasureMatrix;
-	unordered_map<int, unordered_map<int, int*>> geneOccurrences;
-	unordered_map<int, int> geneValueIndices;
 
 	void createCachedDistances();
 	void resetCachedDistances();
-	vector<vector<double>> cachedDistances;
 
     void printDistanceMatrix();
 
     void printClusters();
 
+	
+	double calculateDistanceBetweenGenes(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize);
+	double calculateRelativeOrderingInformation(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize);
+	double calculateAdjacencyInformation(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize);
+	
+	void updatePopulationInformation(Solution* newSolution);
 	void updateRelativeOrderingInformation(Solution* newSolution);
 	void updateRelativeOrderingInformation(vector<double>* genotype);
 	void updateAdjacencyInformation(Solution* newSolution);
@@ -60,7 +56,12 @@ private:
 
     static double calculateRelativeOrderingInformation(double firstGeneValue, double secondGeneValue);
 	static double calculateAdjacencyInformation(double firstGeneValue, double secondGeneValue);
-	
+
+	int numberOfGenes;
+	vector<vector<int>> clusters;
+	vector<vector<double>*>* distanceMeasureMatrix;
+	vector<vector<double>> cachedDistances;
 	unordered_map<int, unordered_map<int, double>> relativeOrderingInformation;
 	unordered_map<int, unordered_map<int, double>> adjacencyInformation;
+	std::mt19937& randomGenerator;
 };

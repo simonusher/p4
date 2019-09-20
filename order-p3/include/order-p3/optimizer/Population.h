@@ -11,7 +11,7 @@
 
 class Population {
 public:
-    Population(Problem* problem);
+    Population(Problem* problem, std::mt19937& randomGenerator);
     ~Population();
     void addSolution(Solution* solution);
     void improve(Solution* solution);
@@ -23,6 +23,6 @@ private:
 	Problem* problem;
     Linkage *linkage;
     vector<int> solutionCheckingOrder;
-	std::mt19937* randomGenerator;
+	std::mt19937& randomGenerator;
 	SolutionMixer* solutionMixer;
 };

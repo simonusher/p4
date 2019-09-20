@@ -4,13 +4,24 @@
 
 #include "../../include/order-p3/optimizer/Linkage.h"
 
-Linkage::Linkage(int numberOfGenes, vector<int> &geneDomain) {
+
+
+Linkage::Linkage(int numberOfGenes, std::mt19937& randomGenerator) : randomGenerator(randomGenerator) {
     this->numberOfGenes = numberOfGenes;
-    this->geneDomain = geneDomain;
     initializeDistanceMatrix();
-	initGeneValueIndices();
-	initGeneOccurrences();
+	initializeDistanceMeasures();
 	createCachedDistances();
+}
+
+Linkage::~Linkage() {
+	deleteMatrix();
+}
+
+void Linkage::deleteMatrix() {
+	for (int i = 0; i < numberOfGenes; i++) {
+		delete (*distanceMeasureMatrix)[i];
+	}
+	delete distanceMeasureMatrix;
 }
 
 void Linkage::initializeDistanceMatrix(){
@@ -20,72 +31,28 @@ void Linkage::initializeDistanceMatrix(){
     }
 }
 
-Linkage::~Linkage() {
-    deleteMatrix();
-	deleteGeneOccurrences();
+void Linkage::initializeDistanceMeasures() {
+	for (int i = 0; i < numberOfGenes - 1; i++) {
+		for (int j = i + 1; j < numberOfGenes; j++) {
+			relativeOrderingInformation[i][j] = 0;
+			adjacencyInformation[i][j] = 0;
+		}
+	}
 }
 
 
-void Linkage::deleteMatrix(){
-    for(int i = 0; i < numberOfGenes; i++){
-        delete (*distanceMeasureMatrix)[i];
-    }
-    delete distanceMeasureMatrix;
-}
-
-void Linkage::recalculate(int currentPopulationSize, vector<int>& solution, std::mt19937& random) {
-	updateGeneOccurrences(solution);
+void Linkage::recalculate(int currentPopulationSize, Solution* newSolution) {
+	updatePopulationInformation(newSolution);
 	if(currentPopulationSize > 1) {
 		recalculateDistances(currentPopulationSize);
-		buildTree(random);
+		buildTree();
 	}
 }
 
 void Linkage::recalculateDistances(int currentPopulationSize) {
-	double dIJ = 0;
-	double hIJ = 0;
-	double dMIJ = 0;
-	int domainSize = geneDomain.size();
-	std::vector<double> geneValuePairProbs(domainSize * domainSize, 0);
-	std::vector<double> iGeneValueProbs(domainSize, 0);
-	std::vector<double> jGeneValueProbs(domainSize, 0);
-	int *iJGeneOccurrences;
 	for(int i = 0; i < numberOfGenes - 1; i++) {
 		for(int j = i + 1; j < numberOfGenes; j++) {
-			dIJ = 0;
-			hIJ = 0;
-			iJGeneOccurrences = geneOccurrences[i][j];
-			for(int k = 0; k < domainSize * domainSize; k++) {
-				geneValuePairProbs[k] = iJGeneOccurrences[k] / double(currentPopulationSize);
-				iGeneValueProbs[k / domainSize] += iJGeneOccurrences[k];
-				jGeneValueProbs[k % domainSize] += iJGeneOccurrences[k];
-			}
-			for(int k = 0; k < domainSize; k++) {
-				iGeneValueProbs[k] /= currentPopulationSize;
-				jGeneValueProbs[k] /= currentPopulationSize;
-			}
-
-			for(int k = 0; k < domainSize * domainSize; k++) {
-				double pij = geneValuePairProbs[k];
-				double pi = iGeneValueProbs[k / domainSize];
-				double pj = jGeneValueProbs[k % domainSize];
-				if (pij != 0) {
-					if (pi != 0 && pj != 0) {
-						dIJ += pij * log(pij / (pi * pj));
-					}
-					hIJ += pij * log(pij);
-				}
-			}
-			hIJ *= -1;
-			if (hIJ == 0) {
-				dMIJ = 0;
-			}
-			else {
-				dMIJ = (hIJ - dIJ) / hIJ;
-			}
-			distanceMeasureMatrix->at(i)->at(j) = dMIJ;
-			std::fill(iGeneValueProbs.begin(), iGeneValueProbs.end(), 0);
-			std::fill(jGeneValueProbs.begin(), jGeneValueProbs.end(), 0);
+			distanceMeasureMatrix->at(i)->at(j) = calculateDistanceBetweenGenes(i, j, currentPopulationSize);
 		}
 	}
 }
@@ -128,21 +95,11 @@ void Linkage::printClusters() {
     }
 }
 
-
-
-
-double Linkage::getDistanceMeasure(int fstGeneIndex, int sndGeneIndex) {
-    if(fstGeneIndex > sndGeneIndex) {
-        return getDistanceMeasure(sndGeneIndex, fstGeneIndex);
-    }
-    return distanceMeasureMatrix->at(fstGeneIndex)->at(sndGeneIndex);
-}
-
 void Linkage::clearClusters() {
     clusters.clear();
 }
 
-void Linkage::buildTree(std::mt19937& random) {
+void Linkage::buildTree() {
 	resetCachedDistances();
     clearClusters();
 	vector<vector<int>> useful;
@@ -164,7 +121,7 @@ void Linkage::buildTree(std::mt19937& random) {
 	double cachedDistance;
     while(options.size() - startIndex > 1){
         smallestDistance = 1;
-		std::shuffle(options.begin() + startIndex, options.end(), random);
+		std::shuffle(options.begin() + startIndex, options.end(), randomGenerator);
 		int firstOption;
 		int secondOption;
 		for (int i = startIndex; i < options.size(); i++) {
@@ -207,6 +164,14 @@ void Linkage::buildTree(std::mt19937& random) {
 	clusters = useful;
 }
 
+const vector<vector<int>>& Linkage::getClusters() const {
+	return clusters;
+}
+
+double Linkage::getDistanceBetweenClusters(vector<int>& first, vector<int>& second) {
+	return getDistanceBetweenClusters(first, second, 0, first.size(), 0, second.size());
+}
+
 double Linkage::getDistanceBetweenClusters(vector<int> &first, vector<int> &second,
 	int firstStart, int firstEnd, int secondStart, int secondEnd) {
 	int firstSize = firstEnd - firstStart;
@@ -226,52 +191,31 @@ double Linkage::getDistanceBetweenClusters(vector<int> &first, vector<int> &seco
 	}
 }
 
-const vector<vector<int>> &Linkage::getClusters() const {
-	return clusters;
-}
-
-double Linkage::getDistanceBetweenClusters(vector<int> &first, vector<int> &second) {
-	return getDistanceBetweenClusters(first, second, 0, first.size(), 0, second.size());
-}
-
-void Linkage::initGeneValueIndices() {
-	int geneValue;
-	for(int i = 0; i < geneDomain.size(); i++) {
-		geneValue = geneDomain[i];
-		geneValueIndices.insert({ geneValue, i });
+double Linkage::getDistanceMeasure(int firstGeneIndex, int secondGeneIndex) {
+	if(firstGeneIndex > secondGeneIndex) {
+		return getDistanceMeasure(secondGeneIndex, firstGeneIndex);
 	}
+	return distanceMeasureMatrix->at(firstGeneIndex)->at(secondGeneIndex);
 }
 
-void Linkage::initGeneOccurrences() {
-	for(int i = 0; i < numberOfGenes - 1; i++) {
-		geneOccurrences.insert({ i, unordered_map<int, int*>() });
-		for(int j = i + 1; j < numberOfGenes; j++) {
-			int* occurrences = new int[geneDomain.size() * geneDomain.size()]();
-			geneOccurrences[i][j] = occurrences;
-		}
-	}
+double Linkage::calculateDistanceBetweenGenes(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize) {
+	double relativeOrderingMeasure = calculateRelativeOrderingInformation(firstGeneIndex, secondGeneIndex, currentPopulationSize);
+	double adjacencyMeasure = calculateAdjacencyInformation(firstGeneIndex, secondGeneIndex, currentPopulationSize);
+	return relativeOrderingMeasure * adjacencyMeasure;
 }
 
-void Linkage::deleteGeneOccurrences() {
-	for (int i = 0; i < numberOfGenes - 1; i++) {
-		for (int j = i + 1; j < numberOfGenes; j++) {
-			delete geneOccurrences[i][j];
-		}
-	}
+double Linkage::calculateRelativeOrderingInformation(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize) {
+	double pij =  1 / (double(currentPopulationSize)) * relativeOrderingInformation[firstGeneIndex][secondGeneIndex];
+	return 1 - (-(pij * log2(pij)) + (1 - pij) * log2(1 - pij));
 }
 
-void Linkage::updateGeneOccurrences(std::vector<int>& solution) {
-	int geneIValue;
-	int geneJValue;
-	int geneValuePairIndex;
-	for (int i = 0; i < numberOfGenes; i++) {
-		for (int j = i + 1; j < numberOfGenes; j++) {
-			geneIValue = solution[i];
-			geneJValue = solution[j];
-			geneValuePairIndex = geneValueIndices[geneIValue] * geneDomain.size() + geneValueIndices[geneJValue];
-			geneOccurrences[i][j][geneValuePairIndex]++;
-		}
-	}
+double Linkage::calculateAdjacencyInformation(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize) {
+	return 1 - (1 / double(currentPopulationSize)) * adjacencyInformation[firstGeneIndex][secondGeneIndex];
+}
+
+void Linkage::updatePopulationInformation(Solution* newSolution) {
+	updateRelativeOrderingInformation(newSolution);
+	updateAdjacencyInformation(newSolution);
 }
 
 void Linkage::updateRelativeOrderingInformation(Solution* newSolution) {

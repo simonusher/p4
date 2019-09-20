@@ -4,8 +4,8 @@
 
 #include "../../include/order-p3/optimizer/Population.h"
 
-Population::Population(Problem* problem) : problem(problem) {
-    this->linkage = new Linkage(numberOfBits, geneDomain);
+Population::Population(Problem* problem, std::mt19937& randomGenerator) : problem(problem), randomGenerator(randomGenerator) {
+    this->linkage = new Linkage(problem->getProblemSize());
 }
 
 Population::~Population() {
