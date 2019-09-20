@@ -45,9 +45,6 @@
     <ClInclude Include="include\order-p3\optimizer\Linkage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\order-p3\optimizer\Optimizer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\order-p3\optimizer\Population.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -81,6 +78,9 @@
     <ClInclude Include="include\order-p3\optimizer\solution\OptimalMixer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\order-p3\optimizer\solution\SolutionFactoryImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\evaluation\Configuration.cpp">
@@ -107,12 +107,6 @@
     <ClCompile Include="src\optimizer\Linkage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\optimizer\Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\optimizer\Optimizer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\optimizer\Population.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -135,6 +129,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\optimizer\PopulationFactoryImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\optimizer\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\optimizer\solution\SolutionFactoryImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

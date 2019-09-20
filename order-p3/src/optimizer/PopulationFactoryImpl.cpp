@@ -1,8 +1,8 @@
 #include "../../include/order-p3/optimizer/PopulationFactoryImpl.h"
 
 
-PopulationFactoryImpl::PopulationFactoryImpl(Problem* problem, std::mt19937& randomGenerator) : problem(problem), randomGenerator(randomGenerator) { }
+PopulationFactoryImpl::PopulationFactoryImpl(Problem* problem, std::mt19937& randomGenerator) : randomGenerator(randomGenerator), problem(problem) { }
 
-Population* PopulationFactoryImpl::getNewPopulation() const {
+Population* PopulationFactoryImpl::newPopulation() {
 	return new Population(problem, randomGenerator);
 }

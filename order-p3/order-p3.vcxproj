@@ -25,10 +25,10 @@
     <ClInclude Include="include\order-p3\local_optimizers\LocalOptimizer.h" />
     <ClInclude Include="include\order-p3\local_optimizers\SwapHillClimber.h" />
     <ClInclude Include="include\order-p3\optimizer\Linkage.h" />
-    <ClInclude Include="include\order-p3\optimizer\Optimizer.h" />
     <ClInclude Include="include\order-p3\optimizer\PopulationFactory.h" />
     <ClInclude Include="include\order-p3\optimizer\PopulationFactoryImpl.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\OptimalMixer.h" />
+    <ClInclude Include="include\order-p3\optimizer\solution\SolutionFactoryImpl.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\SolutionMixer.h" />
     <ClInclude Include="include\order-p3\util\PairHasher.h" />
     <ClInclude Include="include\order-p3\optimizer\Population.h" />
@@ -49,14 +49,14 @@
     <ClCompile Include="src\local_optimizers\LocalOptimizer.cpp" />
     <ClCompile Include="src\local_optimizers\SwapHillClimber.cpp" />
     <ClCompile Include="src\optimizer\Linkage.cpp" />
-    <ClCompile Include="src\optimizer\Main.cpp" />
-    <ClCompile Include="src\optimizer\Optimizer.cpp" />
+    <ClCompile Include="src\optimizer\main.cpp" />
     <ClCompile Include="src\optimizer\Population.cpp" />
     <ClCompile Include="src\optimizer\PopulationFactoryImpl.cpp" />
     <ClCompile Include="src\optimizer\Pyramid.cpp" />
     <ClCompile Include="src\optimizer\encoding\RandomKeyDecoder.cpp" />
     <ClCompile Include="src\optimizer\encoding\RandomKeyEncoder.cpp" />
     <ClCompile Include="src\optimizer\solution\OptimalMixer.cpp" />
+    <ClCompile Include="src\optimizer\solution\SolutionFactoryImpl.cpp" />
     <ClCompile Include="src\util\Timer.cpp" />
     <ClCompile Include="src\evaluation\Util.cpp" />
     <ClCompile Include="src\util\VectorHasher.cpp" />
@@ -83,7 +83,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>

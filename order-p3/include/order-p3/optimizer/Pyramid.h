@@ -18,6 +18,7 @@ using std::vector;
 class Pyramid {
 public:
 	Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer);
+	~Pyramid();
     void runSingleIteration();
     vector<int> getBestSolutionPhenotype() const;
 	Solution* getBestSolution() const;

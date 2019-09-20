@@ -9,6 +9,12 @@ Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationF
 	bestSolution = nullptr;
 }
 
+Pyramid::~Pyramid() {
+	for (Population* population : populations) {
+		delete population;
+	}
+}
+
 void Pyramid::runSingleIteration() {
 	Solution* newSolution = solutionFactory->nextRandomSolution();
 	newSolution->evaluate(*problem);
