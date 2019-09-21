@@ -18,59 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\order-p3\evaluation\Configuration.h" />
-    <ClInclude Include="include\order-p3\evaluation\Evaluation.h" />
-    <ClInclude Include="include\order-p3\evaluation\Evaluator.h" />
-    <ClInclude Include="include\order-p3\local_optimizers\LocalOptimizer.h" />
-    <ClInclude Include="include\order-p3\local_optimizers\SwapHillClimber.h" />
-    <ClInclude Include="include\order-p3\optimizer\Linkage.h" />
-    <ClInclude Include="include\order-p3\optimizer\PopulationFactory.h" />
-    <ClInclude Include="include\order-p3\optimizer\PopulationFactoryImpl.h" />
-    <ClInclude Include="include\order-p3\optimizer\solution\OptimalMixer.h" />
-    <ClInclude Include="include\order-p3\optimizer\solution\SolutionFactoryImpl.h" />
-    <ClInclude Include="include\order-p3\optimizer\solution\SolutionMixer.h" />
-    <ClInclude Include="include\order-p3\problem\travelling_thief\City.h" />
-    <ClInclude Include="include\order-p3\problem\travelling_thief\KnapsackItem.h" />
-    <ClInclude Include="include\order-p3\problem\travelling_thief\TTPProblem.h" />
-    <ClInclude Include="include\order-p3\util\PairHasher.h" />
-    <ClInclude Include="include\order-p3\optimizer\Population.h" />
-    <ClInclude Include="include\order-p3\optimizer\Pyramid.h" />
-    <ClInclude Include="include\order-p3\problem\Problem.h" />
-    <ClInclude Include="include\order-p3\optimizer\encoding\RandomKeyDecoder.h" />
-    <ClInclude Include="include\order-p3\optimizer\encoding\RandomKeyEncoder.h" />
-    <ClInclude Include="include\order-p3\util\Timer.h" />
-    <ClInclude Include="include\order-p3\evaluation\Util.h" />
-    <ClInclude Include="include\order-p3\util\VectorHasher.h" />
-    <ClInclude Include="include\order-p3\optimizer\solution\Solution.h" />
-    <ClInclude Include="include\order-p3\optimizer\solution\SolutionFactory.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\evaluation\Configuration.cpp" />
-    <ClCompile Include="src\evaluation\Evaluation.cpp" />
-    <ClCompile Include="src\evaluation\Evaluator.cpp" />
-    <ClCompile Include="src\local_optimizers\LocalOptimizer.cpp" />
-    <ClCompile Include="src\local_optimizers\SwapHillClimber.cpp" />
-    <ClCompile Include="src\optimizer\Linkage.cpp" />
-    <ClCompile Include="src\optimizer\Population.cpp" />
-    <ClCompile Include="src\optimizer\PopulationFactoryImpl.cpp" />
-    <ClCompile Include="src\optimizer\Pyramid.cpp" />
-    <ClCompile Include="src\optimizer\encoding\RandomKeyDecoder.cpp" />
-    <ClCompile Include="src\optimizer\encoding\RandomKeyEncoder.cpp" />
-    <ClCompile Include="src\optimizer\solution\OptimalMixer.cpp" />
-    <ClCompile Include="src\optimizer\solution\SolutionFactoryImpl.cpp" />
-    <ClCompile Include="src\problem\travelling_thief\City.cpp" />
-    <ClCompile Include="src\problem\travelling_thief\KnapsackItem.cpp" />
-    <ClCompile Include="src\problem\travelling_thief\TTPProblem.cpp" />
-    <ClCompile Include="src\util\Timer.cpp" />
-    <ClCompile Include="src\evaluation\Util.cpp" />
-    <ClCompile Include="src\util\VectorHasher.cpp" />
-    <ClCompile Include="src\optimizer\solution\Solution.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{2EE83DA6-4853-4A15-876E-DCF89AF66D03}</ProjectGuid>
-    <RootNamespace>orderp3</RootNamespace>
+    <ProjectGuid>{619A59A8-8CFF-45AC-845E-61657A72AA45}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>p3optimizer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -78,27 +30,27 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -118,61 +70,94 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-    </Link>
-  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <EntryPointSymbol>
-      </EntryPointSymbol>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="p3-optimizer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\order-p3\order-p3.vcxproj">
+      <Project>{2ee83da6-4853-4a15-876e-dcf89af66d03}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -22,12 +22,12 @@ public:
 	double evaluate(std::vector<int>& solution) override;
 	int getProblemSize() override;
 
-    void initialize(std::string &filename, ItemSelectionPolicy policy);
+    void initialize(const std::string &filename, ItemSelectionPolicy policy);
     double selectedItemsWeight;
     double selectedItemsProfit;
     double getDistance(int firstCityIndex, int secondCityIndex);
 private:
-    void load(std::string &filename);
+    void load(const std::string &filename);
     void selectItems(ItemSelectionPolicy policy);
     void calculateDistances();
     void addNewItem(int index, int profit, int weight, int assignedNodeIndex);

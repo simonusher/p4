@@ -4,7 +4,7 @@
 
 #include "../../include/order-p3/optimizer/Population.h"
 
-Population::Population(Problem* problem, std::mt19937& randomGenerator) : problem(problem), randomGenerator(randomGenerator) {
+Population::Population(Problem* problem, SolutionMixer* solutionMixer, ::mt19937& randomGenerator) : problem(problem), solutionMixer(solutionMixer), randomGenerator(randomGenerator) {
     this->linkage = new Linkage(problem->getProblemSize(), randomGenerator);
 }
 

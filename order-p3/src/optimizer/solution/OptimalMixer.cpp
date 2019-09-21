@@ -30,6 +30,7 @@ void OptimalMixer::handleGenotypeChange() const {
 	}
 	else {
 		swapSolutionsGenesInCluster();
+		destinationSolution->setFitness(oldFitness);
 	}
 }
 

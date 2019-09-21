@@ -2,7 +2,7 @@
 #include <string>
 #include "../../../include/order-p3/problem/travelling_thief/TTPProblem.h"
 
-void TtpProblem::initialize(std::string &filename, ItemSelectionPolicy policy) {
+void TtpProblem::initialize(const std::string &filename, ItemSelectionPolicy policy) {
     load(filename);
     calculateDistances();
     selectItems(policy);
@@ -28,7 +28,7 @@ double TtpProblem::evaluate(std::vector<int>& solution) {
 	return selectedItemsProfit - totalTime;
 }
 
-void TtpProblem::load(std::string &filename) {
+void TtpProblem::load(const std::string &filename) {
     std::ifstream file;
     std::string line;
 
@@ -140,15 +140,15 @@ void TtpProblem::selectItems(ItemSelectionPolicy policy) {
 }
 
 bool TtpProblem::selectBetterWeightProfitItem(KnapsackItem *firstItem, KnapsackItem *secondItem){
-    return firstItem->getProfitWeightRatio() >= secondItem->getProfitWeightRatio();
+    return firstItem->getProfitWeightRatio() > secondItem->getProfitWeightRatio();
 }
 
 bool TtpProblem::selectLighterItem(KnapsackItem *firstItem, KnapsackItem *secondItem) {
-    return firstItem->getWeight() <= secondItem->getWeight();
+    return firstItem->getWeight() < secondItem->getWeight();
 }
 
 bool TtpProblem::selectProfitableItem(KnapsackItem *firstItem, KnapsackItem *secondItem) {
-    return firstItem->getProfit() >= secondItem->getProfit();
+    return firstItem->getProfit() > secondItem->getProfit();
 }
 
 double TtpProblem::getDistance(int firstCityIndex, int secondCityIndex) {

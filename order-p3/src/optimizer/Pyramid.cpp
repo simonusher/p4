@@ -20,6 +20,7 @@ void Pyramid::runSingleIteration() {
 	newSolution->evaluate(*problem);
 	localOptimizer->optimize(newSolution);
 	tryAddSolutionToPyramid(newSolution);
+	std::cout << "Populations: " << populations.size() << std::endl;
 }
 
 bool Pyramid::tryAddSolutionToPyramid(Solution* solution) {
@@ -77,7 +78,7 @@ void Pyramid::ensurePyramidCapacity(int level) {
 }
 
 void Pyramid::checkIfBest(Solution* solution) {
-	if (solution->getFitness() > bestSolution->getFitness()) {
+	if (bestSolution == nullptr || solution->getFitness() > bestSolution->getFitness()) {
 		bestSolution = solution;
 	}
 }

@@ -1,4 +1,5 @@
 #include "../../include/order-p3/local_optimizers/SwapHillClimber.h"
+#include <iostream>
 
 SwapHillClimber::SwapHillClimber(Problem* problem, RandomKeyEncoder* encoder) : LocalOptimizer(problem), encoder(encoder){
 	initialize();
@@ -13,7 +14,7 @@ void SwapHillClimber::initialize() {
 void SwapHillClimber::optimize(Solution& solution) {
 	resetHelperFields();
 	initializeSolutionData(solution);
-	optimize(solution);
+	hillClimb(solution);
 }
 
 void SwapHillClimber::resetHelperFields() {
@@ -49,16 +50,20 @@ void SwapHillClimber::runOptimizationIteration() {
 }
 
 void SwapHillClimber::trySwappingPossiblePairs() {
-	for (std::pair<int, int>& indexPair : possibleIndexPairs) {
-		std::swap((*solutionPhenotypePtr)[indexPair.first], (*solutionPhenotypePtr)[indexPair.second]);
-		double newFitness = problem->evaluate(*solutionPhenotypePtr);
-		if (currentFitness < newFitness) {
-			noteImprovement(newFitness);
-		}
-		else {
+	for (int i = 0; i < possibleIndexPairs.size(); i++) {
+		std::pair<int, int>& indexPair = possibleIndexPairs.at(i);
+		if(triedIndexPairs.count(indexPair) == 0) {
 			std::swap((*solutionPhenotypePtr)[indexPair.first], (*solutionPhenotypePtr)[indexPair.second]);
+			double newFitness = problem->evaluate(*solutionPhenotypePtr);
+			if (currentFitness < newFitness) {
+				noteImprovement(newFitness);
+			}
+			else {
+				std::swap((*solutionPhenotypePtr)[indexPair.first], (*solutionPhenotypePtr)[indexPair.second]);
+			}
+			triedIndexPairs.insert(indexPair);
 		}
-		triedIndexPairs.insert(indexPair);
+		
 	}
 }
 

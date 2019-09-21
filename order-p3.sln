@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "order-p3", "order-p3\order-
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "order-p3-test", "order-p3-test\order-p3-test.vcxproj", "{7CA32A67-1096-42A2-9E43-0D97AB0C14D9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "p3-optimizer", "p3-optimizer\p3-optimizer.vcxproj", "{619A59A8-8CFF-45AC-845E-61657A72AA45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{7CA32A67-1096-42A2-9E43-0D97AB0C14D9}.Release|x64.Build.0 = Release|x64
 		{7CA32A67-1096-42A2-9E43-0D97AB0C14D9}.Release|x86.ActiveCfg = Release|Win32
 		{7CA32A67-1096-42A2-9E43-0D97AB0C14D9}.Release|x86.Build.0 = Release|Win32
+		{619A59A8-8CFF-45AC-845E-61657A72AA45}.Debug|x64.ActiveCfg = Debug|x64
+		{619A59A8-8CFF-45AC-845E-61657A72AA45}.Debug|x64.Build.0 = Debug|x64
+		{619A59A8-8CFF-45AC-845E-61657A72AA45}.Debug|x86.ActiveCfg = Debug|Win32
+		{619A59A8-8CFF-45AC-845E-61657A72AA45}.Debug|x86.Build.0 = Debug|Win32
+		{619A59A8-8CFF-45AC-845E-61657A72AA45}.Release|x64.ActiveCfg = Release|x64
+		{619A59A8-8CFF-45AC-845E-61657A72AA45}.Release|x64.Build.0 = Release|x64
+		{619A59A8-8CFF-45AC-845E-61657A72AA45}.Release|x86.ActiveCfg = Release|Win32
+		{619A59A8-8CFF-45AC-845E-61657A72AA45}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

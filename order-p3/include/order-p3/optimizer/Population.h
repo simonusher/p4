@@ -11,7 +11,7 @@
 
 class Population {
 public:
-    Population(Problem* problem, std::mt19937& randomGenerator);
+    Population(Problem* problem, SolutionMixer* solutionMixer, std::mt19937& randomGenerator);
     ~Population();
     void addSolution(Solution* solution);
     void improve(Solution* solution);
