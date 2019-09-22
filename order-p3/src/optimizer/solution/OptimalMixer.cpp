@@ -3,15 +3,23 @@
 OptimalMixer::OptimalMixer(Problem* problem, RandomKeyDecoder* decoder) : problem(problem), decoder(decoder) {}
 
 bool OptimalMixer::mix(Solution* destination, Solution* source, std::vector<int>* cluster) {
-	destinationSolution = destination;
-	sourceSolution = source;
-	destinationGenotype = destination->getPhenotypePtr();
-	sourceGenotype = source->getPhenotypePtr();
-	this->cluster = cluster;
-	return mixPhenotypes();
+	setSourceSolution(source);
+	setDestinationSolution(destination);
+	setCluster(cluster);
+	return mixGenotypes();
 }
 
-bool OptimalMixer::mixPhenotypes() const {
+void OptimalMixer::setDestinationSolution(Solution* destinationSolution) {
+	this->destinationSolution = destinationSolution;
+	this->destinationGenotype = destinationSolution->getGenotypePtr();
+}
+
+void OptimalMixer::setSourceSolution(Solution* sourceSolution) {
+	this->sourceSolution = sourceSolution;
+	this->sourceGenotype = sourceSolution->getGenotypePtr();
+}
+
+bool OptimalMixer::mixGenotypes() const {
 	bool anyGeneChanged = swapSolutionsGenesInCluster();
 	
 	if (anyGeneChanged) {
@@ -30,6 +38,7 @@ void OptimalMixer::handleGenotypeChange() const {
 	}
 	else {
 		swapSolutionsGenesInCluster();
+		destinationSolution->recalculatePhenotype(*decoder);
 		destinationSolution->setFitness(oldFitness);
 	}
 }
@@ -41,6 +50,10 @@ bool OptimalMixer::swapSolutionsGenesInCluster() const {
 		std::swap((*destinationGenotype)[index], (*sourceGenotype)[index]);
 	}
 	return solutionsDiffer;
+}
+
+void OptimalMixer::setCluster(std::vector<int>* cluster) {
+	this->cluster = cluster;
 }
 
 void OptimalMixer::revertSource() const {

@@ -1,5 +1,7 @@
 #include "../../../include/order-p3/optimizer/solution/Solution.h"
 
+Solution::Solution(std::vector<double> genotype, std::vector<int> phenotype, double fitness): genotype(genotype), phenotype(phenotype), fitness(fitness) {}
+
 Solution::Solution(RandomKeyEncoder& encoder, RandomKeyDecoder& decoder): genotype(encoder.getRandomEncoding()), phenotype(encoder.getNumberOfGenes()) {
 	recalculatePhenotype(decoder);
 }

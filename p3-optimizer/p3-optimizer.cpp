@@ -12,7 +12,7 @@
 
 int main() {
 	TtpProblem* problem = new TtpProblem();
-	problem->initialize("medium_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
+	problem->initialize("hard_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
 	RandomKeyEncoder encoder(0, 1, problem->getProblemSize());
 	RandomKeyDecoder decoder;
 	SolutionFactory* solutionFactory = new SolutionFactoryImpl(encoder, decoder);
