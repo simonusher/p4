@@ -161,6 +161,7 @@ void Linkage::buildTree() {
 		options.push_back(unmerged.size());
 		unmerged.push_back(mergedClusters);
     }
+	std::sort(useful.begin(), useful.end(), [](const auto& firstCluster, const auto& secondCluster) { return firstCluster.size() < secondCluster.size(); });
 	clusters = useful;
 }
 
@@ -206,7 +207,15 @@ double Linkage::calculateDistanceBetweenGenes(int firstGeneIndex, int secondGene
 
 double Linkage::calculateRelativeOrderingInformation(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize) {
 	double pij =  1 / (double(currentPopulationSize)) * relativeOrderingInformation[firstGeneIndex][secondGeneIndex];
-	return 1 - (-(pij * log2(pij)) + (1 - pij) * log2(1 - pij));
+	double firstTerm = 0;
+	double secondTerm = 0;
+	if(pij != 0) {
+		firstTerm = pij * log2(pij);
+	}
+	if(1 - pij != 0) {
+		secondTerm = (1 - pij) * log2(1 - pij);
+	}
+	return 1 - (-firstTerm + secondTerm);
 }
 
 double Linkage::calculateAdjacencyInformation(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize) {

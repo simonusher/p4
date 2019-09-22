@@ -16,8 +16,10 @@ public:
 	std::vector<int>* getPhenotypePtr();
 	double getFitness() const;
 	void setFitness(double newFitness);
-	void setPhenotype(std::vector<int>& newPhenotype, RandomKeyEncoder& encoder);
-	void setGenotype(std::vector<double>& newGenotype, RandomKeyDecoder& decoder);
+	void setGenotype(std::vector<double>& newGenotype);
+	void setPhenotype(std::vector<int>& newPhenotype);
+	void setPhenotypeAndRecalculateGenotype(std::vector<int>& newPhenotype, RandomKeyEncoder& encoder);
+	void setGenotypeAndRecalculatePhenotype(std::vector<double>& newGenotype, RandomKeyDecoder& decoder);
 	void recalculatePhenotype(RandomKeyDecoder& decoder);
 	void recalculateGenotype(RandomKeyEncoder& encoder);
 private:

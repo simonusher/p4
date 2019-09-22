@@ -6,13 +6,13 @@ Solution::Solution(RandomKeyEncoder& encoder, RandomKeyDecoder& decoder): genoty
 	recalculatePhenotype(decoder);
 }
 
-void Solution::setPhenotype(std::vector<int>& newPhenotype, RandomKeyEncoder& encoder) {
-	phenotype = newPhenotype;
+void Solution::setPhenotypeAndRecalculateGenotype(std::vector<int>& newPhenotype, RandomKeyEncoder& encoder) {
+	setPhenotype(newPhenotype);
 	recalculateGenotype(encoder);
 }
 
-void Solution::setGenotype(std::vector<double>& newGenotype, RandomKeyDecoder& decoder) {
-	this->genotype = newGenotype;
+void Solution::setGenotypeAndRecalculatePhenotype(std::vector<double>& newGenotype, RandomKeyDecoder& decoder) {
+	setGenotype(newGenotype);
 	recalculatePhenotype(decoder);
 }
 
@@ -41,6 +41,14 @@ double Solution::getFitness() const { return fitness; }
 
 void Solution::setFitness(double newFitness) {
 	this->fitness = newFitness;
+}
+
+void Solution::setGenotype(std::vector<double>& newGenotype) {
+	genotype = newGenotype;
+}
+
+void Solution::setPhenotype(std::vector<int>& newPhenotype) {
+	phenotype = newPhenotype;
 }
 
 void Solution::recalculatePhenotype(RandomKeyDecoder& decoder) {

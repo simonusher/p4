@@ -18,21 +18,22 @@ using std::vector;
 class Pyramid {
 public:
 	Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer);
-	~Pyramid();
-    void runSingleIteration();
+	virtual ~Pyramid();
+    virtual void runSingleIteration();
     vector<int> getBestSolutionPhenotype() const;
 	Solution* getBestSolution() const;
     double getBestFitness() const;
 
+protected:
+	void tryToAddImprovedSolutions(Solution* solution, int level);
+	Solution* bestSolution;
 private:
     bool tryAddSolutionToPyramid(Solution* solution);
-	void tryToAddImprovedSolutions(Solution* solution, int level);
     bool tryAddSolutionToPyramid(Solution* solution, int level);
     bool addSolutionToPyramidIfUnique(Solution* solution, int level);
 	void ensurePyramidCapacity(int level);
 	void checkIfBest(Solution* solution);
 
-	Solution* bestSolution;
     unordered_set<vector<int>, VectorHasher>::const_iterator seenSolution;
     unordered_set<vector<int>, VectorHasher> seen;
     vector<Population*> populations;

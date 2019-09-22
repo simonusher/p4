@@ -90,6 +90,12 @@
     <ClInclude Include="include\order-p3\problem\travelling_thief\TTPProblem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\order-p3\optimizer\FeedbackPyramid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\order-p3\local_optimizers\OptimalInversionHillClimber.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\evaluation\Configuration.cpp">
@@ -150,6 +156,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\problem\travelling_thief\TTPProblem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\optimizer\FeedbackPyramid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\local_optimizers\OptimalInversionHillClimber.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

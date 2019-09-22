@@ -44,6 +44,7 @@ void Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
 	for (int lev = level; lev < populations.size(); lev++) {
 		double previousFitness = currentlyImprovedSolution->getFitness();
 		populations[lev]->improve(currentlyImprovedSolution);
+		// std::cout << "Previous: " << previousFitness << ", current: " << currentlyImprovedSolution->getFitness() << std::endl;
 		if (previousFitness < currentlyImprovedSolution->getFitness()) {
 			addedImprovedSolution = addSolutionToPyramidIfUnique(currentlyImprovedSolution, lev + 1);
 			if (addedImprovedSolution) {

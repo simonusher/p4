@@ -30,6 +30,7 @@ bool OptimalMixer::mixGenotypes() const {
 
 void OptimalMixer::handleGenotypeChange() const {
 	double oldFitness = destinationSolution->getFitness();
+	std::vector<int> oldPhenotype(destinationSolution->getPhenotype());
 	destinationSolution->recalculatePhenotype(*decoder);
 	double newFitness = destinationSolution->evaluate(*problem);
 
@@ -38,7 +39,7 @@ void OptimalMixer::handleGenotypeChange() const {
 	}
 	else {
 		swapSolutionsGenesInCluster();
-		destinationSolution->recalculatePhenotype(*decoder);
+		destinationSolution->setPhenotype(oldPhenotype);
 		destinationSolution->setFitness(oldFitness);
 	}
 }
