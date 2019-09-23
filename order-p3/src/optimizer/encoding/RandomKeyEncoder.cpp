@@ -25,7 +25,7 @@ std::vector<double> RandomKeyEncoder::getEncodingForPhenotype(std::vector<int>& 
 	std::sort(randomEncoding.begin(), randomEncoding.end());
 	std::vector<double> phenotypeEncoding(randomEncoding.size());
 	for (size_t i = 0; i < phenotype.size(); i++) {
-		phenotypeEncoding[i] = randomEncoding[phenotype[i]];
+		phenotypeEncoding[phenotype[i]] = randomEncoding[i];
 	}
 	return phenotypeEncoding;
 }

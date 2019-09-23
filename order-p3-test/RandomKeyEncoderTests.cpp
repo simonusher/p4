@@ -37,28 +37,25 @@ TEST_F(RandomKeyEncoderTests, GivenSamplePhenotypeGetRandomEncodingShouldYieldCo
 	std::vector<int> testPhenotype{ 2, 1, 3, 5, 4, 0 };
 	std::vector<double> phenotypeEncoding(encoder->getEncodingForPhenotype(testPhenotype));
 	
-	for(size_t i = 0; i < testPhenotype.size() - 1; i++) {
-		for (size_t j = i + 1; j < testPhenotype.size() ; j++) {
-			ASSERT_EQ(testPhenotype[i] < testPhenotype[j], phenotypeEncoding[i] < phenotypeEncoding[j]);
-		}
-	}
-	EXPECT_LE(phenotypeEncoding[5], phenotypeEncoding[0]);
-	EXPECT_LE(phenotypeEncoding[5], phenotypeEncoding[1]);
-	EXPECT_LE(phenotypeEncoding[5], phenotypeEncoding[2]);
-	EXPECT_LE(phenotypeEncoding[5], phenotypeEncoding[3]);
-	EXPECT_LE(phenotypeEncoding[5], phenotypeEncoding[4]);
-	
-	EXPECT_LE(phenotypeEncoding[1], phenotypeEncoding[0]);
-	EXPECT_LE(phenotypeEncoding[1], phenotypeEncoding[2]);
-	EXPECT_LE(phenotypeEncoding[1], phenotypeEncoding[3]);
-	EXPECT_LE(phenotypeEncoding[1], phenotypeEncoding[4]);
-	
-	EXPECT_LE(phenotypeEncoding[0], phenotypeEncoding[2]);
-	EXPECT_LE(phenotypeEncoding[0], phenotypeEncoding[3]);
-	EXPECT_LE(phenotypeEncoding[0], phenotypeEncoding[4]);
-	
+	EXPECT_LE(phenotypeEncoding[2], phenotypeEncoding[0]);
+	EXPECT_LE(phenotypeEncoding[2], phenotypeEncoding[1]);
 	EXPECT_LE(phenotypeEncoding[2], phenotypeEncoding[3]);
 	EXPECT_LE(phenotypeEncoding[2], phenotypeEncoding[4]);
+	EXPECT_LE(phenotypeEncoding[2], phenotypeEncoding[5]);
+
+
+	EXPECT_LE(phenotypeEncoding[1], phenotypeEncoding[0]);
+	EXPECT_LE(phenotypeEncoding[1], phenotypeEncoding[3]);
+	EXPECT_LE(phenotypeEncoding[1], phenotypeEncoding[4]);
+	EXPECT_LE(phenotypeEncoding[1], phenotypeEncoding[5]);
+
+
+	EXPECT_LE(phenotypeEncoding[3], phenotypeEncoding[0]);
+	EXPECT_LE(phenotypeEncoding[3], phenotypeEncoding[4]);
+	EXPECT_LE(phenotypeEncoding[3], phenotypeEncoding[5]);
+
+	EXPECT_LE(phenotypeEncoding[5], phenotypeEncoding[0]);
+	EXPECT_LE(phenotypeEncoding[5], phenotypeEncoding[4]);
 	
-	EXPECT_LE(phenotypeEncoding[4], phenotypeEncoding[3]);
+	EXPECT_LE(phenotypeEncoding[4], phenotypeEncoding[0]);
 }
