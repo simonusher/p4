@@ -6,4 +6,5 @@ public:
 	virtual ~Problem() = default;
 	virtual double evaluate(std::vector<int>& solution) = 0;
 	virtual int getProblemSize() = 0;
+	virtual int getFitnessFunctionEvaluations() = 0;
 };

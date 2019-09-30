@@ -2,6 +2,7 @@
 // Created by Szymon on 22.11.2018.
 //
 #pragma once
+#include "NewLinkage.h"
 #include "Linkage.h"
 #include <algorithm>
 #include <numeric>
@@ -15,13 +16,12 @@ public:
     ~Population();
     void addSolution(Solution* solution);
     void improve(Solution* solution);
-    Linkage *getLinkage() const;
 private:
     void recalculateLinkage(Solution* solution) const;
     void shuffleCheckingOrder();
 	vector<Solution*> solutions;
 	Problem* problem;
-    Linkage *linkage;
+    NewLinkage *linkage;
     vector<int> solutionCheckingOrder;
 	std::mt19937& randomGenerator;
 	SolutionMixer* solutionMixer;

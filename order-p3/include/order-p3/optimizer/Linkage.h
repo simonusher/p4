@@ -44,7 +44,7 @@ private:
     void printClusters();
 
 	
-	double calculateDistanceBetweenGenes(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize);
+	double calculateDependencyBetweenGenes(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize);
 	double calculateRelativeOrderingInformation(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize);
 	double calculateAdjacencyInformation(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize);
 	

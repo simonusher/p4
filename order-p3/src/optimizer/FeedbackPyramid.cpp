@@ -7,11 +7,20 @@ FeedbackPyramid::FeedbackPyramid(Problem* problem, SolutionFactory* solutionFact
 	iterationsPassed = 0;
 }
 
+void FeedbackPyramid::runOptimizationFeedback() {
+	std::cout << "RUNNING OPTIMIZATION FEEDBACK" << std::endl;
+	Solution* solution = new Solution(*bestSolution);
+	localOptimizer->optimize(solution);
+	tryAddSolutionToPyramid(solution);
+	std::cout << "bEST AFTER FEEDBACK: " << bestSolution->getFitness() << std::endl;
+}
+
 void FeedbackPyramid::runSingleIteration() {
 	Pyramid::runSingleIteration();
 	iterationsPassed++;
 	if(iterationsPassed % feedbackFrequency == 0) {
 		runFeedback();
+		// runOptimizationFeedback();
 	}
 }
 

@@ -93,5 +93,9 @@ Solution* Pyramid::getBestSolution() const {
 }
 
 double Pyramid::getBestFitness() const {
-    return bestSolution->getFitness();
+	if(bestSolution != nullptr) {
+		return bestSolution->getFitness();
+	} else {
+		return 0;
+	}
 }

@@ -96,6 +96,15 @@
     <ClInclude Include="include\order-p3\local_optimizers\OptimalInversionHillClimber.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\order-p3\problem\deceptive_ordering\AbsoluteOrderingProblem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\order-p3\optimizer\NewLinkage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\order-p3\optimizer\HcOptimizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\evaluation\Configuration.cpp">
@@ -162,6 +171,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\local_optimizers\OptimalInversionHillClimber.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\problem\deceptive_ordering\AbsoluteOrderingProblem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\optimizer\NewLinkage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

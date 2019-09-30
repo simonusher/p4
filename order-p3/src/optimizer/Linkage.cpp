@@ -52,7 +52,7 @@ void Linkage::recalculate(int currentPopulationSize, Solution* newSolution) {
 void Linkage::recalculateDistances(int currentPopulationSize) {
 	for(int i = 0; i < numberOfGenes - 1; i++) {
 		for(int j = i + 1; j < numberOfGenes; j++) {
-			distanceMeasureMatrix->at(i)->at(j) = calculateDistanceBetweenGenes(i, j, currentPopulationSize);
+			distanceMeasureMatrix->at(i)->at(j) = -1 * calculateDependencyBetweenGenes(i, j, currentPopulationSize);
 		}
 	}
 }
@@ -199,23 +199,27 @@ double Linkage::getDistanceMeasure(int firstGeneIndex, int secondGeneIndex) {
 	return distanceMeasureMatrix->at(firstGeneIndex)->at(secondGeneIndex);
 }
 
-double Linkage::calculateDistanceBetweenGenes(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize) {
+double Linkage::calculateDependencyBetweenGenes(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize) {
 	double relativeOrderingMeasure = calculateRelativeOrderingInformation(firstGeneIndex, secondGeneIndex, currentPopulationSize);
 	double adjacencyMeasure = calculateAdjacencyInformation(firstGeneIndex, secondGeneIndex, currentPopulationSize);
 	return relativeOrderingMeasure * adjacencyMeasure;
 }
 
 double Linkage::calculateRelativeOrderingInformation(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize) {
-	double pij =  1 / (double(currentPopulationSize)) * relativeOrderingInformation[firstGeneIndex][secondGeneIndex];
-	double firstTerm = 0;
-	double secondTerm = 0;
-	if(pij != 0) {
-		firstTerm = pij * log2(pij);
-	}
-	if(1 - pij != 0) {
-		secondTerm = (1 - pij) * log2(1 - pij);
-	}
-	return 1 - (-firstTerm + secondTerm);
+	// double pij =  1 / (double(currentPopulationSize)) * relativeOrderingInformationSum[firstGeneIndex][secondGeneIndex];
+	// double firstTerm = 0;
+	// double secondTerm = 0;
+	// if(pij != 0) {
+	// 	firstTerm = pij * log2(pij);
+	// }
+	// if(1 - pij != 0) {
+	// 	secondTerm = (1 - pij) * log2(1 - pij);
+	// }
+	// return 1 - (-firstTerm + secondTerm);
+	double pij = relativeOrderingInformation[firstGeneIndex][secondGeneIndex];
+	pij /= double(currentPopulationSize);
+	double entropy = (pij == 0) || (pij == 1) ? 0 : -(pij * log2(pij) + (1.0 - pij) * log2(1.0 - pij));
+	return 1.0 - entropy;
 }
 
 double Linkage::calculateAdjacencyInformation(int firstGeneIndex, int secondGeneIndex, int currentPopulationSize) {

@@ -26,6 +26,8 @@ public:
     double selectedItemsWeight;
     double selectedItemsProfit;
     double getDistance(int firstCityIndex, int secondCityIndex);
+	int getFitnessFunctionEvaluations() override;
+
 private:
     void load(const std::string &filename);
     void selectItems(ItemSelectionPolicy policy);
@@ -44,6 +46,7 @@ private:
     double vMin;
     double vMax;
 
+	std::vector<std::vector<double>> vCityDistances;
     std::unordered_map<int, std::unordered_map<int, double>> cityDistances;
 
     std::vector<KnapsackItem*> allItems;

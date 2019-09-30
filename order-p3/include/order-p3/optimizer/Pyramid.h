@@ -27,7 +27,6 @@ public:
 protected:
 	void tryToAddImprovedSolutions(Solution* solution, int level);
 	Solution* bestSolution;
-private:
     bool tryAddSolutionToPyramid(Solution* solution);
     bool tryAddSolutionToPyramid(Solution* solution, int level);
     bool addSolutionToPyramidIfUnique(Solution* solution, int level);

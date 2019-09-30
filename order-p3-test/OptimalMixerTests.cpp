@@ -7,6 +7,7 @@ class ProblemMock: public Problem {
 public:
 	MOCK_METHOD1(evaluate, double(std::vector<int>& solution));
 	MOCK_METHOD0(getProblemSize, int());
+	MOCK_METHOD0(getFitnessFunctionEvaluations, int());
 };
 
 class OptimalMixerTests : public ::testing::Test {

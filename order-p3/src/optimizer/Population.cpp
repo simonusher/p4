@@ -5,7 +5,7 @@
 #include "../../include/order-p3/optimizer/Population.h"
 
 Population::Population(Problem* problem, SolutionMixer* solutionMixer, ::mt19937& randomGenerator) : problem(problem), solutionMixer(solutionMixer), randomGenerator(randomGenerator) {
-    this->linkage = new Linkage(problem->getProblemSize(), randomGenerator);
+    this->linkage = new NewLinkage(problem->getProblemSize(), randomGenerator);
 }
 
 Population::~Population() {
@@ -21,11 +21,7 @@ void Population::addSolution(Solution* solution) {
 }
 
 void Population::recalculateLinkage(Solution* solution) const {
-	this->linkage->recalculate(this->solutions.size(), solution);
-}
-
-Linkage *Population::getLinkage() const {
-    return linkage;
+	this->linkage->update(solution, this->solutions.size());
 }
 
 void Population::improve(Solution* solution) {
