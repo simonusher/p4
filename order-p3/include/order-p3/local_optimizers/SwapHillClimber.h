@@ -4,6 +4,7 @@
 #include "../optimizer/encoding/RandomKeyEncoder.h"
 #include "../optimizer/solution/Solution.h"
 #include <unordered_set>
+#include <memory>
 
 class SwapHillClimber: public LocalOptimizer {
 public:
@@ -23,11 +24,11 @@ private:
 	
 	std::vector<int>* solutionPhenotypePtr;
 	double currentFitness;
-	std::unordered_set<std::pair<int, int>, PairHasher> triedIndexPairs;
+	std::unordered_set<std::pair<int, int>*> triedIndexPairs;
 	bool improvementMadeLastIteration;
 	bool anyImprovementMade;
 	
-	std::vector<std::pair<int, int>> possibleIndexPairs;
+	std::vector<std::unique_ptr<std::pair<int, int>>> possibleIndexPairs;
 	std::mt19937 randomGenerator;
 	RandomKeyEncoder* encoder;
 };

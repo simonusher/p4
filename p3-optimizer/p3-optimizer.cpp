@@ -44,7 +44,7 @@ int main() {
 	Pyramid* pyramid = new Pyramid(problem, solutionFactory, populationFactory, localOptimizer);
 	// Pyramid* pyramid = new FeedbackPyramid(problem, solutionFactory, populationFactory, localOptimizer, 500);
 	
-	for(int i = 0; pyramid->getBestFitness() != 1 ;i++) {
+	for(int i = 0; i < 15 ;i++) {
 		pyramid->runSingleIteration();
 		std::cout << problem->getFitnessFunctionEvaluations() << " : " << pyramid->getBestFitness() << std::endl;
 		// printSolution(pyramid->getBestSolutionPhenotype());
