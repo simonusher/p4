@@ -12,6 +12,7 @@
 #include "../order-p3/include/order-p3/problem/deceptive_ordering/AbsoluteOrderingProblem.h"
 #include "../order-p3/include/order-p3/optimizer/FeedbackPyramid.h"
 #include "../order-p3/include/order-p3/optimizer/HcOptimizer.h"
+#include "../order-p3/include/order-p3/local_optimizers/NullOptimizer.h"
 
 void printSolution(const std::vector<int>& solution) {
 	std::cout << "[ ";
@@ -33,6 +34,7 @@ int main() {
 	SolutionFactory* solutionFactory = new SolutionFactoryImpl(encoder, decoder);
 	
 	LocalOptimizer* localOptimizer = new SwapHillClimber(problem, &encoder);
+	// LocalOptimizer* localOptimizer = new NullOptimizer(problem);
 	// HcOptimizer* optimizer = new HcOptimizer(problem, solutionFactory, localOptimizer);
 	// LocalOptimizer* localOptimizer = new OptimalInversionHillClimber(problem, &encoder);
 	std::random_device randomDevice;

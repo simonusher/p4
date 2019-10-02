@@ -20,7 +20,7 @@ private:
 	std::vector<double>* destinationGenotype;
 	std::vector<double>* sourceGenotype;
 	std::vector<int>* cluster;
-
+	
 	Problem* problem;
 	RandomKeyDecoder* decoder;
 };

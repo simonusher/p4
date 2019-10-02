@@ -23,6 +23,7 @@
     <ClInclude Include="include\order-p3\evaluation\Evaluation.h" />
     <ClInclude Include="include\order-p3\evaluation\Evaluator.h" />
     <ClInclude Include="include\order-p3\local_optimizers\LocalOptimizer.h" />
+    <ClInclude Include="include\order-p3\local_optimizers\NullOptimizer.h" />
     <ClInclude Include="include\order-p3\local_optimizers\OptimalInversionHillClimber.h" />
     <ClInclude Include="include\order-p3\local_optimizers\SwapHillClimber.h" />
     <ClInclude Include="include\order-p3\optimizer\FeedbackPyramid.h" />
