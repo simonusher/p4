@@ -3,17 +3,18 @@
 
 class OptimalMixer : public SolutionMixer {
 public:
-	OptimalMixer(Problem* problem, RandomKeyDecoder* decoder);
-	bool mix(Solution* destination, Solution* source, std::vector<int>* cluster) override;
+	OptimalMixer(Problem* problem);
+	virtual ~OptimalMixer() = default;
+	virtual bool mix(Solution* destination, Solution* source, std::vector<int>* cluster) override;
 
-	void setDestinationSolution(Solution* destinationSolution);
-	void setSourceSolution(Solution* sourceSolution);
-	void setCluster(std::vector<int>* cluster);
-private:
-	void revertSource() const;
-	void handleGenotypeChange() const;
-	bool swapSolutionsGenesInCluster() const;
-	bool mixGenotypes() const;
+	virtual void setDestinationSolution(Solution* destinationSolution);
+	virtual void setSourceSolution(Solution* sourceSolution);
+	virtual void setCluster(std::vector<int>* cluster);
+protected:
+	virtual void revertSource();
+	virtual void handleGenotypeChange();
+	virtual bool swapSolutionsGenesInCluster();
+	virtual bool mixGenotypes();
 	
 	Solution* destinationSolution;
 	Solution* sourceSolution;
@@ -22,5 +23,4 @@ private:
 	std::vector<int>* cluster;
 	
 	Problem* problem;
-	RandomKeyDecoder* decoder;
 };

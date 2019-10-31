@@ -17,7 +17,7 @@ using std::vector;
 
 class Pyramid {
 public:
-	Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer);
+	Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer, bool removeDuplicates = true);
 	virtual ~Pyramid();
     virtual void runSingleIteration();
     vector<int> getBestSolutionPhenotype() const;
@@ -30,6 +30,7 @@ protected:
     bool tryAddSolutionToPyramid(Solution* solution);
     bool tryAddSolutionToPyramid(Solution* solution, int level);
     bool addSolutionToPyramidIfUnique(Solution* solution, int level);
+	void addSolutionToPyramid(Solution* solution, int level);
 	void ensurePyramidCapacity(int level);
 	void checkIfBest(Solution* solution);
 
@@ -40,4 +41,5 @@ protected:
 	SolutionFactory* solutionFactory;
 	PopulationFactory* populationFactory;
 	LocalOptimizer* localOptimizer;
+	bool removeDuplicates;
 };

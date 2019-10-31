@@ -11,21 +11,21 @@ void TtpProblem::initialize(const std::string &filename, ItemSelectionPolicy pol
 
 double TtpProblem::evaluate(std::vector<int>& solution) {
 	fitnessFunctionEvaluationsNumber++;
-    double itemsWeight = 0;
-    double totalTime = 0;
-    double currentVelocity = 0;
+	double itemsWeight = 0;
+	double totalTime = 0;
+	double currentVelocity = 0;
 
-    for(int i = 0; i < solution.size() - 1; i++){
-        itemsWeight += weightsInCities[solution[i]];
-        currentVelocity = vMax - (itemsWeight * ((vMax - vMin) / (double)capacityOfKnapsack));
-        double distance = getDistance(solution[i], solution[i + 1]);
-        double time = distance / currentVelocity;
-        totalTime += time;
-    }
-    itemsWeight += weightsInCities[solution[solution.size() - 1]];
-    currentVelocity = vMax - (itemsWeight * ((vMax - vMin) / (double)capacityOfKnapsack));
-    double time = getDistance(solution[solution.size() - 1], solution[0]) / currentVelocity;
-    totalTime += time;
+	for (int i = 0; i < solution.size() - 1; i++) {
+		itemsWeight += weightsInCities[solution[i]];
+		currentVelocity = vMax - (itemsWeight * ((vMax - vMin) / (double)capacityOfKnapsack));
+		double distance = getDistance(solution[i], solution[i + 1]);
+		double time = distance / currentVelocity;
+		totalTime += time;
+	}
+	itemsWeight += weightsInCities[solution[solution.size() - 1]];
+	currentVelocity = vMax - (itemsWeight * ((vMax - vMin) / (double)capacityOfKnapsack));
+	double time = getDistance(solution[solution.size() - 1], solution[0]) / currentVelocity;
+	totalTime += time;
 	return selectedItemsProfit - totalTime;
 }
 

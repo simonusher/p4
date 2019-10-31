@@ -23,7 +23,7 @@ protected:
 	void SetUp() override {
 		decoder = new RandomKeyDecoder();
 		problem = new ProblemMock();
-		optimalMixer = new OptimalMixer(problem, decoder);
+		optimalMixer = new OptimalMixer(problem);
 		setUpSource();
 		setUpDestination();
 	}

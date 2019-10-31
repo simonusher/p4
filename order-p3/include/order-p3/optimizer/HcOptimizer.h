@@ -26,7 +26,7 @@ inline HcOptimizer::~HcOptimizer() {
 inline void HcOptimizer::runOneStep() {
 	Solution* solution = factory->nextRandomSolution();
 	solution->evaluate(*problem);
-	optimizer->optimize(solution);
+	optimizer->optimizeLocally(solution);
 	if(bestSolution == nullptr || bestSolution->getFitness() < solution->getFitness()) {
 		delete bestSolution;
 		bestSolution = solution;

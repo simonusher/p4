@@ -1,9 +1,9 @@
 #include "../../include/order-p3/local_optimizers/OptimalInversionHillClimber.h"
 #include <iostream>
 
-OptimalInversionHillClimber::OptimalInversionHillClimber(Problem* problem, RandomKeyEncoder* encoder): LocalOptimizer(problem), encoder(encoder) {	}
+OptimalInversionHillClimber::OptimalInversionHillClimber(Problem* problem): LocalOptimizer(problem) {	}
 
-void OptimalInversionHillClimber::optimize(Solution& solution) {
+void OptimalInversionHillClimber::optimizeLocally(Solution& solution) {
 	std::vector<int>* solutionPhenotype = solution.getPhenotypePtr();
 	for(int i = 2; i < solutionPhenotype->size() - 1 ; i++) {
 		for(int j = 0; j <= solutionPhenotype->size() - i; j++) {
@@ -15,5 +15,5 @@ void OptimalInversionHillClimber::optimize(Solution& solution) {
 			}
 		}
 	}
-	solution.recalculateGenotype(*encoder);
+	solution.recalculateGenotype();
 }

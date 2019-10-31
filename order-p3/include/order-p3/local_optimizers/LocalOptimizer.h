@@ -7,8 +7,8 @@ public:
 	LocalOptimizer(Problem* problem);
 	virtual ~LocalOptimizer() = default;
 	
-	virtual void optimize(Solution& solution) = 0;
-	virtual void optimize(Solution* solution);
+	virtual void optimizeLocally(Solution& solution) = 0;
+	virtual void optimizeLocally(Solution* solution);
 protected:
 	Problem* problem;
 };

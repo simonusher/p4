@@ -2,18 +2,13 @@
 
 Solution::Solution(std::vector<double> genotype, std::vector<int> phenotype, double fitness): genotype(genotype), phenotype(phenotype), fitness(fitness) {}
 
-Solution::Solution(RandomKeyEncoder& encoder, RandomKeyDecoder& decoder): genotype(encoder.getRandomEncoding()), phenotype(encoder.getNumberOfGenes()) {
-	recalculatePhenotype(decoder);
-}
-
-void Solution::setPhenotypeAndRecalculateGenotype(std::vector<int>& newPhenotype, RandomKeyEncoder& encoder) {
-	setPhenotype(newPhenotype);
-	recalculateGenotype(encoder);
-}
-
-void Solution::setGenotypeAndRecalculatePhenotype(std::vector<double>& newGenotype, RandomKeyDecoder& decoder) {
-	setGenotype(newGenotype);
-	recalculatePhenotype(decoder);
+Solution::Solution(RandomKeyEncoder& encoder, RandomKeyDecoder& decoder):
+	genotype(encoder.getRandomEncoding()),
+	phenotype(encoder.getNumberOfGenes()),
+	encoder(&encoder),
+	decoder(&decoder)
+{
+	recalculatePhenotype();
 }
 
 std::vector<double> Solution::getGenotype() const {
@@ -33,7 +28,9 @@ std::vector<int>* Solution::getPhenotypePtr() {
 }
 
 double Solution::evaluate(Problem& problem) {
+	this->recalculatePhenotype();
 	this->fitness = problem.evaluate(this->phenotype);
+	// this->fitness = problem.evaluate(this->genotype);
 	return fitness;
 }
 
@@ -51,10 +48,15 @@ void Solution::setPhenotype(std::vector<int>& newPhenotype) {
 	phenotype = newPhenotype;
 }
 
-void Solution::recalculatePhenotype(RandomKeyDecoder& decoder) {
-	phenotype = decoder.decode(genotype);
+void Solution::recalculatePhenotype() {
+	phenotype = decoder->decode(genotype);
 }
 
-void Solution::recalculateGenotype(RandomKeyEncoder& encoder) {
-	genotype = encoder.getEncodingForPhenotype(phenotype);
+void Solution::recalculateGenotype() {
+	genotype = encoder->getEncodingForPhenotype(phenotype);
+}
+
+void Solution::reEncode() {
+	recalculatePhenotype();
+	genotype = encoder->getEncodingForPhenotype(phenotype);
 }

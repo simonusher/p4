@@ -1,7 +1,7 @@
 #include "../../include/order-p3/local_optimizers/SwapHillClimber.h"
 #include <iostream>
 
-SwapHillClimber::SwapHillClimber(Problem* problem, RandomKeyEncoder* encoder) : LocalOptimizer(problem), encoder(encoder){
+SwapHillClimber::SwapHillClimber(Problem* problem) : LocalOptimizer(problem) {
 	initialize();
 }
 
@@ -11,7 +11,7 @@ void SwapHillClimber::initialize() {
 	resetHelperFields();
 }
 
-void SwapHillClimber::optimize(Solution& solution) {
+void SwapHillClimber::optimizeLocally(Solution& solution) {
 	resetHelperFields();
 	initializeSolutionData(solution);
 	hillClimb(solution);
@@ -39,7 +39,7 @@ void SwapHillClimber::hillClimb(Solution& solution) {
 }
 
 void SwapHillClimber::saveImprovedSolution(Solution& solution) {
-	solution.recalculateGenotype(*encoder);
+	solution.recalculateGenotype();
 	solution.setFitness(currentFitness);
 }
 

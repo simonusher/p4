@@ -10,7 +10,7 @@ FeedbackPyramid::FeedbackPyramid(Problem* problem, SolutionFactory* solutionFact
 void FeedbackPyramid::runOptimizationFeedback() {
 	std::cout << "RUNNING OPTIMIZATION FEEDBACK" << std::endl;
 	Solution* solution = new Solution(*bestSolution);
-	localOptimizer->optimize(solution);
+	localOptimizer->optimizeLocally(solution);
 	tryAddSolutionToPyramid(solution);
 	std::cout << "bEST AFTER FEEDBACK: " << bestSolution->getFitness() << std::endl;
 }

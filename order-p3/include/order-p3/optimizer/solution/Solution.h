@@ -18,12 +18,13 @@ public:
 	void setFitness(double newFitness);
 	void setGenotype(std::vector<double>& newGenotype);
 	void setPhenotype(std::vector<int>& newPhenotype);
-	void setPhenotypeAndRecalculateGenotype(std::vector<int>& newPhenotype, RandomKeyEncoder& encoder);
-	void setGenotypeAndRecalculatePhenotype(std::vector<double>& newGenotype, RandomKeyDecoder& decoder);
-	void recalculatePhenotype(RandomKeyDecoder& decoder);
-	void recalculateGenotype(RandomKeyEncoder& encoder);
+	void recalculatePhenotype();
+	void recalculateGenotype();
+	void reEncode();
 private:
 	std::vector<double> genotype;
 	std::vector<int> phenotype;
 	double fitness;
+	RandomKeyEncoder* encoder;
+	RandomKeyDecoder* decoder;
 };

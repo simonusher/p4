@@ -8,8 +8,8 @@
 
 class SwapHillClimber: public LocalOptimizer {
 public:
-	SwapHillClimber(Problem* problem, RandomKeyEncoder* encoder);
-	void optimize(Solution& solution) override;
+	SwapHillClimber(Problem* problem);
+	void optimizeLocally(Solution& solution) override;
 private:
 	void hillClimb(Solution& solution);
 	void initialize();
@@ -30,5 +30,4 @@ private:
 	
 	std::vector<std::unique_ptr<std::pair<int, int>>> possibleIndexPairs;
 	std::mt19937 randomGenerator;
-	RandomKeyEncoder* encoder;
 };

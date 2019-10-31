@@ -2,11 +2,8 @@
 #include "LocalOptimizer.h"
 
 class OptimalInversionHillClimber : public LocalOptimizer {
-
 public:
-	OptimalInversionHillClimber(Problem* problem, RandomKeyEncoder* encoder);
+	OptimalInversionHillClimber(Problem* problem);
 
-	void optimize(Solution& solution) override;
-private:
-	RandomKeyEncoder* encoder;
+	void optimizeLocally(Solution& solution) override;
 };

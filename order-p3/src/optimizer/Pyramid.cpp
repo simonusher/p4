@@ -4,8 +4,10 @@
 
 #include "../../include/order-p3/optimizer/Pyramid.h"
 
-Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer)
-	: problem(problem), solutionFactory(solutionFactory), populationFactory(populationFactory), localOptimizer(localOptimizer) {
+Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer, bool removeDuplicates)
+	: problem(problem), solutionFactory(solutionFactory), populationFactory(populationFactory), localOptimizer(localOptimizer),
+		removeDuplicates(removeDuplicates)
+{
 	bestSolution = nullptr;
 }
 
@@ -18,10 +20,10 @@ Pyramid::~Pyramid() {
 void Pyramid::runSingleIteration() {
 	Solution* newSolution = solutionFactory->nextRandomSolution();
 	newSolution->evaluate(*problem);
-	localOptimizer->optimize(newSolution);
+	localOptimizer->optimizeLocally(newSolution);
 	tryAddSolutionToPyramid(newSolution);
-	std::cout << "Populations: " << populations.size() << std::endl;
 }
+
 
 bool Pyramid::tryAddSolutionToPyramid(Solution* solution) {
 	return tryAddSolutionToPyramid(solution, 0);
@@ -29,10 +31,8 @@ bool Pyramid::tryAddSolutionToPyramid(Solution* solution) {
 
 bool Pyramid::tryAddSolutionToPyramid(Solution* solution, int level) {
 	bool addedBaseSolution = addSolutionToPyramidIfUnique(solution, level);
-	if (addedBaseSolution) {
-		tryToAddImprovedSolutions(solution, level);
-	}
-	else {
+	tryToAddImprovedSolutions(solution, level);
+	if(!addedBaseSolution) {
 		delete solution;
 	}
 	return addedBaseSolution;
@@ -44,7 +44,6 @@ void Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
 	for (int lev = level; lev < populations.size(); lev++) {
 		double previousFitness = currentlyImprovedSolution->getFitness();
 		populations[lev]->improve(currentlyImprovedSolution);
-		// std::cout << "Previous: " << previousFitness << ", current: " << currentlyImprovedSolution->getFitness() << std::endl;
 		if (previousFitness < currentlyImprovedSolution->getFitness()) {
 			addedImprovedSolution = addSolutionToPyramidIfUnique(currentlyImprovedSolution, lev + 1);
 			if (addedImprovedSolution) {
@@ -59,17 +58,22 @@ void Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
 }
 
 bool Pyramid::addSolutionToPyramidIfUnique(Solution* solution, int level) {
-	std::vector<int> phenotype(solution->getPhenotype());
-    seenSolution = seen.find(phenotype);
-    if(seenSolution != seen.end()){
-        return false;
-    } else {
-        seen.insert(phenotype);
-		ensurePyramidCapacity(level);
-        populations[level]->addSolution(solution);
-		checkIfBest(solution);
-        return true;
-    }
+	if(removeDuplicates) {
+		std::vector<int> phenotype(solution->getPhenotype());
+		seenSolution = seen.find(phenotype);
+		if (seenSolution != seen.end()) {
+			return false;
+		}
+		seen.insert(phenotype);
+	}
+	addSolutionToPyramid(solution, level);
+	return true;
+}
+
+void Pyramid::addSolutionToPyramid(Solution* solution, int level) {
+	ensurePyramidCapacity(level);
+	populations[level]->addSolution(solution);
+	checkIfBest(solution);
 }
 
 void Pyramid::ensurePyramidCapacity(int level) {

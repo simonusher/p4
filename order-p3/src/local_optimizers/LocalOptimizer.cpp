@@ -2,6 +2,6 @@
 
 LocalOptimizer::LocalOptimizer(Problem* problem): problem(problem) {}
 
-void LocalOptimizer::optimize(Solution* solution) {
-	optimize(*solution);
+void LocalOptimizer::optimizeLocally(Solution* solution) {
+	optimizeLocally(*solution);
 }

@@ -1,10 +1,13 @@
 #include "../../include/order-p3/optimizer/NewLinkage.h"
+#include <iostream>
+
 NewLinkage::NewLinkage(int problemSize, std::mt19937& randomGenerator) :
 	problemSize(problemSize),
 	randomGenerator(randomGenerator),
 	relativeOrderingInformationSum(problemSize, vector<double>(problemSize, 0.0)),
 	adjacencyInformationSum(problemSize, vector<double>(problemSize, 0.0)),
-	distanceMeasureMatrix(problemSize, vector<double>(problemSize, 0.0))
+	distanceMeasureMatrix(problemSize, vector<double>(problemSize, 0.0)),
+	bleDistribution(0, 1)
 {	
 }
 
@@ -70,6 +73,7 @@ void NewLinkage::recalculateDistances(const int currentPopulationSize) {
 	for(int firstGeneIndex = 0; firstGeneIndex < problemSize - 1; firstGeneIndex++) {
 		for(int secondGeneIndex = firstGeneIndex + 1; secondGeneIndex < problemSize; secondGeneIndex++) {
 			const double dependencyBetweenGenes = calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, currentPopulationSize);
+			// const double dependencyBetweenGenes = bleDistribution(randomGenerator);
 			distanceMeasureMatrix[firstGeneIndex][secondGeneIndex] = dependencyBetweenGenes;
 			distanceMeasureMatrix[secondGeneIndex][firstGeneIndex] = dependencyBetweenGenes;
 		}
@@ -134,6 +138,7 @@ void NewLinkage::rebuildTree() {
 				}
 			}
 		}
+		// std::cout << greatestDependency << std::endl;
 		vector<int>& first = unmerged.at(options[bestFirstIndex]);
 		vector<int>& second = unmerged.at(options[bestSecondIndex]);
 		vector<int> mergedClusters;

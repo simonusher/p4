@@ -30,4 +30,5 @@ private:
 	vector<vector<double>> adjacencyInformationSum;
 	vector<vector<double>> distanceMeasureMatrix;
 	vector<vector<int>> clusters;
+	std::uniform_real_distribution<double> bleDistribution;
 };

@@ -26,6 +26,7 @@
     <ClInclude Include="include\order-p3\local_optimizers\NullOptimizer.h" />
     <ClInclude Include="include\order-p3\local_optimizers\OptimalInversionHillClimber.h" />
     <ClInclude Include="include\order-p3\local_optimizers\SwapHillClimber.h" />
+    <ClInclude Include="include\order-p3\optimizer\CHierarchicalClustering.h" />
     <ClInclude Include="include\order-p3\optimizer\FeedbackPyramid.h" />
     <ClInclude Include="include\order-p3\optimizer\HcOptimizer.h" />
     <ClInclude Include="include\order-p3\optimizer\Linkage.h" />
@@ -33,9 +34,12 @@
     <ClInclude Include="include\order-p3\optimizer\PopulationFactory.h" />
     <ClInclude Include="include\order-p3\optimizer\PopulationFactoryImpl.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\OptimalMixer.h" />
+    <ClInclude Include="include\order-p3\optimizer\solution\RandomRescalingOptimalMixer.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\SolutionFactoryImpl.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\SolutionMixer.h" />
     <ClInclude Include="include\order-p3\problem\deceptive_ordering\AbsoluteOrderingProblem.h" />
+    <ClInclude Include="include\order-p3\problem\PermutationGOMEA.h" />
+    <ClInclude Include="include\order-p3\problem\SortFunctionProblem.h" />
     <ClInclude Include="include\order-p3\problem\travelling_thief\City.h" />
     <ClInclude Include="include\order-p3\problem\travelling_thief\KnapsackItem.h" />
     <ClInclude Include="include\order-p3\problem\travelling_thief\TTPProblem.h" />
@@ -58,6 +62,7 @@
     <ClCompile Include="src\local_optimizers\LocalOptimizer.cpp" />
     <ClCompile Include="src\local_optimizers\OptimalInversionHillClimber.cpp" />
     <ClCompile Include="src\local_optimizers\SwapHillClimber.cpp" />
+    <ClCompile Include="src\optimizer\CHierarchicalClustering.cpp" />
     <ClCompile Include="src\optimizer\FeedbackPyramid.cpp" />
     <ClCompile Include="src\optimizer\Linkage.cpp" />
     <ClCompile Include="src\optimizer\NewLinkage.cpp" />
@@ -67,8 +72,11 @@
     <ClCompile Include="src\optimizer\encoding\RandomKeyDecoder.cpp" />
     <ClCompile Include="src\optimizer\encoding\RandomKeyEncoder.cpp" />
     <ClCompile Include="src\optimizer\solution\OptimalMixer.cpp" />
+    <ClCompile Include="src\optimizer\solution\RandomRescalingOptimalMixer.cpp" />
     <ClCompile Include="src\optimizer\solution\SolutionFactoryImpl.cpp" />
     <ClCompile Include="src\problem\deceptive_ordering\AbsoluteOrderingProblem.cpp" />
+    <ClCompile Include="src\problem\PermutationGOMEAC.cpp" />
+    <ClCompile Include="src\problem\SortFunctionProblem.cpp" />
     <ClCompile Include="src\problem\travelling_thief\City.cpp" />
     <ClCompile Include="src\problem\travelling_thief\KnapsackItem.cpp" />
     <ClCompile Include="src\problem\travelling_thief\TTPProblem.cpp" />
