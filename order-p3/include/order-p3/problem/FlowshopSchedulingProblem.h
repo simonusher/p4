@@ -6,7 +6,7 @@
 #include <sstream>
 
 
-class PermutationGOMEAProblems : public Problem {
+class FlowshopSchedulingProblem : public Problem {
 public:
 	void initializeProblem(int index);
 	double evaluate(std::vector<int>& solution) override;

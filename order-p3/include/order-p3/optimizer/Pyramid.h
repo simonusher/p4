@@ -15,7 +15,7 @@
 using std::unordered_set;
 using std::vector;
 
-class Pyramid {
+class Pyramid : public LocalOptimizer {
 public:
 	Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer, bool removeDuplicates = true);
 	virtual ~Pyramid();
@@ -24,11 +24,13 @@ public:
 	Solution* getBestSolution() const;
     double getBestFitness() const;
 
+
+	void optimizeLocally(Solution& solution) override;
 protected:
-	void tryToAddImprovedSolutions(Solution* solution, int level);
+	Solution* tryToAddImprovedSolutions(Solution* solution, int level);
 	Solution* bestSolution;
-    bool tryAddSolutionToPyramid(Solution* solution);
-    bool tryAddSolutionToPyramid(Solution* solution, int level);
+    Solution* tryAddSolutionToPyramid(Solution* solution);
+	Solution* tryAddSolutionToPyramid(Solution* solution, int level);
     bool addSolutionToPyramidIfUnique(Solution* solution, int level);
 	void addSolutionToPyramid(Solution* solution, int level);
 	void ensurePyramidCapacity(int level);

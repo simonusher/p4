@@ -1,4 +1,3 @@
-#pragma once
 #include "../order-p3/include/order-p3/optimizer/encoding/RandomKeyEncoder.h"
 #include "../order-p3/include/order-p3/optimizer/encoding/RandomKeyDecoder.h"
 #include "../order-p3/include/order-p3/optimizer/solution/SolutionFactory.h"
@@ -14,10 +13,10 @@
 #include "../order-p3/include/order-p3/optimizer/FeedbackPyramid.h"
 #include "../order-p3/include/order-p3/optimizer/HcOptimizer.h"
 #include "../order-p3/include/order-p3/local_optimizers/NullOptimizer.h"
-#include "../order-p3/include/order-p3/problem/PermutationGOMEA.h"
 #include "../order-p3/include/order-p3/optimizer/solution/RandomRescalingOptimalMixer.h"
 #include "../order-p3/include/order-p3/problem/SortFunctionProblem.h"
 #include "../order-p3/include/order-p3/local_optimizers/OptimalInversionHillClimber.h"
+#include "../order-p3/include/order-p3/problem/FlowshopSchedulingProblem.h"
 
 void printSolution(const std::vector<int>& solution) {
 	std::cout << "[ ";
@@ -30,73 +29,69 @@ void printSolution(const std::vector<int>& solution) {
 	std::cout << " ]";
 }
 
-int main() {
-	TtpProblem* problem = new TtpProblem();
-	problem->initialize("medium_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
-	// problem->initialize("hard_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
-	// PermutationGOMEAProblems* problem = new PermutationGOMEAProblems();
-	// problem->initializeProblem(37);
-	// AbsoluteOrderingProblem* problem = new AbsoluteOrderingProblem(8);
+
+void runFlowshopTests(int problemIndex, bool removeDuplicatesUpper, int maxIter, bool useP3AsLocalOptimizer, int experimentNumber)
+{
+	FlowshopSchedulingProblem fsp;
+	fsp.initializeProblem(problemIndex);
+	Problem* problem = &fsp;
 	std::random_device device;
-	std::mt19937 randomGenerator(device());
+	unsigned int seed = device();
+	std::mt19937 randomGenerator(seed);
+
+	ofstream myfile;
+	myfile.open("p" + std::to_string(problemIndex) + "d" + std::to_string(removeDuplicatesUpper) + "p3" + 
+		std::to_string(useP3AsLocalOptimizer) + "_" + std::to_string(experimentNumber) + ".csv");
+	myfile << "FFE found;Fitness" << std::endl;
+
+	double best_fitness = std::numeric_limits<double>::lowest();
+	int ffeFound = 0;
 
 	NullOptimizer optimizer(problem);
 	RandomKeyEncoder encoder(0, 1, problem->getProblemSize());
 	RandomKeyDecoder decoder;
-	SolutionFactory* solutionFactory = new SolutionFactoryImpl(encoder, decoder);
-	SolutionMixer* mixer = new RandomRescalingOptimalMixer(problem, 0.1, 0, 1, randomGenerator);
-	PopulationFactory* factory = new PopulationFactoryImpl(problem, mixer, randomGenerator);
-	Pyramid pyramid(problem, solutionFactory, factory, &optimizer , false);
+	SolutionFactoryImpl factoryImpl(encoder, decoder);
+	SolutionFactory* solutionFactory = &factoryImpl;
+	RandomRescalingOptimalMixer mixerImpl(problem, 0.1, 0, 1, randomGenerator);
+	SolutionMixer* mixer = &mixerImpl;
+	PopulationFactoryImpl popFactoryImpl(problem, mixer, randomGenerator);
+	PopulationFactory* populationFactory = &popFactoryImpl;
 
-	double max_iter = 220712150;
-	// for (int i = 0; problem->getFitnessFunctionEvaluations() < max_iter;i++) {
-	for (int i = 0; pyramid.getBestFitness() != 1;i++) {
-		pyramid.runSingleIteration();
-		// std::cout << problem->getFitnessFunctionEvaluations() / max_iter << " : " << pyramid.getBestFitness() << std::endl;
-		std::cout << problem->getFitnessFunctionEvaluations() << " : " << pyramid.getBestFitness() << std::endl;
+	LocalOptimizer* localOptimizer;
+	if(useP3AsLocalOptimizer)
+	{
+		localOptimizer = new Pyramid(problem, solutionFactory, populationFactory, &optimizer, false);
+
+	} else
+	{
+		localOptimizer = &optimizer;
 	}
+
+	Pyramid finalPyramid(problem, solutionFactory, populationFactory, localOptimizer, removeDuplicatesUpper);
+
 	
-	// TtpProblem* problem = new TtpProblem();
-	// problem->initialize("medium_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
-	// problem->initialize("hard_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
-	// AbsoluteOrderingProblem* problem = new AbsoluteOrderingProblem(8);
-	// for(int j = 31; j < 41; j++) {
-	// 	// PermutationGOMEAProblems* problem = new PermutationGOMEAProblems();
-	// 	// problem->initializeProblem(32);
-	// 	// Problem* problem = new SortFunctionProblem(10);
-	// 	RandomKeyEncoder encoder(0, 1, problem->getProblemSize());
-	// 	RandomKeyDecoder decoder;
-	// 	SolutionFactory* solutionFactory = new SolutionFactoryImpl(encoder, decoder);
-	//
-	// 	// LocalOptimizer* localOptimizer = new SwapHillClimber(problem);
-	// 	LocalOptimizer* localOptimizer = new NullOptimizer(problem);
-	// 	// HcOptimizer* optimizer = new HcOptimizer(problem, solutionFactory, localOptimizer);
-	// 	// LocalOptimizer* localOptimizer = new OptimalInversionHillClimber(problem);
-	// 	std::random_device randomDevice;
-	// 	std::mt19937 randomGenerator(randomDevice());
-	// 	// SolutionMixer* mixer = new OptimalMixer(problem);
-	// 	RandomRescalingOptimalMixer* mixer = new RandomRescalingOptimalMixer(problem, 0.1, 0, 1, randomGenerator);
-	// 	PopulationFactory* populationFactory = new PopulationFactoryImpl(problem, mixer, randomGenerator);
-	// 	Pyramid* pyramid = new Pyramid(problem, solutionFactory, populationFactory, localOptimizer);
-	// 	// Pyramid* pyramid = new FeedbackPyramid(problem, solutionFactory, populationFactory, localOptimizer, 200);
-	//
-	// 	double max_iter = 220712150;
-	// 	// for (int i = 0; problem->getFitnessFunctionEvaluations() < max_iter;i++) {
-	// 	for (int i = 0; pyramid->getBestFitness() != 1 < max_iter;i++) {
-	// 		// for(int i = 0; pyramid->getBestFitness() != 1 ;i++) {
-	// 		pyramid->runSingleIteration();
-	// 		// std::cout << problem->getFitnessFunctionEvaluations() / max_iter << " : " << pyramid->getBestFitness() << std::endl;
-	// 		std::cout << problem->getFitnessFunctionEvaluations() << " : " << pyramid->getBestFitness() << std::endl;
-	// 		// printSolution(pyramid->getBestSolutionPhenotype());
-	// 		// std::cout << std::endl;
-	// 	}
-	// 	std::cout << "problem: " << j << " best fitness: " << pyramid->getBestFitness();;
-	// 	delete pyramid;
-	// 	delete populationFactory;
-	// 	delete localOptimizer;
-	// 	delete problem;
-	// 	delete solutionFactory;
-	// }
-	
+	for (int i = 0; problem->getFitnessFunctionEvaluations() < maxIter; i++) {
+		finalPyramid.runSingleIteration();
+		if(problem->getFitnessFunctionEvaluations() <= maxIter && best_fitness < finalPyramid.getBestFitness())
+		{
+			best_fitness = finalPyramid.getBestFitness();
+			ffeFound = problem->getFitnessFunctionEvaluations();
+			myfile << ffeFound << ";" << best_fitness << std::endl;
+		}
+	}
+}
+
+
+int main() {
+	int numberOfExperiments = 20;
+	int budget = 220712150;
+	for(int i = 31; i < 41; i++)
+	{
+		for(int j = 0; j < numberOfExperiments; j++)
+		{
+			runFlowshopTests(i, false, budget, true, j);
+			runFlowshopTests(i, false, budget, false, j);
+		}
+	}
 	return 0;
 }

@@ -6,5 +6,8 @@ public:
 	explicit NullOptimizer(Problem* problem)
 		: LocalOptimizer(problem) {}
 
-	void optimizeLocally(Solution& solution) override { }
+	void optimizeLocally(Solution& solution) override
+	{
+
+	}
 };

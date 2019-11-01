@@ -1,6 +1,6 @@
-#include "../../include/order-p3/problem/PermutationGOMEA.h"
+#include "../../include/order-p3/problem/FlowshopSchedulingProblem.h"
 
-double PermutationGOMEAProblems::evaluate(std::vector<int>& phenotype)
+double FlowshopSchedulingProblem::evaluate(std::vector<int>& phenotype)
 {
 	ffe++;
 	switch (problemIndex)
@@ -14,15 +14,15 @@ double PermutationGOMEAProblems::evaluate(std::vector<int>& phenotype)
 	}
 }
 
-int PermutationGOMEAProblems::getProblemSize() {
+int FlowshopSchedulingProblem::getProblemSize() {
 	return problemSize;
 }
 
-int PermutationGOMEAProblems::getFitnessFunctionEvaluations() {
+int FlowshopSchedulingProblem::getFitnessFunctionEvaluations() {
 	return ffe;
 }
 
-double PermutationGOMEAProblems::sortFunctionProblemEvaluation(std::vector<int>& parameters)
+double FlowshopSchedulingProblem::sortFunctionProblemEvaluation(std::vector<int>& parameters)
 {
 	int    i, j;
 	double result;
@@ -35,7 +35,7 @@ double PermutationGOMEAProblems::sortFunctionProblemEvaluation(std::vector<int>&
 }
 
 
-double PermutationGOMEAProblems::taillardFlowshopProblemEvaluation(std::vector<int>& parameters)
+double FlowshopSchedulingProblem::taillardFlowshopProblemEvaluation(std::vector<int>& parameters)
 {
 	int i, m;
 
@@ -60,7 +60,7 @@ double PermutationGOMEAProblems::taillardFlowshopProblemEvaluation(std::vector<i
 
 
 
-void PermutationGOMEAProblems::initializeProblem(int index)
+void FlowshopSchedulingProblem::initializeProblem(int index)
 {
 	problemIndex = index;
 	char fn[100];
@@ -134,7 +134,7 @@ void PermutationGOMEAProblems::initializeProblem(int index)
 	}
 }
 
-void PermutationGOMEAProblems::loadTaillardFlowshop(int J, int M, char* fileName, int instance) {
+void FlowshopSchedulingProblem::loadTaillardFlowshop(int J, int M, char* fileName, int instance) {
 	int i, j, c, m, t;
 
 	nJobs = J;

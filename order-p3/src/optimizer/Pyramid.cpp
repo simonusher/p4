@@ -5,7 +5,7 @@
 #include "../../include/order-p3/optimizer/Pyramid.h"
 
 Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer, bool removeDuplicates)
-	: problem(problem), solutionFactory(solutionFactory), populationFactory(populationFactory), localOptimizer(localOptimizer),
+	: LocalOptimizer(problem), problem(problem), solutionFactory(solutionFactory), populationFactory(populationFactory), localOptimizer(localOptimizer),
 		removeDuplicates(removeDuplicates)
 {
 	bestSolution = nullptr;
@@ -24,22 +24,37 @@ void Pyramid::runSingleIteration() {
 	tryAddSolutionToPyramid(newSolution);
 }
 
+void Pyramid::optimizeLocally(Solution& solution) {
+	Solution* copy = new Solution(solution);
+	localOptimizer->optimizeLocally(copy);
+	Solution* bestAddedSolution = tryAddSolutionToPyramid(copy);
+	if(bestAddedSolution != nullptr) {
+		solution = *bestAddedSolution;
+	}
+}
 
-bool Pyramid::tryAddSolutionToPyramid(Solution* solution) {
+Solution* Pyramid::tryAddSolutionToPyramid(Solution* solution) {
 	return tryAddSolutionToPyramid(solution, 0);
 }
 
-bool Pyramid::tryAddSolutionToPyramid(Solution* solution, int level) {
+Solution* Pyramid::tryAddSolutionToPyramid(Solution* solution, int level) {
 	bool addedBaseSolution = addSolutionToPyramidIfUnique(solution, level);
-	tryToAddImprovedSolutions(solution, level);
+	Solution* bestAddedSolution = tryToAddImprovedSolutions(solution, level);
 	if(!addedBaseSolution) {
 		delete solution;
 	}
-	return addedBaseSolution;
+	if(bestAddedSolution == nullptr && addedBaseSolution)
+	{
+		return solution;
+	} else
+	{
+		return bestAddedSolution;
+	}
 }
 
-void Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
+Solution* Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
 	Solution* currentlyImprovedSolution = new Solution(*solution);
+	Solution* lastAddedSolution = nullptr;
 	bool addedImprovedSolution = false;
 	for (int lev = level; lev < populations.size(); lev++) {
 		double previousFitness = currentlyImprovedSolution->getFitness();
@@ -47,6 +62,7 @@ void Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
 		if (previousFitness < currentlyImprovedSolution->getFitness()) {
 			addedImprovedSolution = addSolutionToPyramidIfUnique(currentlyImprovedSolution, lev + 1);
 			if (addedImprovedSolution) {
+				lastAddedSolution = currentlyImprovedSolution;
 				currentlyImprovedSolution = new Solution(*currentlyImprovedSolution);
 				addedImprovedSolution = false;
 			}
@@ -55,6 +71,7 @@ void Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
 	if (!addedImprovedSolution) {
 		delete currentlyImprovedSolution;
 	}
+	return lastAddedSolution;
 }
 
 bool Pyramid::addSolutionToPyramidIfUnique(Solution* solution, int level) {

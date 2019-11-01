@@ -3,5 +3,5 @@
 LocalOptimizer::LocalOptimizer(Problem* problem): problem(problem) {}
 
 void LocalOptimizer::optimizeLocally(Solution* solution) {
-	optimizeLocally(*solution);
+	return optimizeLocally(*solution);
 }

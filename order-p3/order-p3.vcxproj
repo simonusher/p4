@@ -38,7 +38,7 @@
     <ClInclude Include="include\order-p3\optimizer\solution\SolutionFactoryImpl.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\SolutionMixer.h" />
     <ClInclude Include="include\order-p3\problem\deceptive_ordering\AbsoluteOrderingProblem.h" />
-    <ClInclude Include="include\order-p3\problem\PermutationGOMEA.h" />
+    <ClInclude Include="include\order-p3\problem\FlowshopSchedulingProblem.h" />
     <ClInclude Include="include\order-p3\problem\SortFunctionProblem.h" />
     <ClInclude Include="include\order-p3\problem\travelling_thief\City.h" />
     <ClInclude Include="include\order-p3\problem\travelling_thief\KnapsackItem.h" />
@@ -75,7 +75,7 @@
     <ClCompile Include="src\optimizer\solution\RandomRescalingOptimalMixer.cpp" />
     <ClCompile Include="src\optimizer\solution\SolutionFactoryImpl.cpp" />
     <ClCompile Include="src\problem\deceptive_ordering\AbsoluteOrderingProblem.cpp" />
-    <ClCompile Include="src\problem\PermutationGOMEAC.cpp" />
+    <ClCompile Include="src\problem\FlowshopSchedulingProblem.cpp" />
     <ClCompile Include="src\problem\SortFunctionProblem.cpp" />
     <ClCompile Include="src\problem\travelling_thief\City.cpp" />
     <ClCompile Include="src\problem\travelling_thief\KnapsackItem.cpp" />
