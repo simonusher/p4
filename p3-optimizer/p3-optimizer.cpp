@@ -64,7 +64,7 @@ void runFlowshopTests(int problemIndex, bool removeDuplicatesUpper, int maxIter,
 
 	} else
 	{
-		localOptimizer = &optimizer;
+		localOptimizer = new NullOptimizer(problem);
 	}
 
 	Pyramid finalPyramid(problem, solutionFactory, populationFactory, localOptimizer, removeDuplicatesUpper);
@@ -79,6 +79,7 @@ void runFlowshopTests(int problemIndex, bool removeDuplicatesUpper, int maxIter,
 			myfile << ffeFound << ";" << best_fitness << std::endl;
 		}
 	}
+	delete localOptimizer;
 }
 
 
