@@ -6,6 +6,7 @@
 class RandomKeyDecoder
 {
 public:
-	std::vector<int> decode(const std::vector<double>& encodedGenotype);
+	virtual ~RandomKeyDecoder() = default;
+	virtual std::vector<int> decode(const std::vector<double>& encodedGenotype);
 };
 
