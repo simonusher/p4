@@ -32,6 +32,7 @@
     <ClInclude Include="include\order-p3\optimizer\HcOptimizer.h" />
     <ClInclude Include="include\order-p3\optimizer\Linkage.h" />
     <ClInclude Include="include\order-p3\optimizer\NewLinkage.h" />
+    <ClInclude Include="include\order-p3\optimizer\OptimizedLinkage.h" />
     <ClInclude Include="include\order-p3\optimizer\PopulationFactory.h" />
     <ClInclude Include="include\order-p3\optimizer\PopulationFactoryImpl.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\OptimalMixer.h" />
@@ -69,6 +70,7 @@
     <ClCompile Include="src\optimizer\FeedbackPyramid.cpp" />
     <ClCompile Include="src\optimizer\Linkage.cpp" />
     <ClCompile Include="src\optimizer\NewLinkage.cpp" />
+    <ClCompile Include="src\optimizer\OptimizedLinkage.cpp" />
     <ClCompile Include="src\optimizer\Population.cpp" />
     <ClCompile Include="src\optimizer\PopulationFactoryImpl.cpp" />
     <ClCompile Include="src\optimizer\Pyramid.cpp" />

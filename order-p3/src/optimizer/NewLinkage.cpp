@@ -73,7 +73,6 @@ void NewLinkage::recalculateDistances(const int currentPopulationSize) {
 	for(int firstGeneIndex = 0; firstGeneIndex < problemSize - 1; firstGeneIndex++) {
 		for(int secondGeneIndex = firstGeneIndex + 1; secondGeneIndex < problemSize; secondGeneIndex++) {
 			const double dependencyBetweenGenes = calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, currentPopulationSize);
-			// const double dependencyBetweenGenes = bleDistribution(randomGenerator);
 			distanceMeasureMatrix[firstGeneIndex][secondGeneIndex] = dependencyBetweenGenes;
 			distanceMeasureMatrix[secondGeneIndex][firstGeneIndex] = dependencyBetweenGenes;
 		}
