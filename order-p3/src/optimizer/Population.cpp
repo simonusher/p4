@@ -17,6 +17,7 @@ Population::~Population() {
 
 void Population::addSolution(Solution* solution) {
     solutions.push_back(solution);
+	solutionCheckingOrder.push_back(solutions.size() - 1);
     recalculateLinkage(solution);
 }
 
@@ -39,9 +40,5 @@ void Population::improve(Solution* solution) {
 }
 
 void Population::shuffleCheckingOrder() {
-    if(solutionCheckingOrder.size() != solutions.size()){
-        solutionCheckingOrder = vector<int>(solutions.size());
-        std::iota(solutionCheckingOrder.begin(), solutionCheckingOrder.end(), 0);
-    }
     std::shuffle(solutionCheckingOrder.begin(), solutionCheckingOrder.end(), randomGenerator);
 }
