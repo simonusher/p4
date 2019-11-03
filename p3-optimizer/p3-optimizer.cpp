@@ -17,6 +17,7 @@
 #include "../order-p3/include/order-p3/problem/SortFunctionProblem.h"
 #include "../order-p3/include/order-p3/local_optimizers/OptimalInversionHillClimber.h"
 #include "../order-p3/include/order-p3/problem/FlowshopSchedulingProblem.h"
+#include <functional>
 
 void printSolution(const std::vector<int>& solution) {
 	std::cout << "[ ";
@@ -30,11 +31,9 @@ void printSolution(const std::vector<int>& solution) {
 }
 
 
-void runFlowshopTests(int problemIndex, bool removeDuplicatesUpper, int maxIter, bool useP3AsLocalOptimizer, int experimentNumber)
+void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, bool useP3AsLocalOptimizer, int experimentNumber,
+	std::function<bool(Problem*, Pyramid*)> stopCondition)
 {
-	FlowshopSchedulingProblem fsp;
-	fsp.initializeProblem(problemIndex);
-	Problem* problem = &fsp;
 	std::random_device device;
 	unsigned int seed = device();
 	std::mt19937 randomGenerator(seed);
@@ -42,6 +41,7 @@ void runFlowshopTests(int problemIndex, bool removeDuplicatesUpper, int maxIter,
 	ofstream myfile;
 	myfile.open("p" + std::to_string(problemIndex) + "d" + std::to_string(removeDuplicatesUpper) + "p3" + 
 		std::to_string(useP3AsLocalOptimizer) + "_" + std::to_string(experimentNumber) + ".csv");
+	myfile << "Seed: " << std::to_string(seed) << std::endl;
 	myfile << "FFE found;Fitness" << std::endl;
 
 	double best_fitness = std::numeric_limits<double>::lowest();
@@ -64,20 +64,22 @@ void runFlowshopTests(int problemIndex, bool removeDuplicatesUpper, int maxIter,
 
 	} else
 	{
-		localOptimizer = new NullOptimizer(problem);
+		// localOptimizer = new NullOptimizer(problem);
+		localOptimizer = new SwapHillClimber(problem);
 	}
 
 	Pyramid finalPyramid(problem, solutionFactory, populationFactory, localOptimizer, removeDuplicatesUpper);
 
 	
-	for (int i = 0; problem->getFitnessFunctionEvaluations() < maxIter; i++) {
+	while (!stopCondition(problem, &finalPyramid)) {
 		finalPyramid.runSingleIteration();
-		if(problem->getFitnessFunctionEvaluations() <= maxIter && best_fitness < finalPyramid.getBestFitness())
+		if(best_fitness < finalPyramid.getBestFitness())
 		{
 			best_fitness = finalPyramid.getBestFitness();
+			std::cout << best_fitness << std::endl;
 			ffeFound = problem->getFitnessFunctionEvaluations();
 			myfile << ffeFound << ";" << best_fitness << std::endl;
-		}
+		} 
 	}
 	delete localOptimizer;
 }
@@ -86,12 +88,18 @@ void runFlowshopTests(int problemIndex, bool removeDuplicatesUpper, int maxIter,
 int main() {
 	int numberOfExperiments = 20;
 	int budget = 220712150;
+	std::function<bool(Problem*, Pyramid*)> stop_condition = [&](Problem* problem, Pyramid* pyramid) { return problem->getFitnessFunctionEvaluations() >= budget;  };
 	for(int i = 31; i < 41; i++)
 	{
 		for(int j = 0; j < numberOfExperiments; j++)
 		{
-			runFlowshopTests(i, false, budget, true, j);
-			runFlowshopTests(i, false, budget, false, j);
+			std::cout << j << std::endl;
+			FlowshopSchedulingProblem p;
+			// p.initializeProblem(i);
+			// runTest(i, &p, false, false, j, stop_condition);
+			p = FlowshopSchedulingProblem();
+			p.initializeProblem(i);
+			runTest(i, &p, false, true, j, stop_condition);
 		}
 	}
 	return 0;
