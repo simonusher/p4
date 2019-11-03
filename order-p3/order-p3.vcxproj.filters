@@ -123,6 +123,9 @@
     <ClInclude Include="include\order-p3\optimizer\encoding\MaskedDecoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\order-p3\problem\deceptive_ordering\RelativeOrderingProblem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\evaluation\Configuration.cpp">
@@ -210,6 +213,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\optimizer\encoding\MaskedDecoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\problem\deceptive_ordering\RelativeOrderingProblem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

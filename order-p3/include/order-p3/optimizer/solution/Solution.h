@@ -7,7 +7,7 @@
 class Solution
 {
 public:
-	Solution(std::vector<double> genotype, std::vector<int> phenotype, double fitness);
+	Solution(std::vector<double> genotype, std::vector<int> phenotype, double fitness, RandomKeyEncoder& encoder, RandomKeyDecoder& decoder);
 	Solution(RandomKeyEncoder& encoder, RandomKeyDecoder& decoder);
 	double evaluate(Problem& problem);
 	std::vector<double> getGenotype() const;

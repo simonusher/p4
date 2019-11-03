@@ -13,16 +13,17 @@ public:
 class OptimalMixerTests : public ::testing::Test {
 protected:
 	void setUpSource() {
-		sourceSolution = new Solution(SOURCE_GENOTYPE, SOURCE_PHENOTYPE, BASE_FITNESS);
+		sourceSolution = new Solution(SOURCE_GENOTYPE, SOURCE_PHENOTYPE, BASE_FITNESS, *encoder, *decoder);
 	}
 
 	void setUpDestination() {
-		destinationSolution = new Solution(DESTINATION_GENOTYPE, DESTINATION_PHENOTYPE, BASE_FITNESS);
+		destinationSolution = new Solution(DESTINATION_GENOTYPE, DESTINATION_PHENOTYPE, BASE_FITNESS, *encoder, *decoder);
 	}
 
 	void SetUp() override {
 		decoder = new RandomKeyDecoder();
 		problem = new ProblemMock();
+		encoder = new RandomKeyEncoder(0.0, 1.0, SOURCE_GENOTYPE.size());
 		optimalMixer = new OptimalMixer(problem);
 		setUpSource();
 		setUpDestination();
@@ -34,6 +35,7 @@ protected:
 		delete decoder;
 		delete destinationSolution;
 		delete sourceSolution;
+		delete encoder;
 	}
 
 	template<typename T>
@@ -64,6 +66,7 @@ protected:
 	Solution* sourceSolution;
 	ProblemMock* problem;
 	RandomKeyDecoder* decoder;
+	RandomKeyEncoder* encoder;
 	OptimalMixer* optimalMixer;
 };
 

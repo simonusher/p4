@@ -20,13 +20,11 @@ public:
     TtpProblem() = default;
     ~TtpProblem();
 	double evaluate(std::vector<int>& solution) override;
-	int getProblemSize() override;
 
     void initialize(const std::string &filename, ItemSelectionPolicy policy);
     double selectedItemsWeight;
     double selectedItemsProfit;
     double getDistance(int firstCityIndex, int secondCityIndex);
-	int getFitnessFunctionEvaluations() override;
 
 private:
     void load(const std::string &filename);
@@ -35,7 +33,6 @@ private:
     void addNewItem(int index, int profit, int weight, int assignedNodeIndex);
     std::vector<std::string> splitInputLine(std::string &line) const;
 
-    int fitnessFunctionEvaluationsNumber;
 
     static bool selectBetterWeightProfitItem(KnapsackItem *firstItem, KnapsackItem *secondItem);
     static bool selectLighterItem(KnapsackItem *firstItem, KnapsackItem *secondItem);
@@ -46,8 +43,7 @@ private:
     double vMin;
     double vMax;
 
-	std::vector<std::vector<double>> vCityDistances;
-    std::unordered_map<int, std::unordered_map<int, double>> cityDistances;
+	std::vector<std::vector<double>> cityDistances;
 
     std::vector<KnapsackItem*> allItems;
     std::unordered_map<int, std::vector<KnapsackItem*>> selectedItems;

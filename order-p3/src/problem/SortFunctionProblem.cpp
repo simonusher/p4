@@ -1,6 +1,7 @@
 #include "../../include/order-p3/problem/SortFunctionProblem.h"
 
-SortFunctionProblem::SortFunctionProblem(int problemSize): problemSize(problemSize), ffe(0) {
+SortFunctionProblem::SortFunctionProblem(int problemSize) {
+	this->problemSize = problemSize;
 }
 
 double SortFunctionProblem::evaluate(std::vector<int>& solution) {
@@ -13,12 +14,4 @@ double SortFunctionProblem::evaluate(std::vector<int>& solution) {
 		for (j = i + 1; j < problemSize; j++)
 			result += solution[i] > solution[j] ? 0 : 1;
 	return result;
-}
-
-int SortFunctionProblem::getProblemSize() {
-	return problemSize;
-}
-
-int SortFunctionProblem::getFitnessFunctionEvaluations() {
-	return ffe;
 }

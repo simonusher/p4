@@ -6,11 +6,10 @@ void TtpProblem::initialize(const std::string &filename, ItemSelectionPolicy pol
     load(filename);
     calculateDistances();
     selectItems(policy);
-    fitnessFunctionEvaluationsNumber = 0;
 }
 
 double TtpProblem::evaluate(std::vector<int>& solution) {
-	fitnessFunctionEvaluationsNumber++;
+	ffe++;
 	double itemsWeight = 0;
 	double totalTime = 0;
 	double currentVelocity = 0;
@@ -43,6 +42,7 @@ void TtpProblem::load(const std::string &filename) {
         std::getline(file, line);
         lineTokens = splitInputLine(line);
         numberOfCities = std::stoi(lineTokens[lineTokens.size()-1]);
+		problemSize = numberOfCities;
 
         std::getline(file, line);
         lineTokens = splitInputLine(line);
@@ -108,20 +108,11 @@ TtpProblem::~TtpProblem() {
 }
 
 void TtpProblem::calculateDistances() {
-    // cityDistances.clear();
-    // for(int i = 0; i < cities.size(); i++){
-    //     cityDistances.emplace(cities[i]->getIndex(), std::unordered_map<int, double>());
-    //     for(int j = 0; j < cities.size(); j++){
-    //         cityDistances[cities[i]->getIndex()][cities[j]->getIndex()] = calculateDistance(cities[i], cities[j]);
-    //     }
-    // }
-
-	// cityDistances.clear();
-	vCityDistances.clear();
-	vCityDistances = std::vector<std::vector<double>>(cities.size(), std::vector<double>(cities.size(), 0.0));
+	cityDistances.clear();
+	cityDistances = std::vector<std::vector<double>>(cities.size(), std::vector<double>(cities.size(), 0.0));
 	for (int i = 0; i < cities.size(); i++) {
 		for (int j = 0; j < cities.size(); j++) {
-			vCityDistances[cities[i]->getIndex()][cities[j]->getIndex()] = calculateDistance(cities[i], cities[j]);
+			cityDistances[cities[i]->getIndex()][cities[j]->getIndex()] = calculateDistance(cities[i], cities[j]);
 		}
 	}
 }
@@ -162,12 +153,7 @@ bool TtpProblem::selectProfitableItem(KnapsackItem *firstItem, KnapsackItem *sec
 }
 
 double TtpProblem::getDistance(int firstCityIndex, int secondCityIndex) {
-    // return cityDistances[firstCityIndex][secondCityIndex];
-    return vCityDistances[firstCityIndex][secondCityIndex];
-}
-
-int TtpProblem::getFitnessFunctionEvaluations() {
-	return fitnessFunctionEvaluationsNumber;
+    return cityDistances[firstCityIndex][secondCityIndex];
 }
 
 void TtpProblem::selectAllFittingItems() {
@@ -191,8 +177,4 @@ void TtpProblem::selectAllFittingItems() {
             profitInCities[currentItem->getAssignedNodeIndex()] += currentItem->getProfit();
         }
     }
-}
-
-int TtpProblem::getProblemSize() {
-    return numberOfCities;
 }

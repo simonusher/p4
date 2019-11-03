@@ -1,54 +1,20 @@
 #include "../../include/order-p3/problem/FlowshopSchedulingProblem.h"
 
-double FlowshopSchedulingProblem::evaluate(std::vector<int>& phenotype)
+double FlowshopSchedulingProblem::evaluate(std::vector<int>& solution)
 {
 	ffe++;
-	switch (problemIndex)
-	{
-	case 0:
-		return sortFunctionProblemEvaluation(phenotype);
-		break;
-	default:
-		return taillardFlowshopProblemEvaluation(phenotype);
-		break;
-	}
-}
-
-int FlowshopSchedulingProblem::getProblemSize() {
-	return problemSize;
-}
-
-int FlowshopSchedulingProblem::getFitnessFunctionEvaluations() {
-	return ffe;
-}
-
-double FlowshopSchedulingProblem::sortFunctionProblemEvaluation(std::vector<int>& parameters)
-{
-	int    i, j;
-	double result;
-
-	result = 0.0;
-	for (i = 0; i < problemSize; i++)
-		for (j = i + 1; j < problemSize; j++)
-			result += parameters[i] > parameters[j] ? 0 : 1;
-	return result;
-}
-
-
-double FlowshopSchedulingProblem::taillardFlowshopProblemEvaluation(std::vector<int>& parameters)
-{
 	int i, m;
 
 	double objectiveValue = 0.0;
 
-	fitnessCalculationCache[0][0] = processingTimes[parameters[0]][0];
+	fitnessCalculationCache[0][0] = processingTimes[solution[0]][0];
 	for (m = 1; m < nMachines; m++)
-		fitnessCalculationCache[0][m] = fitnessCalculationCache[0][m - 1] + processingTimes[parameters[0]][m];
+		fitnessCalculationCache[0][m] = fitnessCalculationCache[0][m - 1] + processingTimes[solution[0]][m];
 
 	for (i = 1; i < nJobs; i++) {
-		fitnessCalculationCache[i][0] = fitnessCalculationCache[i - 1][0] + processingTimes[parameters[i]][0];
+		fitnessCalculationCache[i][0] = fitnessCalculationCache[i - 1][0] + processingTimes[solution[i]][0];
 		for (m = 1; m < nMachines; m++)
-			fitnessCalculationCache[i][m] = std::max(fitnessCalculationCache[i - 1][m], fitnessCalculationCache[i][m - 1]) + processingTimes[parameters[i]][m];
+			fitnessCalculationCache[i][m] = std::max(fitnessCalculationCache[i - 1][m], fitnessCalculationCache[i][m - 1]) + processingTimes[solution[i]][m];
 	}
 
 	objectiveValue = -fitnessCalculationCache[nJobs - 1][nMachines - 1];
@@ -57,8 +23,6 @@ double FlowshopSchedulingProblem::taillardFlowshopProblemEvaluation(std::vector<
 		objectiveValue += -fitnessCalculationCache[i][nMachines - 1];
 	return objectiveValue;
 }
-
-
 
 void FlowshopSchedulingProblem::initializeProblem(int index)
 {
