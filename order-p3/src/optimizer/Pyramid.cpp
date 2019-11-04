@@ -76,6 +76,7 @@ Solution* Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
 
 bool Pyramid::addSolutionToPyramidIfUnique(Solution* solution, int level) {
 	if(removeDuplicates) {
+		solution->recalculatePhenotype();
 		std::vector<int> phenotype(solution->getPhenotype());
 		seenSolution = seen.find(phenotype);
 		if (seenSolution != seen.end()) {

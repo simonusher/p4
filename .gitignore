@@ -338,3 +338,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/p3-optimizer/experiments
+/p3-optimizer/experiments1
+/p3-optimizer/p31d0p30_0.csv
+/p3-optimizer/p31d0p31_0.csv

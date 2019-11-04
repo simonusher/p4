@@ -193,9 +193,10 @@ void OptimizedLinkage::rebuildTree() {
 		}
 	}
 	clusterOrdering.resize(kept);
-	std::sort(clusterOrdering.begin(), clusterOrdering.end(), [&](int firstClusterIndex, int secondClusterIndex) {
-		return clusters[firstClusterIndex].size() < clusters[secondClusterIndex].size();
-	});
+	// std::shuffle(clusterOrdering.begin(), clusterOrdering.end(), randomGenerator);
+	// std::sort(clusterOrdering.begin(), clusterOrdering.end(), [&](int firstClusterIndex, int secondClusterIndex) {
+		// return clusters[firstClusterIndex].size() < clusters[secondClusterIndex].size();
+	// });
 }
 
 void OptimizedLinkage::updateLinkageInformation(Solution* solution) {

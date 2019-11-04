@@ -35,7 +35,7 @@ void printSolution(const std::vector<int>& solution) {
 }
 
 
-void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, bool useP3AsLocalOptimizer, int experimentNumber,
+void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, bool useLocalOptimizer, int experimentNumber,
 	std::function<bool(Problem*, Pyramid*)> stopCondition)
 {
 	std::random_device device;
@@ -44,7 +44,7 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 
 	ofstream myfile;
 	myfile.open("experiments/" + to_string(problemIndex) + "/p" + std::to_string(problemIndex) + "d" + std::to_string(removeDuplicatesUpper) + "plo" +
-		std::to_string(useP3AsLocalOptimizer) + "_" + std::to_string(experimentNumber) + ".csv");
+		std::to_string(useLocalOptimizer) + "_" + std::to_string(experimentNumber) + ".csv");
 	myfile << "Seed: " << std::to_string(seed) << std::endl;
 	myfile << "FFE found;Fitness" << std::endl;
 
@@ -62,9 +62,10 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 	PopulationFactory* populationFactory = &popFactoryImpl;
 
 	LocalOptimizer* localOptimizer;
-	if(useP3AsLocalOptimizer)
+	if(useLocalOptimizer)
 	{
-		localOptimizer = new Pyramid(problem, solutionFactory, populationFactory, &optimizer, false);
+		// localOptimizer = new Pyramid(problem, solutionFactory, populationFactory, &optimizer, false);
+		localOptimizer = new SwapHillClimber(problem);
 
 	} else
 	{
@@ -101,10 +102,11 @@ int main() {
 		}
 		for(int j = 0; j < numberOfExperiments; j++)
 		{
-			std::cout << j << std::endl;
+			// std::cout << j << std::endl;
 			FlowshopSchedulingProblem p;
 			p.initializeProblem(i);
 			runTest(i, &p, false, false, j, stop_condition);
+			
 			p = FlowshopSchedulingProblem();
 			p.initializeProblem(i);
 			runTest(i, &p, false, true, j, stop_condition);
