@@ -5,7 +5,8 @@
 #include "../../include/order-p3/optimizer/Population.h"
 
 Population::Population(Problem* problem, SolutionMixer* solutionMixer, ::mt19937& randomGenerator) : problem(problem), solutionMixer(solutionMixer), randomGenerator(randomGenerator) {
-    this->linkage = new NewLinkage(problem->getProblemSize(), randomGenerator);
+    // this->linkage = new NewLinkage(problem->getProblemSize(), randomGenerator);
+    this->linkage = new OptimizedLinkage(problem->getProblemSize(), randomGenerator);
 }
 
 Population::~Population() {
@@ -26,17 +27,28 @@ void Population::recalculateLinkage(Solution* solution) const {
 }
 
 void Population::improve(Solution* solution) {
-    vector<vector<int>> clusters = linkage->getClusters();
-    vector<int> cluster;
-    bool different;
-    for (int i = 0; i < clusters.size(); i++) {
-        shuffleCheckingOrder();
-        cluster = clusters[i];
-        different = false;
-        for (int j = 0; j < solutionCheckingOrder.size() && !different; j++) {
-			different = solutionMixer->mix(solution, solutions[solutionCheckingOrder[j]], &cluster);
-        }
-    }
+	bool different;
+	vector<int> options(solutions.size());
+	iota(options.begin(), options.end(), 0);
+	int unused;
+	int index, working = 0;
+
+	for(auto& cluster : *linkage) {
+		do {
+			unused = options.size() - 1;
+			different = false;
+			// Choose a donor
+			index = std::uniform_int_distribution<int>(0, unused)(randomGenerator);
+			working = options[index];
+			// make certain that donor cannot be chosen again
+			swap(options[unused], options[index]);
+			unused -= 1;
+
+			// Attempt the donation
+			different = solutionMixer->mix(solution, solutions[working], &cluster);
+			// Break loop if configured to stop_after_one or donate returned true
+		} while (unused >= 0 and not different);
+	}
 }
 
 void Population::shuffleCheckingOrder() {

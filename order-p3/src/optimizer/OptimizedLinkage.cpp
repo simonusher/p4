@@ -35,7 +35,7 @@ void OptimizedLinkage::update(Solution* newSolution, int currentPopulationSize) 
 	}
 }
 
-OptimizedLinkage::ClusterIterator::ClusterIterator(int currentIndex, OptimizedLinkage& linkage) :
+OptimizedLinkage::ClusterIterator::ClusterIterator(size_t currentIndex, OptimizedLinkage& linkage) :
 	currentClusterOrderingIndex(currentIndex), linkage(linkage) {
 }
 
@@ -76,7 +76,7 @@ void OptimizedLinkage::rebuildTree() {
 	// useful keeps track of clusters that should be used by crossover
 	vector<bool> useful(clusters.size(), true);
 	// Shuffle the single variable clusters
-	std::shuffle(clusters.begin(), clusters.begin() + problemSize, rand);
+	std::shuffle(clusters.begin(), clusters.begin() + problemSize, randomGenerator);
 
 	// Find the initial distances between the clusters
 	for (size_t i = 0; i < problemSize - 1; i++) {
@@ -97,7 +97,7 @@ void OptimizedLinkage::rebuildTree() {
 	// rebuild all clusters after the single variable clusters
 	for (size_t index = problemSize; index < clusters.size(); index++) {
 		// Shuffle everything not yet in the path
-		std::shuffle(usable.begin() + end_of_path, usable.end(), rand);
+		std::shuffle(usable.begin() + end_of_path, usable.end(), randomGenerator);
 
 		// if nothing in the path, just add a random usable node
 		if (end_of_path == 0) {
@@ -207,7 +207,7 @@ void OptimizedLinkage::updateLinkageInformation(Solution* solution) {
 void OptimizedLinkage::recalculateDistances(const int currentPopulationSize) {
 	for (int firstGeneIndex = 0; firstGeneIndex < problemSize - 1; firstGeneIndex++) {
 		for (int secondGeneIndex = firstGeneIndex + 1; secondGeneIndex < problemSize; secondGeneIndex++) {
-			const double distanceBetweenGenes =  1 - calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, currentPopulationSize);
+			const double distanceBetweenGenes = 1 - calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, currentPopulationSize);
 			distanceMeasureMatrix[firstGeneIndex][secondGeneIndex] = distanceBetweenGenes;
 			distanceMeasureMatrix[secondGeneIndex][firstGeneIndex] = distanceBetweenGenes;
 		}
@@ -221,7 +221,7 @@ double OptimizedLinkage::calculateDependencyBetweenGenes(const int firstGeneInde
 }
 
 double OptimizedLinkage::calculateRelativeOrderingMeasure(const int firstGeneIndex, const int secondGeneIndex, const int currentPopulationSize) {
-	const double pij = relativeOrderingInformationSum[firstGeneIndex][secondGeneIndex] / double(currentPopulationSize);
+	const double pij = relativeOrderingInformationSum[firstGeneIndex][secondGeneIndex] / static_cast<double>(currentPopulationSize);
 	double entropy;
 	if (pij == 0 || pij == 1) {
 		entropy = 0;
@@ -233,7 +233,7 @@ double OptimizedLinkage::calculateRelativeOrderingMeasure(const int firstGeneInd
 }
 
 double OptimizedLinkage::calculateAdjacencyMeasure(const int firstGeneIndex, const int secondGeneIndex, const int currentPopulationSize) {
-	const double adjacencyMeasure = adjacencyInformationSum[firstGeneIndex][secondGeneIndex] / double(currentPopulationSize);
+	const double adjacencyMeasure = adjacencyInformationSum[firstGeneIndex][secondGeneIndex] / static_cast<double>(currentPopulationSize);
 	return 1.0 - adjacencyMeasure;
 }
 

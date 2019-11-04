@@ -8,6 +8,7 @@
 #include <numeric>
 #include "../evaluation/Evaluator.h"
 #include "solution/SolutionMixer.h"
+#include "OptimizedLinkage.h"
 
 
 class Population {
@@ -21,7 +22,8 @@ private:
     void shuffleCheckingOrder();
 	vector<Solution*> solutions;
 	Problem* problem;
-    NewLinkage *linkage;
+    // NewLinkage *linkage;
+    OptimizedLinkage *linkage;
     vector<int> solutionCheckingOrder;
 	std::mt19937& randomGenerator;
 	SolutionMixer* solutionMixer;

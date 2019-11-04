@@ -20,6 +20,8 @@
 #include <functional>
 #include "../order-p3/include/order-p3/optimizer/encoding/MaskedDecoder.h"
 #include "../order-p3/include/order-p3/problem/deceptive_ordering/RelativeOrderingProblem.h"
+#include <filesystem>
+
 
 void printSolution(const std::vector<int>& solution) {
 	std::cout << "[ ";
@@ -41,7 +43,7 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 	std::mt19937 randomGenerator(seed);
 
 	ofstream myfile;
-	myfile.open("p" + std::to_string(problemIndex) + "d" + std::to_string(removeDuplicatesUpper) + "p3" + 
+	myfile.open("experiments/" + to_string(problemIndex) + "/p" + std::to_string(problemIndex) + "d" + std::to_string(removeDuplicatesUpper) + "plo" +
 		std::to_string(useP3AsLocalOptimizer) + "_" + std::to_string(experimentNumber) + ".csv");
 	myfile << "Seed: " << std::to_string(seed) << std::endl;
 	myfile << "FFE found;Fitness" << std::endl;
@@ -78,7 +80,7 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 		if(best_fitness < finalPyramid.getBestFitness())
 		{
 			best_fitness = finalPyramid.getBestFitness();
-			std::cout << best_fitness << std::endl;
+			std::cout << ffeFound << " " << best_fitness << std::endl;
 			ffeFound = problem->getFitnessFunctionEvaluations();
 			myfile << ffeFound << ";" << best_fitness << std::endl;
 		} 
@@ -94,12 +96,15 @@ int main() {
 
 	for(int i = 31; i < 41; i++)
 	{
+		if(!std::filesystem::exists("experiments/" + to_string(i))) {
+			std::filesystem::create_directory("experiments/" + to_string(i));
+		}
 		for(int j = 0; j < numberOfExperiments; j++)
 		{
 			std::cout << j << std::endl;
 			FlowshopSchedulingProblem p;
-			// p.initializeProblem(i);
-			// runTest(i, &p, false, false, j, stop_condition);
+			p.initializeProblem(i);
+			runTest(i, &p, false, false, j, stop_condition);
 			p = FlowshopSchedulingProblem();
 			p.initializeProblem(i);
 			runTest(i, &p, false, true, j, stop_condition);

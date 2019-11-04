@@ -25,12 +25,12 @@ public:
 
 	class ClusterIterator {
 		public:
-			ClusterIterator(int currentIndex, OptimizedLinkage& linkage);
+			ClusterIterator(size_t currentIndex, OptimizedLinkage& linkage);
 			bool operator!=(const ClusterIterator& other) const;
 			std::vector<int>& operator*() const;
 			ClusterIterator& operator++();
 		private:
-			int currentClusterOrderingIndex;
+			size_t currentClusterOrderingIndex;
 			OptimizedLinkage& linkage;
 	};
 	
