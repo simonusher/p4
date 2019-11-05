@@ -109,12 +109,10 @@ void run_tests() {
 void test2() {
 	std::random_device d;
 	std::mt19937 randomGenerator(d());
-	AbsoluteOrderingProblem problem(8);
-	// TtpProblem problem;
-	// problem.initialize("hard_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
+	RelativeOrderingProblem problem(8);
 	RandomKeyEncoder encoder(0, 1, problem.getProblemSize());
-	RandomKeyDecoder decoder;
-	// MaskedDecoder decoder = MaskedDecoder::get8FunctionLooseCoding();
+	// RandomKeyDecoder decoder;
+	MaskedDecoder decoder = MaskedDecoder::get8FunctionLooseCoding();
 	NullOptimizer optimizer(&problem);
 	RandomRescalingOptimalMixer mixer(&problem, 0.1, 0, 1, randomGenerator);
 	SolutionFactoryImpl solutionFactory(encoder, decoder);

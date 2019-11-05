@@ -3,21 +3,16 @@
 class RandomKeyEncoder
 {
 public:
-	RandomKeyEncoder(double lowerBound, double upperBound, int numberOfGenes);
-	std::vector<double> getRandomEncoding();
-	std::vector<double> getRandomEncoding(int numberOfGenes);
-	std::vector<double> getEncodingForPhenotype(std::vector<int>& phenotype);
-	double getRandomKey();
+	RandomKeyEncoder(double lowerBound, double upperBound, int numberOfGenes, std::mt19937& randomGenerator);
+	std::vector<double> getRandomEncoding() const;
+	std::vector<double> getRandomEncoding(int numberOfGenes) const ;
+	std::vector<double> getEncodingForPhenotype(std::vector<int>& phenotype) const;
+	double getRandomKey() const;
 
 	int getNumberOfGenes() const;
 private:
-	void initializeRandom();
-	void initializeRandomEngine();
-	void initializeDistribution();
-	std::mt19937 randomEngine;
+	std::mt19937& randomGenerator;
 	std::uniform_real_distribution<double> keyDistribution;
-	double lowerBound;
-	double upperBound;
 	int numberOfGenes;
 };
 

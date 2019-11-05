@@ -1,18 +1,17 @@
 #include "../../../include/order-p3/optimizer/encoding/RandomKeyEncoder.h"
 
-RandomKeyEncoder::RandomKeyEncoder(double lowerBound, double upperBound, int numberOfGenes)
-	: lowerBound(lowerBound),
-	upperBound(upperBound),
+RandomKeyEncoder::RandomKeyEncoder(double lowerBound, double upperBound, int numberOfGenes, std::mt19937& randomGenerator) :
+	randomGenerator(randomGenerator),
+	keyDistribution(lowerBound, upperBound),
 	numberOfGenes(numberOfGenes)
 {
-	initializeRandom();
 }
 
-std::vector<double> RandomKeyEncoder::getRandomEncoding() {
+std::vector<double> RandomKeyEncoder::getRandomEncoding() const {
 	return getRandomEncoding(this->numberOfGenes);
 }
 
-std::vector<double> RandomKeyEncoder::getRandomEncoding(int numberOfGenes) {
+std::vector<double> RandomKeyEncoder::getRandomEncoding(int numberOfGenes) const {
 	std::vector<double> encoding(numberOfGenes);
 	for(size_t i = 0; i < numberOfGenes; i++) {
 		encoding[i] = getRandomKey();
@@ -20,7 +19,7 @@ std::vector<double> RandomKeyEncoder::getRandomEncoding(int numberOfGenes) {
 	return encoding;
 }
 
-std::vector<double> RandomKeyEncoder::getEncodingForPhenotype(std::vector<int>& phenotype) {
+std::vector<double> RandomKeyEncoder::getEncodingForPhenotype(std::vector<int>& phenotype) const {
 	std::vector<double> randomEncoding(getRandomEncoding(phenotype.size()));
 	std::sort(randomEncoding.begin(), randomEncoding.end());
 	std::vector<double> phenotypeEncoding(randomEncoding.size());
@@ -30,24 +29,10 @@ std::vector<double> RandomKeyEncoder::getEncodingForPhenotype(std::vector<int>& 
 	return phenotypeEncoding;
 }
 
-double RandomKeyEncoder::getRandomKey() {
-	return this->keyDistribution(this->randomEngine);
+double RandomKeyEncoder::getRandomKey() const {
+	return this->keyDistribution(this->randomGenerator);
 }
 
 int RandomKeyEncoder::getNumberOfGenes() const {
 	return numberOfGenes;
-}
-
-void RandomKeyEncoder::initializeRandom() {
-	initializeRandomEngine();
-	initializeDistribution();
-}
-
-void RandomKeyEncoder::initializeRandomEngine() {
-	std::random_device randomDevice;
-	this->randomEngine.seed(randomDevice());
-}
-
-void RandomKeyEncoder::initializeDistribution() {
-	this->keyDistribution = std::uniform_real_distribution<double>(lowerBound, upperBound);
 }
