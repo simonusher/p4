@@ -89,28 +89,57 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 	delete localOptimizer;
 }
 
-
-int main() {
+void run_tests() {
 	int numberOfExperiments = 20;
 	int budget = 220712150;
 	std::function<bool(Problem*, Pyramid*)> stop_condition = [&](Problem* problem, Pyramid* pyramid) { return problem->getFitnessFunctionEvaluations() >= budget;  };
 
-	for(int i = 31; i < 41; i++)
+	for (int i = 31; i < 41; i++)
 	{
-		if(!std::filesystem::exists("experiments/" + to_string(i))) {
+		if (!std::filesystem::exists("experiments/" + to_string(i))) {
 			std::filesystem::create_directory("experiments/" + to_string(i));
 		}
-		for(int j = 0; j < numberOfExperiments; j++)
+		for (int j = 0; j < numberOfExperiments; j++)
 		{
-			// std::cout << j << std::endl;
+			std::cout << j << std::endl;
 			FlowshopSchedulingProblem p;
 			p.initializeProblem(i);
 			runTest(i, &p, false, false, j, stop_condition);
-			
-			p = FlowshopSchedulingProblem();
-			p.initializeProblem(i);
-			runTest(i, &p, false, true, j, stop_condition);
 		}
 	}
+}
+
+void test2() {
+	std::random_device d;
+	std::mt19937 randomGenerator(d());
+	// AbsoluteOrderingProblem problem(8);
+	TtpProblem problem;
+	problem.initialize("hard_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
+	RandomKeyEncoder encoder(0, 1, problem.getProblemSize());
+	RandomKeyDecoder decoder;
+	NullOptimizer optimizer(&problem);
+	RandomRescalingOptimalMixer mixer(&problem, 0.1, 0, 1, randomGenerator);
+	SolutionFactoryImpl solutionFactory(encoder, decoder);
+	PopulationFactoryImpl populationFactory(&problem, &mixer, randomGenerator);
+	Pyramid pyramid(&problem, &solutionFactory, &populationFactory, &optimizer, false);
+
+	double best_fitness = std::numeric_limits<double>::lowest();
+	int ffeFound = 0;
+
+	for (int i = 0; pyramid.getBestFitness() != 1; i++) {
+		pyramid.runSingleIteration();
+		if (best_fitness < pyramid.getBestFitness())
+		{
+			best_fitness = pyramid.getBestFitness();
+			ffeFound = problem.getFitnessFunctionEvaluations();
+			std::cout << ffeFound << " " << best_fitness << std::endl;
+		}
+	}
+	printSolution(pyramid.getBestSolution()->getPhenotype());
+}
+
+
+int main() {
+	test2();
 	return 0;
 }

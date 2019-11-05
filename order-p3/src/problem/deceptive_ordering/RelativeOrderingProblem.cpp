@@ -39,21 +39,13 @@ double RelativeOrderingProblem::evaluate(std::vector<int>& solution) {
 	std::vector<int> indices(4);
 	std::iota(indices.begin(), indices.end(), 0);
 
+	int startIndex = 0;
 	for (int i = 0; i < numberOfFunctions; i++) {
-		for (int j = 0; j < 4; j++) {
-			int elementToFind = i * 4 + j;
-			auto it = std::find(solution.begin(), solution.end(), elementToFind);
-			int index = std::distance(solution.begin(), it);
-			elementIndices[j] = index;
-		}
+		std::vector<int> subfunctionIndices(indices);
 
-		std::vector<int> currentOrdering(indices);
-		std::sort(currentOrdering.begin(), currentOrdering.end(), [&](int first, int second) { return elementIndices[first] < elementIndices[second]; });
-		std::vector<int> finalOrdering(4);
-		for (int j = 0; j < 4; j++) {
-			finalOrdering[currentOrdering[j]] = j;
-		}
-		sum += functionValues.at(currentOrdering);
+		std::sort(subfunctionIndices.begin(), subfunctionIndices.end(), [&](int first, int second) { return solution[first + startIndex] < solution[second + startIndex];});
+		sum += functionValues.at(subfunctionIndices);
+		startIndex += 4;
 	}
 	return sum / maximumFitness;
 }

@@ -28,13 +28,15 @@ void Population::recalculateLinkage(Solution* solution) const {
 
 void Population::improve(Solution* solution) {
 	bool different;
-	vector<int> options(solutions.size());
-	iota(options.begin(), options.end(), 0);
+	vector<int> options(solutionCheckingOrder);
 	int unused;
 	int index, working = 0;
 
-	for(auto& cluster : *linkage) {
+
+	// for(auto& cluster : *linkage) {
+	for (auto it = linkage->randomBegin(); it != linkage->randomEnd(); ++it) {
 		do {
+			auto cluster = *it;
 			unused = options.size() - 1;
 			different = false;
 			// Choose a donor

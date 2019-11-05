@@ -52,6 +52,39 @@ OptimizedLinkage::ClusterIterator& OptimizedLinkage::ClusterIterator::operator++
 	return *this;
 }
 
+OptimizedLinkage::RandomClusterIterator::RandomClusterIterator(OptimizedLinkage& linkage, bool end)
+: linkage(linkage), unused(linkage.clusterOrdering.size() - 1), options(linkage.clusterOrdering)
+{
+	if(end) {
+		unused = -1;
+	} else {
+		generateNextIndex();
+	}
+}
+
+bool OptimizedLinkage::RandomClusterIterator::operator!=(const RandomClusterIterator& other) const {
+	return this->unused != other.unused;
+}
+
+std::vector<int>& OptimizedLinkage::RandomClusterIterator::operator*() const {
+	return linkage.clusters[currentIndex];
+}
+
+OptimizedLinkage::RandomClusterIterator& OptimizedLinkage::RandomClusterIterator::operator++() {
+	generateNextIndex();
+	return *this;
+}
+
+void OptimizedLinkage::RandomClusterIterator::generateNextIndex() {
+	if(unused > 0) {
+		indexDistribution = std::uniform_int_distribution<int>(0, unused);
+		int index = indexDistribution(linkage.randomGenerator);
+		currentIndex = options[index];
+		std::swap(options[unused - 1], options[index]);
+	}
+	unused--;
+}
+
 OptimizedLinkage::ClusterIterator OptimizedLinkage::begin() {
 	return { 0, *this };
 }
@@ -60,6 +93,13 @@ OptimizedLinkage::ClusterIterator OptimizedLinkage::end() {
 	return { clusterOrdering.size(), *this };
 }
 
+OptimizedLinkage::RandomClusterIterator OptimizedLinkage::randomBegin() {
+	return { *this };
+}
+
+OptimizedLinkage::RandomClusterIterator OptimizedLinkage::randomEnd() {
+	return { *this, true };
+}
 
 double OptimizedLinkage::getDistance(int firstIndex, int secondIndex) {
 	if (firstIndex > secondIndex) {
@@ -193,10 +233,6 @@ void OptimizedLinkage::rebuildTree() {
 		}
 	}
 	clusterOrdering.resize(kept);
-	// std::shuffle(clusterOrdering.begin(), clusterOrdering.end(), randomGenerator);
-	// std::sort(clusterOrdering.begin(), clusterOrdering.end(), [&](int firstClusterIndex, int secondClusterIndex) {
-		// return clusters[firstClusterIndex].size() < clusters[secondClusterIndex].size();
-	// });
 }
 
 void OptimizedLinkage::updateLinkageInformation(Solution* solution) {

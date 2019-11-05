@@ -33,10 +33,27 @@ public:
 			size_t currentClusterOrderingIndex;
 			OptimizedLinkage& linkage;
 	};
+
+	class RandomClusterIterator {
+		public:
+			RandomClusterIterator(OptimizedLinkage& linkage, bool end = false);
+			bool operator!=(const RandomClusterIterator& other) const;
+			std::vector<int>& operator*() const;
+			RandomClusterIterator& operator++();
+		private:
+			int unused;
+			int currentIndex;
+			void generateNextIndex();
+			std::uniform_int_distribution<int> indexDistribution;
+			std::vector<int> options;
+			OptimizedLinkage& linkage;
+	};
 	
 	ClusterIterator begin();
 	ClusterIterator end();
-	
+
+	RandomClusterIterator randomBegin();
+	RandomClusterIterator randomEnd();
 	
 private:
 	double getDistance(int firstIndex, int secondIndex);
