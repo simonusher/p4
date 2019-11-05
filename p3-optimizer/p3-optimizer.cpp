@@ -23,7 +23,8 @@
 #include <filesystem>
 
 
-void printSolution(const std::vector<int>& solution) {
+template <typename T>
+void printSolution(const std::vector<T>& solution) {
 	std::cout << "[ ";
 	for (int i = 0; i < solution.size(); i++) {
 		std::cout << solution[i];
@@ -112,19 +113,14 @@ void test2() {
 	// TtpProblem problem;
 	// problem.initialize("hard_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
 	RandomKeyEncoder encoder(0, 1, problem.getProblemSize());
-	// RandomKeyDecoder decoder;
-	MaskedDecoder decoder = MaskedDecoder::get8FunctionLooseCoding();
+	RandomKeyDecoder decoder;
+	// MaskedDecoder decoder = MaskedDecoder::get8FunctionLooseCoding();
 	NullOptimizer optimizer(&problem);
-	// OptimalInversionHillClimber optimizer(&problem);
 	RandomRescalingOptimalMixer mixer(&problem, 0.1, 0, 1, randomGenerator);
 	SolutionFactoryImpl solutionFactory(encoder, decoder);
 	PopulationFactoryImpl populationFactory(&problem, &mixer, randomGenerator);
 
-	Pyramid localOptimizer3(&problem, &solutionFactory, &populationFactory, &optimizer, false);
-	Pyramid localOptimizer2(&problem, &solutionFactory, &populationFactory, &localOptimizer3, false);
-	Pyramid localOptimizer1(&problem, &solutionFactory, &populationFactory, &localOptimizer2, false);
-	Pyramid localOptimizer(&problem, &solutionFactory, &populationFactory, &localOptimizer1, false);
-	Pyramid pyramid(&problem, &solutionFactory, &populationFactory, &localOptimizer, false);
+	Pyramid pyramid(&problem, &solutionFactory, &populationFactory, &optimizer, false);
 
 	double best_fitness = std::numeric_limits<double>::lowest();
 	int ffeFound = 0;
@@ -138,11 +134,11 @@ void test2() {
 			std::cout << ffeFound << " " << best_fitness << std::endl;
 		}
 	}
-	printSolution(decoder.decode(pyramid.getBestSolution()->getGenotype()));
+	printSolution(pyramid.getBestSolution()->getPhenotype());
 }
 
 
 int main() {
-	run_tests();
+	test2();
 	return 0;
 }

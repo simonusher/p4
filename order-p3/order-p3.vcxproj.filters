@@ -96,9 +96,6 @@
     <ClInclude Include="include\order-p3\local_optimizers\NullOptimizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\order-p3\optimizer\CHierarchicalClustering.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\order-p3\optimizer\solution\RandomRescalingOptimalMixer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -177,9 +174,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\optimizer\NewLinkage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\optimizer\CHierarchicalClustering.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\optimizer\solution\RandomRescalingOptimalMixer.cpp">

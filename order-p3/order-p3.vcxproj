@@ -23,7 +23,6 @@
     <ClInclude Include="include\order-p3\local_optimizers\NullOptimizer.h" />
     <ClInclude Include="include\order-p3\local_optimizers\OptimalInversionHillClimber.h" />
     <ClInclude Include="include\order-p3\local_optimizers\SwapHillClimber.h" />
-    <ClInclude Include="include\order-p3\optimizer\CHierarchicalClustering.h" />
     <ClInclude Include="include\order-p3\optimizer\encoding\MaskedDecoder.h" />
     <ClInclude Include="include\order-p3\optimizer\FeedbackPyramid.h" />
     <ClInclude Include="include\order-p3\optimizer\HcOptimizer.h" />
@@ -58,7 +57,6 @@
     <ClCompile Include="src\local_optimizers\LocalOptimizer.cpp" />
     <ClCompile Include="src\local_optimizers\OptimalInversionHillClimber.cpp" />
     <ClCompile Include="src\local_optimizers\SwapHillClimber.cpp" />
-    <ClCompile Include="src\optimizer\CHierarchicalClustering.cpp" />
     <ClCompile Include="src\optimizer\encoding\MaskedDecoder.cpp" />
     <ClCompile Include="src\optimizer\FeedbackPyramid.cpp" />
     <ClCompile Include="src\optimizer\Linkage.cpp" />

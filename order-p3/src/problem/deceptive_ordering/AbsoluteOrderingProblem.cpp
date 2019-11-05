@@ -1,30 +1,30 @@
 #include "../../../include/order-p3/problem/deceptive_ordering/AbsoluteOrderingProblem.h"
 
-const std::unordered_map<std::vector<int>, double, VectorHasher> AbsoluteOrderingProblem::functionValues {
-	{ {0, 1, 2, 3}, 4.0 },
-	{ {3, 1, 2, 0}, 1.8 },
-	{ {0, 2, 1, 3}, 1.8 },
-	{ {0, 1, 3, 2}, 1.8 },
-	{ {0, 3, 2, 1}, 1.8 },
-	{ {2, 1, 0, 3}, 1.8 },
-	{ {1, 0, 2, 3}, 1.8 },
-	{ {3, 1, 0, 2}, 2.0 },
-	{ {3, 0, 2, 1}, 2.0 },
-	{ {2, 0, 1, 3}, 2.0 },
-	{ {0, 2, 3, 1}, 2.0 },
-	{ {1, 2, 0, 3}, 2.0 },
-	{ {1, 3, 2, 0}, 2.0 },
-	{ {2, 1, 3, 0}, 2.0 },
-	{ {0, 3, 1, 2}, 2.0 },
-	{ {3, 0, 1, 2}, 2.6 },
-	{ {2, 3, 0, 1}, 2.6 },
-	{ {1, 2, 3, 0}, 2.6 },
-	{ {1, 3, 0, 2}, 2.6 },
-	{ {1, 0, 3, 2}, 2.6 },
-	{ {3, 2, 1, 0}, 2.6 },
-	{ {3, 2, 0, 1}, 2.6 },
-	{ {2, 0, 3, 1}, 2.6 },
-	{ {2, 3, 1, 0}, 3.3 },
+const std::unordered_map<std::vector<int>, double, VectorHasher> AbsoluteOrderingProblem::functionValues{
+	{{0, 1, 2, 3}, 4.0},
+	{{0, 1, 3, 2}, 1.8},
+	{{0, 3, 2, 1}, 1.8},
+	{{0, 2, 1, 3}, 1.8},
+	{{2, 1, 0, 3}, 1.8},
+	{{3, 1, 2, 0}, 1.8},
+	{{1, 0, 2, 3}, 1.8},
+	{{0, 2, 3, 1}, 2.0},
+	{{0, 3, 1, 2}, 2.0},
+	{{3, 1, 0, 2}, 2.0},
+	{{2, 1, 3, 0}, 2.0},
+	{{3, 0, 2, 1}, 2.0},
+	{{1, 3, 2, 0}, 2.0},
+	{{2, 0, 1, 3}, 2.0},
+	{{1, 2, 0, 3}, 2.0},
+	{{1, 0, 3, 2}, 2.6},
+	{{3, 0, 1, 2}, 2.6},
+	{{2, 0, 3, 1}, 2.6},
+	{{2, 3, 0, 1}, 2.6},
+	{{3, 2, 0, 1}, 2.6},
+	{{1, 2, 3, 0}, 2.6},
+	{{2, 3, 1, 0}, 3.3},
+	{{1, 3, 0, 2}, 2.6},
+	{{3, 2, 1, 0}, 2.6},
 };
 
 AbsoluteOrderingProblem::AbsoluteOrderingProblem(int numberOfFunctions) : numberOfFunctions(numberOfFunctions) {
@@ -40,17 +40,16 @@ double AbsoluteOrderingProblem::evaluate(std::vector<int>& solution) {
 	std::vector<int> indices(4);
 	std::iota(indices.begin(), indices.end(), 0);
 
-	for (int i = 0; i < numberOfFunctions; i++) {
+	auto startingElement = solution.begin();
+	for (int i = 0; i < numberOfFunctions; i++, startingElement += 4) {
 		for (int j = 0; j < 4; j++) {
 			int elementToFind = i * 4 + j;
-			auto it = std::find(solution.begin(), solution.end(), elementToFind);
-			int index = std::distance(solution.begin(), it) - i * 4;
-			elementIndices[j] = index;
+			elementIndices[j] = std::distance(startingElement, std::find(solution.begin(), solution.end(), elementToFind));
 		}
 
-		auto t = functionValues.find(elementIndices);
-		if (t != functionValues.end()) {
-			sum += t->second;
+		auto it = functionValues.find(elementIndices);
+		if (it != functionValues.end()) {
+			sum += it->second;
 		}
 		else {
 			bool orderCorrect = true;
