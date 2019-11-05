@@ -28,9 +28,8 @@ OptimizedLinkage::OptimizedLinkage(int problemSize, std::mt19937& randomGenerato
 }
 
 void OptimizedLinkage::update(Solution* newSolution, int currentPopulationSize) {
-	updateLinkageInformation(newSolution);
+	updateLinkageInformation(newSolution, currentPopulationSize);
 	if (currentPopulationSize > 1) {
-		recalculateDistances(currentPopulationSize);
 		rebuildTree();
 	}
 }
@@ -235,15 +234,15 @@ void OptimizedLinkage::rebuildTree() {
 	clusterOrdering.resize(kept);
 }
 
-void OptimizedLinkage::updateLinkageInformation(Solution* solution) {
+void OptimizedLinkage::updateLinkageInformation(Solution* solution, int currentPopulationSize) {
 	vector<double>* genotype = solution->getGenotypePtr();
-	updateRelativeOrderingInformation(genotype);
-	updateAdjacencyInformation(genotype);
-}
-
-void OptimizedLinkage::recalculateDistances(const int currentPopulationSize) {
 	for (int firstGeneIndex = 0; firstGeneIndex < problemSize - 1; firstGeneIndex++) {
+		const double firstGeneValue = genotype->at(firstGeneIndex);
 		for (int secondGeneIndex = firstGeneIndex + 1; secondGeneIndex < problemSize; secondGeneIndex++) {
+			const double secondGeneValue = genotype->at(secondGeneIndex);
+			relativeOrderingInformationSum[firstGeneIndex][secondGeneIndex] += calculateRelativeOrderingInformation(firstGeneValue, secondGeneValue);
+			adjacencyInformationSum[firstGeneIndex][secondGeneIndex] += calculateAdjacencyInformation(firstGeneValue, secondGeneValue);
+			
 			const double distanceBetweenGenes = 1 - calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, currentPopulationSize);
 			distanceMeasureMatrix[firstGeneIndex][secondGeneIndex] = distanceBetweenGenes;
 			distanceMeasureMatrix[secondGeneIndex][firstGeneIndex] = distanceBetweenGenes;
@@ -272,26 +271,6 @@ double OptimizedLinkage::calculateRelativeOrderingMeasure(const int firstGeneInd
 double OptimizedLinkage::calculateAdjacencyMeasure(const int firstGeneIndex, const int secondGeneIndex, const int currentPopulationSize) {
 	const double adjacencyMeasure = adjacencyInformationSum[firstGeneIndex][secondGeneIndex] / static_cast<double>(currentPopulationSize);
 	return 1.0 - adjacencyMeasure;
-}
-
-void OptimizedLinkage::updateRelativeOrderingInformation(vector<double>* genotype) {
-	for (int firstGeneIndex = 0; firstGeneIndex < problemSize - 1; firstGeneIndex++) {
-		const double firstGeneValue = genotype->at(firstGeneIndex);
-		for (int secondGeneIndex = firstGeneIndex + 1; secondGeneIndex < problemSize; secondGeneIndex++) {
-			const double secondGeneValue = genotype->at(secondGeneIndex);
-			relativeOrderingInformationSum[firstGeneIndex][secondGeneIndex] += calculateRelativeOrderingInformation(firstGeneValue, secondGeneValue);
-		}
-	}
-}
-
-void OptimizedLinkage::updateAdjacencyInformation(vector<double>* genotype) {
-	for (int firstGeneIndex = 0; firstGeneIndex < problemSize - 1; firstGeneIndex++) {
-		const double firstGeneValue = genotype->at(firstGeneIndex);
-		for (int secondGeneIndex = firstGeneIndex + 1; secondGeneIndex < problemSize; secondGeneIndex++) {
-			const double secondGeneValue = genotype->at(secondGeneIndex);
-			adjacencyInformationSum[firstGeneIndex][secondGeneIndex] += calculateAdjacencyInformation(firstGeneValue, secondGeneValue);
-		}
-	}
 }
 
 double OptimizedLinkage::calculateRelativeOrderingInformation(const double firstGeneValue, const double secondGeneValue) {

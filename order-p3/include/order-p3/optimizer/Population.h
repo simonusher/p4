@@ -6,7 +6,6 @@
 #include "Linkage.h"
 #include <algorithm>
 #include <numeric>
-#include "../evaluation/Evaluator.h"
 #include "solution/SolutionMixer.h"
 #include "OptimizedLinkage.h"
 

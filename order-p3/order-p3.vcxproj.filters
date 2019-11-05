@@ -15,18 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\order-p3\evaluation\Configuration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\order-p3\evaluation\Evaluation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\order-p3\evaluation\Evaluator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\order-p3\evaluation\Util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\order-p3\problem\Problem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -131,18 +119,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\evaluation\Configuration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\evaluation\Evaluation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\evaluation\Evaluator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\evaluation\Util.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\local_optimizers\SwapHillClimber.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

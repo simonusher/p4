@@ -42,8 +42,8 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 	unsigned int seed = device();
 	std::mt19937 randomGenerator(seed);
 
-	ofstream myfile;
-	myfile.open("experiments/" + to_string(problemIndex) + "/p" + std::to_string(problemIndex) + "d" + std::to_string(removeDuplicatesUpper) + "plo" +
+	std::ofstream myfile;
+	myfile.open("experiments/" + std::to_string(problemIndex) + "/p" + std::to_string(problemIndex) + "d" + std::to_string(removeDuplicatesUpper) + "plo" +
 		std::to_string(useLocalOptimizer) + "_" + std::to_string(experimentNumber) + ".csv");
 	myfile << "Seed: " << std::to_string(seed) << std::endl;
 	myfile << "FFE found;Fitness" << std::endl;
@@ -55,25 +55,21 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 	RandomKeyEncoder encoder(0, 1, problem->getProblemSize());
 	RandomKeyDecoder decoder;
 	SolutionFactoryImpl factoryImpl(encoder, decoder);
-	SolutionFactory* solutionFactory = &factoryImpl;
 	RandomRescalingOptimalMixer mixerImpl(problem, 0.1, 0, 1, randomGenerator);
-	SolutionMixer* mixer = &mixerImpl;
-	PopulationFactoryImpl popFactoryImpl(problem, mixer, randomGenerator);
-	PopulationFactory* populationFactory = &popFactoryImpl;
+	PopulationFactoryImpl popFactoryImpl(problem, &mixerImpl, randomGenerator);
 
 	LocalOptimizer* localOptimizer;
-	if(useLocalOptimizer)
+	if (useLocalOptimizer)
 	{
-		// localOptimizer = new Pyramid(problem, solutionFactory, populationFactory, &optimizer, false);
-		localOptimizer = new SwapHillClimber(problem);
-
-	} else
-	{
+		// localOptimizer = new SwapHillClimber(problem);
+		localOptimizer = new Pyramid(problem, &factoryImpl, &popFactoryImpl, &optimizer, removeDuplicatesUpper);
+	}
+	else {
 		localOptimizer = new NullOptimizer(problem);
 		// localOptimizer = new SwapHillClimber(problem);
 	}
 
-	Pyramid finalPyramid(problem, solutionFactory, populationFactory, localOptimizer, removeDuplicatesUpper);
+	Pyramid finalPyramid(problem, &factoryImpl, &popFactoryImpl, localOptimizer, removeDuplicatesUpper);
 
 	
 	while (!stopCondition(problem, &finalPyramid)) {
@@ -96,8 +92,8 @@ void run_tests() {
 
 	for (int i = 31; i < 41; i++)
 	{
-		if (!std::filesystem::exists("experiments/" + to_string(i))) {
-			std::filesystem::create_directory("experiments/" + to_string(i));
+		if (!std::filesystem::exists("experiments/" + std::to_string(i))) {
+			std::filesystem::create_directory("experiments/" + std::to_string(i));
 		}
 		for (int j = 0; j < numberOfExperiments; j++)
 		{
@@ -112,16 +108,23 @@ void run_tests() {
 void test2() {
 	std::random_device d;
 	std::mt19937 randomGenerator(d());
-	// AbsoluteOrderingProblem problem(8);
-	TtpProblem problem;
-	problem.initialize("hard_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
+	AbsoluteOrderingProblem problem(8);
+	// TtpProblem problem;
+	// problem.initialize("hard_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
 	RandomKeyEncoder encoder(0, 1, problem.getProblemSize());
-	RandomKeyDecoder decoder;
+	// RandomKeyDecoder decoder;
+	MaskedDecoder decoder = MaskedDecoder::get8FunctionLooseCoding();
 	NullOptimizer optimizer(&problem);
+	// OptimalInversionHillClimber optimizer(&problem);
 	RandomRescalingOptimalMixer mixer(&problem, 0.1, 0, 1, randomGenerator);
 	SolutionFactoryImpl solutionFactory(encoder, decoder);
 	PopulationFactoryImpl populationFactory(&problem, &mixer, randomGenerator);
-	Pyramid pyramid(&problem, &solutionFactory, &populationFactory, &optimizer, false);
+
+	Pyramid localOptimizer3(&problem, &solutionFactory, &populationFactory, &optimizer, false);
+	Pyramid localOptimizer2(&problem, &solutionFactory, &populationFactory, &localOptimizer3, false);
+	Pyramid localOptimizer1(&problem, &solutionFactory, &populationFactory, &localOptimizer2, false);
+	Pyramid localOptimizer(&problem, &solutionFactory, &populationFactory, &localOptimizer1, false);
+	Pyramid pyramid(&problem, &solutionFactory, &populationFactory, &localOptimizer, false);
 
 	double best_fitness = std::numeric_limits<double>::lowest();
 	int ffeFound = 0;
@@ -135,11 +138,11 @@ void test2() {
 			std::cout << ffeFound << " " << best_fitness << std::endl;
 		}
 	}
-	printSolution(pyramid.getBestSolution()->getPhenotype());
+	printSolution(decoder.decode(pyramid.getBestSolution()->getGenotype()));
 }
 
 
 int main() {
-	test2();
+	run_tests();
 	return 0;
 }

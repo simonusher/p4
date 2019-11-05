@@ -58,13 +58,10 @@ public:
 private:
 	double getDistance(int firstIndex, int secondIndex);
 	void rebuildTree();
-	void updateLinkageInformation(Solution* solution);
-	void recalculateDistances(const int currentPopulationSize);
+	void updateLinkageInformation(Solution* solution, int currentPopulationSize);
 	double calculateDependencyBetweenGenes(const int firstGeneIndex, const int secondGeneIndex, const int currentPopulationSize);
 	double calculateRelativeOrderingMeasure(const int firstGeneIndex, const int secondGeneIndex, const int currentPopulationSize);
 	double calculateAdjacencyMeasure(const int firstGeneIndex, const int secondGeneIndex, const int currentPopulationSize);
-	void updateRelativeOrderingInformation(vector<double>* genotype);
-	void updateAdjacencyInformation(vector<double>* genotype);
 	static double calculateRelativeOrderingInformation(double firstGeneValue, double secondGeneValue);
 	static double calculateAdjacencyInformation(double firstGeneValue, double secondGeneValue);
 	int problemSize;

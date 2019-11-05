@@ -4,7 +4,7 @@
 
 #include "../../include/order-p3/optimizer/Population.h"
 
-Population::Population(Problem* problem, SolutionMixer* solutionMixer, ::mt19937& randomGenerator) : problem(problem), solutionMixer(solutionMixer), randomGenerator(randomGenerator) {
+Population::Population(Problem* problem, SolutionMixer* solutionMixer, std::mt19937& randomGenerator) : problem(problem), solutionMixer(solutionMixer), randomGenerator(randomGenerator) {
     // this->linkage = new NewLinkage(problem->getProblemSize(), randomGenerator);
     this->linkage = new OptimizedLinkage(problem->getProblemSize(), randomGenerator);
 }
@@ -33,17 +33,18 @@ void Population::improve(Solution* solution) {
 	int index, working = 0;
 
 
-	// for(auto& cluster : *linkage) {
 	for (auto it = linkage->randomBegin(); it != linkage->randomEnd(); ++it) {
+	// for (auto it = linkage->begin(); it != linkage->end(); ++it) {
+		auto cluster = *it;
+		unused = options.size() - 1;
+		different = false;
 		do {
-			auto cluster = *it;
-			unused = options.size() - 1;
-			different = false;
+			
 			// Choose a donor
 			index = std::uniform_int_distribution<int>(0, unused)(randomGenerator);
 			working = options[index];
 			// make certain that donor cannot be chosen again
-			swap(options[unused], options[index]);
+			std::swap(options[unused], options[index]);
 			unused -= 1;
 
 			// Attempt the donation
