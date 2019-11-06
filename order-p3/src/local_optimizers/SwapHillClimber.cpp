@@ -40,6 +40,7 @@ void SwapHillClimber::hillClimb(Solution& solution) {
 
 void SwapHillClimber::saveImprovedSolution(Solution& solution) {
 	solution.recalculateGenotype();
+	solution.recalculatePhenotype();
 	solution.setFitness(currentFitness);
 }
 

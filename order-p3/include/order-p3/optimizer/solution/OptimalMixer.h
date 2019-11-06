@@ -5,16 +5,16 @@ class OptimalMixer : public SolutionMixer {
 public:
 	OptimalMixer(Problem* problem);
 	virtual ~OptimalMixer() = default;
-	virtual bool mix(Solution* destination, Solution* source, std::vector<int>* cluster) override;
+	bool mix(Solution* destination, Solution* source, std::vector<int>* cluster) override;
 
-	virtual void setDestinationSolution(Solution* destinationSolution);
-	virtual void setSourceSolution(Solution* sourceSolution);
-	virtual void setCluster(std::vector<int>* cluster);
+	void setDestinationSolution(Solution* destinationSolution);
+	void setSourceSolution(Solution* sourceSolution);
+	void setCluster(std::vector<int>* cluster);
 protected:
-	virtual void revertSource();
-	virtual void handleGenotypeChange();
-	virtual bool swapSolutionsGenesInCluster();
 	virtual bool mixGenotypes();
+	void revertSource();
+	void handleGenotypeChange();
+	bool swapSolutionsGenesInCluster();
 	
 	Solution* destinationSolution;
 	Solution* sourceSolution;

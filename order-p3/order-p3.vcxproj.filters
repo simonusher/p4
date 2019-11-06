@@ -30,9 +30,6 @@
     <ClInclude Include="include\order-p3\util\VectorHasher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\order-p3\optimizer\Linkage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\order-p3\optimizer\Population.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -78,19 +75,10 @@
     <ClInclude Include="include\order-p3\problem\travelling_thief\TTPProblem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\order-p3\optimizer\FeedbackPyramid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\order-p3\local_optimizers\OptimalInversionHillClimber.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\order-p3\problem\deceptive_ordering\AbsoluteOrderingProblem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\order-p3\optimizer\NewLinkage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\order-p3\optimizer\HcOptimizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\order-p3\local_optimizers\NullOptimizer.h">
@@ -114,6 +102,12 @@
     <ClInclude Include="include\order-p3\optimizer\OptimizedLinkage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\order-p3\optimizer\solution\ReencodingMixer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\order-p3\optimizer\encoding\MaskedEncoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\local_optimizers\SwapHillClimber.cpp">
@@ -123,9 +117,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\util\Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\optimizer\Linkage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\optimizer\Population.cpp">
@@ -164,16 +155,10 @@
     <ClCompile Include="src\problem\travelling_thief\TTPProblem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\optimizer\FeedbackPyramid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\local_optimizers\OptimalInversionHillClimber.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\problem\deceptive_ordering\AbsoluteOrderingProblem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\optimizer\NewLinkage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\optimizer\solution\RandomRescalingOptimalMixer.cpp">
@@ -192,6 +177,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\optimizer\OptimizedLinkage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\optimizer\encoding\MaskedEncoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -6,7 +6,7 @@ class RandomRescalingOptimalMixer: public OptimalMixer {
 public:
 	RandomRescalingOptimalMixer(Problem* problem, double rescalingProbability, double lowerGeneValueBound,
 		double upperGeneValueBound, std::mt19937& randomGenerator);
-
+	virtual ~RandomRescalingOptimalMixer() = default;
 protected:
 	bool mixGenotypes() override;
 

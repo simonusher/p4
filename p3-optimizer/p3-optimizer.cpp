@@ -10,8 +10,6 @@
 #include "../order-p3/include/order-p3/optimizer/Pyramid.h"
 #include "../order-p3/include/order-p3/optimizer/solution/OptimalMixer.h"
 #include "../order-p3/include/order-p3/problem/deceptive_ordering/AbsoluteOrderingProblem.h"
-#include "../order-p3/include/order-p3/optimizer/FeedbackPyramid.h"
-#include "../order-p3/include/order-p3/optimizer/HcOptimizer.h"
 #include "../order-p3/include/order-p3/local_optimizers/NullOptimizer.h"
 #include "../order-p3/include/order-p3/optimizer/solution/RandomRescalingOptimalMixer.h"
 #include "../order-p3/include/order-p3/problem/SortFunctionProblem.h"
@@ -21,6 +19,8 @@
 #include "../order-p3/include/order-p3/optimizer/encoding/MaskedDecoder.h"
 #include "../order-p3/include/order-p3/problem/deceptive_ordering/RelativeOrderingProblem.h"
 #include <filesystem>
+#include "../order-p3/include/order-p3/optimizer/solution/ReencodingMixer.h"
+#include "../order-p3/include/order-p3/optimizer/encoding/MaskedEncoder.h"
 
 
 template <typename T>
@@ -53,17 +53,19 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 	int ffeFound = 0;
 
 	NullOptimizer optimizer(problem);
-	RandomKeyEncoder encoder(0, 1, problem->getProblemSize());
+	RandomKeyEncoder encoder(0, 1, problem->getProblemSize(), randomGenerator);
 	RandomKeyDecoder decoder;
 	SolutionFactoryImpl factoryImpl(encoder, decoder);
+	// ReencodingMixer<RandomRescalingOptimalMixer> mixerImpl(problem, 0.1, 0, 1, randomGenerator);
 	RandomRescalingOptimalMixer mixerImpl(problem, 0.1, 0, 1, randomGenerator);
+	// OptimalMixer mixerImpl(problem);
 	PopulationFactoryImpl popFactoryImpl(problem, &mixerImpl, randomGenerator);
 
 	LocalOptimizer* localOptimizer;
 	if (useLocalOptimizer)
 	{
-		// localOptimizer = new SwapHillClimber(problem);
-		localOptimizer = new Pyramid(problem, &factoryImpl, &popFactoryImpl, &optimizer, removeDuplicatesUpper);
+		localOptimizer = new SwapHillClimber(problem);
+		// localOptimizer = new Pyramid(problem, &factoryImpl, &popFactoryImpl, &optimizer, removeDuplicatesUpper);
 	}
 	else {
 		localOptimizer = new NullOptimizer(problem);
@@ -89,6 +91,7 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 void run_tests() {
 	int numberOfExperiments = 20;
 	int budget = 220712150;
+	// int budget = 283040000;
 	std::function<bool(Problem*, Pyramid*)> stop_condition = [&](Problem* problem, Pyramid* pyramid) { return problem->getFitnessFunctionEvaluations() >= budget;  };
 
 	for (int i = 31; i < 41; i++)
@@ -109,12 +112,20 @@ void run_tests() {
 void test2() {
 	std::random_device d;
 	std::mt19937 randomGenerator(d());
-	RelativeOrderingProblem problem(8);
-	RandomKeyEncoder encoder(0, 1, problem.getProblemSize());
+	// TtpProblem problem;
+	// problem.initialize("medium_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
+	AbsoluteOrderingProblem problem(8);
+	// AbsoluteOrderingProblem problem(8);
+	// RandomKeyEncoder encoder(0, 1, problem.getProblemSize(), randomGenerator);
+	// MaskedEncoder encoder = MaskedEncoder::get8FunctionLooseCoding(0, 1, problem.getProblemSize(), randomGenerator);
+	MaskedEncoder encoder = MaskedEncoder::get8FunctionDeflen6Coding(0, 1, problem.getProblemSize(), randomGenerator);
 	// RandomKeyDecoder decoder;
-	MaskedDecoder decoder = MaskedDecoder::get8FunctionLooseCoding();
-	NullOptimizer optimizer(&problem);
+	MaskedDecoder decoder = MaskedDecoder::get8FunctionDeflen6Coding();
+	// NullOptimizer optimizer(&problem);
+	SwapHillClimber optimizer(&problem);
+	// OptimalMixer mixer(&problem);
 	RandomRescalingOptimalMixer mixer(&problem, 0.1, 0, 1, randomGenerator);
+	// ReencodingMixer<RandomRescalingOptimalMixer> mixer(&problem, 0.1, 0, 1, randomGenerator);
 	SolutionFactoryImpl solutionFactory(encoder, decoder);
 	PopulationFactoryImpl populationFactory(&problem, &mixer, randomGenerator);
 
@@ -137,6 +148,6 @@ void test2() {
 
 
 int main() {
-	test2();
+	run_tests();
 	return 0;
 }

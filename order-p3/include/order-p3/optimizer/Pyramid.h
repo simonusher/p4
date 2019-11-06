@@ -31,6 +31,7 @@ protected:
 	Solution* bestSolution;
     Solution* tryAddSolutionToPyramid(Solution* solution);
 	Solution* tryAddSolutionToPyramid(Solution* solution, int level);
+	void improveUsingBest(Solution* solution);
     bool addSolutionToPyramidIfUnique(Solution* solution, int level);
 	void addSolutionToPyramid(Solution* solution, int level);
 	void ensurePyramidCapacity(int level);

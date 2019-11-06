@@ -58,6 +58,5 @@ void Solution::recalculateGenotype() {
 }
 
 void Solution::reEncode() {
-	recalculatePhenotype();
 	genotype = encoder->getEncodingForPhenotype(phenotype);
 }

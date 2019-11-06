@@ -52,14 +52,37 @@ Solution* Pyramid::tryAddSolutionToPyramid(Solution* solution, int level) {
 	}
 }
 
+void Pyramid::improveUsingBest(Solution* solution) {
+	if(bestSolution) {
+		Solution* currentlyImprovedSolution = new Solution(*solution);
+		bool addedImprovedSolution = false;
+		for (int lev = 0; lev < populations.size(); lev++) {
+			double previousFitness = currentlyImprovedSolution->getFitness();
+			populations[lev]->improveUsingDonor(currentlyImprovedSolution, bestSolution);
+			if (previousFitness < currentlyImprovedSolution->getFitness()) {
+				addedImprovedSolution = addSolutionToPyramidIfUnique(currentlyImprovedSolution, lev + 1);
+				if (addedImprovedSolution) {
+					currentlyImprovedSolution = new Solution(*currentlyImprovedSolution);
+					addedImprovedSolution = false;
+				}
+			}
+		}
+		if (!addedImprovedSolution) {
+			delete currentlyImprovedSolution;
+		}
+	}
+}
+
 Solution* Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
 	Solution* currentlyImprovedSolution = new Solution(*solution);
 	Solution* lastAddedSolution = nullptr;
 	bool addedImprovedSolution = false;
+	bool anyImprovement = false;
 	for (int lev = level; lev < populations.size(); lev++) {
 		double previousFitness = currentlyImprovedSolution->getFitness();
 		populations[lev]->improve(currentlyImprovedSolution);
 		if (previousFitness < currentlyImprovedSolution->getFitness()) {
+			anyImprovement = true;
 			addedImprovedSolution = addSolutionToPyramidIfUnique(currentlyImprovedSolution, lev + 1);
 			if (addedImprovedSolution) {
 				lastAddedSolution = currentlyImprovedSolution;
@@ -67,6 +90,9 @@ Solution* Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
 				addedImprovedSolution = false;
 			}
 		}
+	}
+	if(!anyImprovement) {
+		improveUsingBest(solution);
 	}
 	if (!addedImprovedSolution) {
 		delete currentlyImprovedSolution;
@@ -89,6 +115,7 @@ bool Pyramid::addSolutionToPyramidIfUnique(Solution* solution, int level) {
 }
 
 void Pyramid::addSolutionToPyramid(Solution* solution, int level) {
+	solution->reEncode();
 	ensurePyramidCapacity(level);
 	populations[level]->addSolution(solution);
 	checkIfBest(solution);

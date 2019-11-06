@@ -5,7 +5,6 @@
 #include "../../include/order-p3/optimizer/Population.h"
 
 Population::Population(Problem* problem, SolutionMixer* solutionMixer, std::mt19937& randomGenerator) : problem(problem), solutionMixer(solutionMixer), randomGenerator(randomGenerator) {
-    // this->linkage = new NewLinkage(problem->getProblemSize(), randomGenerator);
     this->linkage = new OptimizedLinkage(problem->getProblemSize(), randomGenerator);
 }
 
@@ -54,6 +53,9 @@ void Population::improve(Solution* solution) {
 	}
 }
 
-void Population::shuffleCheckingOrder() {
-    std::shuffle(solutionCheckingOrder.begin(), solutionCheckingOrder.end(), randomGenerator);
+void Population::improveUsingDonor(Solution* solution, Solution* donor) {
+	for (auto it = linkage->randomBegin(); it != linkage->randomEnd(); ++it) {
+		auto cluster = *it;
+		solutionMixer->mix(solution, donor, &cluster);
+	}
 }
