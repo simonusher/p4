@@ -27,8 +27,8 @@ public:
 
 	void optimizeLocally(Solution& solution) override;
 protected:
+	void reEncode();
 	Solution* tryToAddImprovedSolutions(Solution* solution, int level);
-	Solution* bestSolution;
     Solution* tryAddSolutionToPyramid(Solution* solution);
 	Solution* tryAddSolutionToPyramid(Solution* solution, int level);
 	void improveUsingBest(Solution* solution);
@@ -37,6 +37,7 @@ protected:
 	void ensurePyramidCapacity(int level);
 	void checkIfBest(Solution* solution);
 
+	Solution* bestSolution;
     unordered_set<vector<int>, VectorHasher>::const_iterator seenSolution;
     unordered_set<vector<int>, VectorHasher> seen;
     vector<Population*> populations;

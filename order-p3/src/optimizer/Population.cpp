@@ -59,3 +59,10 @@ void Population::improveUsingDonor(Solution* solution, Solution* donor) {
 		solutionMixer->mix(solution, donor, &cluster);
 	}
 }
+
+void Population::reEncode() {
+	for (Solution* solution : solutions) {
+		solution->reEncode();
+	}
+	linkage->update(solutions);
+}

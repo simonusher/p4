@@ -15,6 +15,7 @@ public:
     void addSolution(Solution* solution);
     void improve(Solution* solution);
     void improveUsingDonor(Solution* solution, Solution* donor);
+	void reEncode();
 private:
     void recalculateLinkage(Solution* solution) const;
 	vector<Solution*> solutions;

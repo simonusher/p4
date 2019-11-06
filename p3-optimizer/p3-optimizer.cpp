@@ -104,7 +104,7 @@ void run_tests() {
 			std::cout << j << std::endl;
 			FlowshopSchedulingProblem p;
 			p.initializeProblem(i);
-			runTest(i, &p, false, false, j, stop_condition);
+			runTest(i, &p, false, true, j, stop_condition);
 		}
 	}
 }
@@ -113,23 +113,23 @@ void test2() {
 	std::random_device d;
 	std::mt19937 randomGenerator(d());
 	// TtpProblem problem;
-	// problem.initialize("medium_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
+	// problem.initialize("hard_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
 	AbsoluteOrderingProblem problem(8);
 	// AbsoluteOrderingProblem problem(8);
 	// RandomKeyEncoder encoder(0, 1, problem.getProblemSize(), randomGenerator);
+	MaskedEncoder encoder = MaskedEncoder::get8FunctionLooseCoding(0, 1, problem.getProblemSize(), randomGenerator);
 	// MaskedEncoder encoder = MaskedEncoder::get8FunctionLooseCoding(0, 1, problem.getProblemSize(), randomGenerator);
-	MaskedEncoder encoder = MaskedEncoder::get8FunctionDeflen6Coding(0, 1, problem.getProblemSize(), randomGenerator);
 	// RandomKeyDecoder decoder;
-	MaskedDecoder decoder = MaskedDecoder::get8FunctionDeflen6Coding();
-	// NullOptimizer optimizer(&problem);
-	SwapHillClimber optimizer(&problem);
+	MaskedDecoder decoder = MaskedDecoder::get8FunctionLooseCoding();
+	NullOptimizer optimizer(&problem);
+	// SwapHillClimber optimizer(&problem);
 	// OptimalMixer mixer(&problem);
 	RandomRescalingOptimalMixer mixer(&problem, 0.1, 0, 1, randomGenerator);
 	// ReencodingMixer<RandomRescalingOptimalMixer> mixer(&problem, 0.1, 0, 1, randomGenerator);
 	SolutionFactoryImpl solutionFactory(encoder, decoder);
 	PopulationFactoryImpl populationFactory(&problem, &mixer, randomGenerator);
-
-	Pyramid pyramid(&problem, &solutionFactory, &populationFactory, &optimizer, false);
+	Pyramid pyramidOptimizer(&problem, &solutionFactory, &populationFactory, &optimizer);
+	Pyramid pyramid(&problem, &solutionFactory, &populationFactory, &pyramidOptimizer, false);
 
 	double best_fitness = std::numeric_limits<double>::lowest();
 	int ffeFound = 0;

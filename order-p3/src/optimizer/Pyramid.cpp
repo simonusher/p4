@@ -22,6 +22,7 @@ void Pyramid::runSingleIteration() {
 	newSolution->evaluate(*problem);
 	localOptimizer->optimizeLocally(newSolution);
 	tryAddSolutionToPyramid(newSolution);
+	// reEncode();
 }
 
 void Pyramid::optimizeLocally(Solution& solution) {
@@ -30,6 +31,12 @@ void Pyramid::optimizeLocally(Solution& solution) {
 	Solution* bestAddedSolution = tryAddSolutionToPyramid(copy);
 	if(bestAddedSolution != nullptr) {
 		solution = *bestAddedSolution;
+	}
+}
+
+void Pyramid::reEncode() {
+	for (Population* population : populations) {
+		population->reEncode();
 	}
 }
 
@@ -77,12 +84,12 @@ Solution* Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
 	Solution* currentlyImprovedSolution = new Solution(*solution);
 	Solution* lastAddedSolution = nullptr;
 	bool addedImprovedSolution = false;
-	bool anyImprovement = false;
+	// bool anyImprovement = false;
 	for (int lev = level; lev < populations.size(); lev++) {
 		double previousFitness = currentlyImprovedSolution->getFitness();
 		populations[lev]->improve(currentlyImprovedSolution);
 		if (previousFitness < currentlyImprovedSolution->getFitness()) {
-			anyImprovement = true;
+			// anyImprovement = true;
 			addedImprovedSolution = addSolutionToPyramidIfUnique(currentlyImprovedSolution, lev + 1);
 			if (addedImprovedSolution) {
 				lastAddedSolution = currentlyImprovedSolution;
@@ -91,9 +98,9 @@ Solution* Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
 			}
 		}
 	}
-	if(!anyImprovement) {
-		improveUsingBest(solution);
-	}
+	// if(!anyImprovement) {
+	// 	improveUsingBest(solution);
+	// }
 	if (!addedImprovedSolution) {
 		delete currentlyImprovedSolution;
 	}
@@ -115,7 +122,7 @@ bool Pyramid::addSolutionToPyramidIfUnique(Solution* solution, int level) {
 }
 
 void Pyramid::addSolutionToPyramid(Solution* solution, int level) {
-	solution->reEncode();
+	// solution->reEncode();
 	ensurePyramidCapacity(level);
 	populations[level]->addSolution(solution);
 	checkIfBest(solution);

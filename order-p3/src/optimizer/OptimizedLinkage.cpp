@@ -4,8 +4,8 @@ vector<vector<double>> OptimizedLinkage::distances;
 
 OptimizedLinkage::OptimizedLinkage(int problemSize, std::mt19937& randomGenerator) :
 	randomGenerator(randomGenerator),
-	relativeOrderingInformationSum(problemSize, vector<double>(problemSize, -1)),
-	adjacencyInformationSum(problemSize, vector<double>(problemSize, -1)),
+	relativeOrderingInformationSum(problemSize, vector<double>(problemSize, 0)),
+	adjacencyInformationSum(problemSize, vector<double>(problemSize, 0)),
 	distanceMeasureMatrix(problemSize, vector<double>(problemSize, -1)),
 	clusters(2 * problemSize - 1),
 	clusterOrdering(2 * problemSize - 1)
@@ -30,6 +30,28 @@ OptimizedLinkage::OptimizedLinkage(int problemSize, std::mt19937& randomGenerato
 void OptimizedLinkage::update(Solution* newSolution, int currentPopulationSize) {
 	updateLinkageInformation(newSolution, currentPopulationSize);
 	if (currentPopulationSize > 1) {
+		rebuildTree();
+	}
+}
+
+void OptimizedLinkage::update(const std::vector<Solution*>& population) {
+	for (int firstGeneIndex = 0; firstGeneIndex < problemSize - 1; firstGeneIndex++) {
+		for (int secondGeneIndex = firstGeneIndex + 1; secondGeneIndex < problemSize; secondGeneIndex++) {
+			relativeOrderingInformationSum[firstGeneIndex][secondGeneIndex] = 0;
+			adjacencyInformationSum[firstGeneIndex][secondGeneIndex] = 0;
+			for(Solution* solution : population) {
+				std::vector<double>* genotype = solution->getGenotypePtr();
+				double firstGeneValue = genotype->at(firstGeneIndex);
+				double secondGeneValue = genotype->at(secondGeneIndex);
+				relativeOrderingInformationSum[firstGeneIndex][secondGeneIndex] += calculateRelativeOrderingInformation(firstGeneValue, secondGeneValue);
+				adjacencyInformationSum[firstGeneIndex][secondGeneIndex] += calculateAdjacencyInformation(firstGeneValue, secondGeneValue);
+			}
+			const double distanceBetweenGenes = 1 - calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, population.size());
+			distanceMeasureMatrix[firstGeneIndex][secondGeneIndex] = distanceBetweenGenes;
+			distanceMeasureMatrix[secondGeneIndex][firstGeneIndex] = distanceBetweenGenes;
+		}
+	}
+	if (population.size() > 1) {
 		rebuildTree();
 	}
 }

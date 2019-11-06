@@ -22,6 +22,7 @@ class OptimizedLinkage {
 public:
 	OptimizedLinkage(int problemSize, std::mt19937& randomGenerator);
 	void update(Solution* newSolution, int currentPopulationSize);
+	void update(const std::vector<Solution*>& population);
 
 	class ClusterIterator {
 		public:
