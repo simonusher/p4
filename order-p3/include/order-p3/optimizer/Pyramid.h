@@ -17,7 +17,8 @@ using std::vector;
 
 class Pyramid : public LocalOptimizer {
 public:
-	Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer, bool removeDuplicates = false);
+	Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer, bool removeDuplicates = false,
+		bool usePreprocessedLinkage = false);
 	virtual ~Pyramid();
     virtual void runSingleIteration();
     vector<int> getBestSolutionPhenotype() const;
@@ -26,6 +27,7 @@ public:
 
 
 	void optimizeLocally(Solution& solution) override;
+	void preprocessProblem();
 protected:
 	void reEncode();
 	Solution* tryToAddImprovedSolutions(Solution* solution, int level);

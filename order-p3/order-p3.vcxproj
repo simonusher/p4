@@ -23,6 +23,7 @@
     <ClInclude Include="include\order-p3\local_optimizers\NullOptimizer.h" />
     <ClInclude Include="include\order-p3\local_optimizers\OptimalInversionHillClimber.h" />
     <ClInclude Include="include\order-p3\local_optimizers\SwapHillClimber.h" />
+    <ClInclude Include="include\order-p3\optimizer\BosmanLinkage.h" />
     <ClInclude Include="include\order-p3\optimizer\encoding\MaskedDecoder.h" />
     <ClInclude Include="include\order-p3\optimizer\encoding\MaskedEncoder.h" />
     <ClInclude Include="include\order-p3\optimizer\OptimizedLinkage.h" />

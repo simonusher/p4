@@ -4,11 +4,18 @@
 
 #include "../../include/order-p3/optimizer/Pyramid.h"
 
-Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer, bool removeDuplicates)
+Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer, bool removeDuplicates,
+	bool usePreprocessedLinkage)
 	: LocalOptimizer(problem), problem(problem), solutionFactory(solutionFactory), populationFactory(populationFactory), localOptimizer(localOptimizer),
 		removeDuplicates(removeDuplicates)
 {
 	bestSolution = nullptr;
+	if(usePreprocessedLinkage) {
+		OptimizedLinkage::usePreprocessedLinkage = true;
+		preprocessProblem();
+	} else {
+		OptimizedLinkage::usePreprocessedLinkage = false;
+	}
 }
 
 Pyramid::~Pyramid() {
@@ -22,7 +29,6 @@ void Pyramid::runSingleIteration() {
 	newSolution->evaluate(*problem);
 	localOptimizer->optimizeLocally(newSolution);
 	tryAddSolutionToPyramid(newSolution);
-	// reEncode();
 }
 
 void Pyramid::optimizeLocally(Solution& solution) {
@@ -32,6 +38,44 @@ void Pyramid::optimizeLocally(Solution& solution) {
 	if(bestAddedSolution != nullptr) {
 		solution = *bestAddedSolution;
 	}
+}
+
+void Pyramid::preprocessProblem() {
+	vector<vector<double>> initialLinkage(problem->getProblemSize(), vector<double>(problem->getProblemSize(), 0));
+	vector<int> phenotype(problem->getProblemSize());
+	std::iota(phenotype.begin(), phenotype.end(), 0);
+
+	int firstMiddleIndex = problem->getProblemSize() / 2;
+	int secondMiddleIndex = firstMiddleIndex + 1;
+	double maxDelta = -1;
+	
+	for(int i = 0; i < problem->getProblemSize(); i++) {
+		for(int j = i + 1; j < problem->getProblemSize(); j++) {
+			std::swap(phenotype[i], phenotype[firstMiddleIndex]);
+			std::swap(phenotype[j], phenotype[secondMiddleIndex]);
+			double fitness = problem->evaluate(phenotype);
+			std::swap(phenotype[firstMiddleIndex], phenotype[secondMiddleIndex]);
+			double swappedFitness = problem->evaluate(phenotype);
+			double delta = swappedFitness - fitness;
+			delta = delta >= 0 ? delta : -delta;
+			if(delta > maxDelta) {
+				maxDelta = delta;
+			}
+			if (fitness != swappedFitness) {
+				// initialLinkage[i][j] = initialLinkage[j][i] = delta;
+				initialLinkage[i][j] = initialLinkage[j][i] = 1;
+			}
+			std::swap(phenotype[firstMiddleIndex], phenotype[secondMiddleIndex]);
+			std::swap(phenotype[j], phenotype[secondMiddleIndex]);
+			std::swap(phenotype[i], phenotype[firstMiddleIndex]);
+		}
+	}
+	// for (int i = 0; i < problem->getProblemSize(); i++) {
+	// 	for (int j = i + 1; j < problem->getProblemSize(); j++) {
+	// 		initialLinkage[i][j] = initialLinkage[j][i] = initialLinkage[i][j] / maxDelta;
+	// 	}
+	// }
+	OptimizedLinkage::preprocessedLinkage = initialLinkage;
 }
 
 void Pyramid::reEncode() {
@@ -122,7 +166,7 @@ bool Pyramid::addSolutionToPyramidIfUnique(Solution* solution, int level) {
 }
 
 void Pyramid::addSolutionToPyramid(Solution* solution, int level) {
-	// solution->reEncode();
+	solution->reEncode();
 	ensurePyramidCapacity(level);
 	populations[level]->addSolution(solution);
 	checkIfBest(solution);

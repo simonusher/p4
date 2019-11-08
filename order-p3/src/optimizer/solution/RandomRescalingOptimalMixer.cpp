@@ -44,9 +44,33 @@ bool RandomRescalingOptimalMixer::mixWithRescaling() {
 void RandomRescalingOptimalMixer::rescaleClusterGeneValues() {
 	double intervalLowerBound = rescalingIntervalsLowerBounds[intervalIndexDistribution(randomGenerator)];
 	rescaledClusterValues.resize(cluster->size());
-	for (int i = 0; i < cluster->size(); i++) {
-		rescaledClusterValues[i] = sourceGenotype->at(cluster->at(i)) * intervalSize + intervalLowerBound;
+	double min = sourceGenotype->at(cluster->at(0));
+	double max = sourceGenotype->at(cluster->at(0));
+	
+	for (int i = 1; i < cluster->size(); i++) {
+		if(sourceGenotype->at(cluster->at(i)) < min) {
+			min = sourceGenotype->at(cluster->at(i));
+		}
+		if (sourceGenotype->at(cluster->at(i)) > max) {
+			max = sourceGenotype->at(cluster->at(i));
+		}
 	}
+	double range = max - min;
+	if (range > 0)
+	{
+		for (int i = 0; i < cluster->size(); i++) {
+			rescaledClusterValues[i] = ((sourceGenotype->at(cluster->at(i)) - min) / range) * (1.0 / ((double)rescalingIntervalsLowerBounds.size())) + intervalLowerBound;
+		}
+	}
+	else
+	{
+		for (int i = 0; i < cluster->size(); i++) {
+			rescaledClusterValues[i] = intervalLowerBound;
+		}
+	}
+	// for (int i = 0; i < cluster->size(); i++) {
+	// 	rescaledClusterValues[i] = sourceGenotype->at(cluster->at(i)) * intervalSize + intervalLowerBound;
+	// }
 }
 
 bool RandomRescalingOptimalMixer::swapWithRescaled() {

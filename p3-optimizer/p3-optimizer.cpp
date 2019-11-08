@@ -24,20 +24,21 @@
 
 
 template <typename T>
-void printSolution(const std::vector<T>& solution) {
-	std::cout << "[ ";
-	for (int i = 0; i < solution.size(); i++) {
-		std::cout << solution[i];
-		if(i != solution.size() - 1) {
-			std::cout << ", ";
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
+	os << "[ ";
+	for (int i = 0; i < vec.size(); i++) {
+		os << vec[i];
+		if(i != vec.size() - 1) {
+			os << ", ";
 		}
 	}
-	std::cout << " ]";
+	os << " ],\n";
+	return os;
 }
 
 
 void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, bool useLocalOptimizer, int experimentNumber,
-	std::function<bool(Problem*, Pyramid*)> stopCondition)
+	std::function<bool(Problem*, Pyramid*)> stopCondition, bool usePreprocessedLinkage)
 {
 	std::random_device device;
 	unsigned int seed = device();
@@ -45,7 +46,7 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 
 	std::ofstream myfile;
 	myfile.open("experiments/" + std::to_string(problemIndex) + "/p" + std::to_string(problemIndex) + "d" + std::to_string(removeDuplicatesUpper) + "plo" +
-		std::to_string(useLocalOptimizer) + "_" + std::to_string(experimentNumber) + ".csv");
+		std::to_string(useLocalOptimizer) + "linkage" + std::to_string(usePreprocessedLinkage) + "_" + std::to_string(experimentNumber) + ".csv");
 	myfile << "Seed: " << std::to_string(seed) << std::endl;
 	myfile << "FFE found;Fitness" << std::endl;
 
@@ -72,7 +73,7 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 		// localOptimizer = new SwapHillClimber(problem);
 	}
 
-	Pyramid finalPyramid(problem, &factoryImpl, &popFactoryImpl, localOptimizer, removeDuplicatesUpper);
+	Pyramid finalPyramid(problem, &factoryImpl, &popFactoryImpl, localOptimizer, removeDuplicatesUpper, usePreprocessedLinkage);
 
 	
 	while (!stopCondition(problem, &finalPyramid)) {
@@ -89,9 +90,12 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 }
 
 void run_tests() {
-	int numberOfExperiments = 20;
+	int numberOfExperiments = 10;
 	int budget = 220712150;
 	// int budget = 283040000;
+	// int budget = 260316750;
+	// int budget = 256208100;
+	// std::vector<int> valuesToReach{ -14033, -15151, -13301, -15447, -13529, -13123, -13548, -13948, -14295, -12943, -20911, -22440, -19833, -18710, -18641, -19245, -18363, -20241, -20330, -21320, -33623, -31587, -33920, -31661, -34557, -32564, -32922, -32412, -33600, -32262 };
 	std::function<bool(Problem*, Pyramid*)> stop_condition = [&](Problem* problem, Pyramid* pyramid) { return problem->getFitnessFunctionEvaluations() >= budget;  };
 
 	for (int i = 31; i < 41; i++)
@@ -104,7 +108,8 @@ void run_tests() {
 			std::cout << j << std::endl;
 			FlowshopSchedulingProblem p;
 			p.initializeProblem(i);
-			runTest(i, &p, false, true, j, stop_condition);
+			runTest(i, &p, false, false, j, stop_condition, false);
+			runTest(i, &p, false, false, j, stop_condition, true);
 		}
 	}
 }
@@ -112,15 +117,15 @@ void run_tests() {
 void test2() {
 	std::random_device d;
 	std::mt19937 randomGenerator(d());
-	// TtpProblem problem;
-	// problem.initialize("hard_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
-	AbsoluteOrderingProblem problem(8);
+	TtpProblem problem;
+	problem.initialize("medium_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
 	// AbsoluteOrderingProblem problem(8);
-	// RandomKeyEncoder encoder(0, 1, problem.getProblemSize(), randomGenerator);
-	MaskedEncoder encoder = MaskedEncoder::get8FunctionLooseCoding(0, 1, problem.getProblemSize(), randomGenerator);
+	// RelativeOrderingProblem problem(8);
+	RandomKeyEncoder encoder(0, 1, problem.getProblemSize(), randomGenerator);
 	// MaskedEncoder encoder = MaskedEncoder::get8FunctionLooseCoding(0, 1, problem.getProblemSize(), randomGenerator);
-	// RandomKeyDecoder decoder;
-	MaskedDecoder decoder = MaskedDecoder::get8FunctionLooseCoding();
+	// MaskedEncoder encoder = MaskedEncoder::get8FunctionLooseCoding(0, 1, problem.getProblemSize(), randomGenerator);
+	RandomKeyDecoder decoder;
+	// MaskedDecoder decoder = MaskedDecoder::get8FunctionLooseCoding();
 	NullOptimizer optimizer(&problem);
 	// SwapHillClimber optimizer(&problem);
 	// OptimalMixer mixer(&problem);
@@ -128,8 +133,7 @@ void test2() {
 	// ReencodingMixer<RandomRescalingOptimalMixer> mixer(&problem, 0.1, 0, 1, randomGenerator);
 	SolutionFactoryImpl solutionFactory(encoder, decoder);
 	PopulationFactoryImpl populationFactory(&problem, &mixer, randomGenerator);
-	Pyramid pyramidOptimizer(&problem, &solutionFactory, &populationFactory, &optimizer);
-	Pyramid pyramid(&problem, &solutionFactory, &populationFactory, &pyramidOptimizer, false);
+	Pyramid pyramid(&problem, &solutionFactory, &populationFactory, &optimizer, false, false);
 
 	double best_fitness = std::numeric_limits<double>::lowest();
 	int ffeFound = 0;
@@ -143,11 +147,11 @@ void test2() {
 			std::cout << ffeFound << " " << best_fitness << std::endl;
 		}
 	}
-	printSolution(pyramid.getBestSolution()->getPhenotype());
+	std::cout << pyramid.getBestSolution()->getPhenotype();
 }
 
 
 int main() {
-	run_tests();
+	test2();
 	return 0;
 }

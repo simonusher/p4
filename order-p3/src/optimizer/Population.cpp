@@ -6,6 +6,7 @@
 
 Population::Population(Problem* problem, SolutionMixer* solutionMixer, std::mt19937& randomGenerator) : problem(problem), solutionMixer(solutionMixer), randomGenerator(randomGenerator) {
     this->linkage = new OptimizedLinkage(problem->getProblemSize(), randomGenerator);
+    // this->linkage = new BosmanLinkage(problem, randomGenerator);
 }
 
 Population::~Population() {
@@ -21,7 +22,7 @@ void Population::addSolution(Solution* solution) {
     recalculateLinkage(solution);
 }
 
-void Population::recalculateLinkage(Solution* solution) const {
+void Population::recalculateLinkage(Solution* solution) {
 	this->linkage->update(solution, this->solutions.size());
 }
 
@@ -64,5 +65,5 @@ void Population::reEncode() {
 	for (Solution* solution : solutions) {
 		solution->reEncode();
 	}
-	linkage->update(solutions);
+	// linkage->update(solutions);
 }

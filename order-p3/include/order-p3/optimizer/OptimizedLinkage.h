@@ -55,6 +55,8 @@ public:
 
 	RandomClusterIterator randomBegin();
 	RandomClusterIterator randomEnd();
+	static vector<vector<double>> preprocessedLinkage;
+	static bool usePreprocessedLinkage;
 	
 private:
 	double getDistance(int firstIndex, int secondIndex);

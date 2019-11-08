@@ -1,6 +1,8 @@
 #include "../../include/order-p3/optimizer/OptimizedLinkage.h"
 
+vector<vector<double>> OptimizedLinkage::preprocessedLinkage;
 vector<vector<double>> OptimizedLinkage::distances;
+bool OptimizedLinkage::usePreprocessedLinkage;
 
 OptimizedLinkage::OptimizedLinkage(int problemSize, std::mt19937& randomGenerator) :
 	randomGenerator(randomGenerator),
@@ -29,9 +31,7 @@ OptimizedLinkage::OptimizedLinkage(int problemSize, std::mt19937& randomGenerato
 
 void OptimizedLinkage::update(Solution* newSolution, int currentPopulationSize) {
 	updateLinkageInformation(newSolution, currentPopulationSize);
-	if (currentPopulationSize > 1) {
-		rebuildTree();
-	}
+	rebuildTree();
 }
 
 void OptimizedLinkage::update(const std::vector<Solution*>& population) {
@@ -46,7 +46,17 @@ void OptimizedLinkage::update(const std::vector<Solution*>& population) {
 				relativeOrderingInformationSum[firstGeneIndex][secondGeneIndex] += calculateRelativeOrderingInformation(firstGeneValue, secondGeneValue);
 				adjacencyInformationSum[firstGeneIndex][secondGeneIndex] += calculateAdjacencyInformation(firstGeneValue, secondGeneValue);
 			}
-			const double distanceBetweenGenes = 1 - calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, population.size());
+
+			double linkageValue;
+			if(usePreprocessedLinkage) {
+				const double preprocessedLinkageValue = preprocessedLinkage[firstGeneIndex][secondGeneIndex];
+				const double calculatedLinkageValue = calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, population.size());
+				linkageValue = 0.5 * (preprocessedLinkageValue + calculatedLinkageValue);
+			} else {
+				linkageValue = calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, population.size());
+			}
+			// const double linkageValue = calculatedLinkageValue;
+			const double distanceBetweenGenes = 1 - linkageValue;
 			distanceMeasureMatrix[firstGeneIndex][secondGeneIndex] = distanceBetweenGenes;
 			distanceMeasureMatrix[secondGeneIndex][firstGeneIndex] = distanceBetweenGenes;
 		}
@@ -197,7 +207,7 @@ void OptimizedLinkage::rebuildTree() {
 
 		// If the distance between the joining clusters is zero, only keep them
 		// if configured to do so
-		if (distances[first][second] == 0) {
+		if (-1e-10 <= distances[first][second] <= 1e-10) {
 			useful[first] = false;
 			useful[second] = false;
 		}
@@ -264,8 +274,17 @@ void OptimizedLinkage::updateLinkageInformation(Solution* solution, int currentP
 			const double secondGeneValue = genotype->at(secondGeneIndex);
 			relativeOrderingInformationSum[firstGeneIndex][secondGeneIndex] += calculateRelativeOrderingInformation(firstGeneValue, secondGeneValue);
 			adjacencyInformationSum[firstGeneIndex][secondGeneIndex] += calculateAdjacencyInformation(firstGeneValue, secondGeneValue);
-			
-			const double distanceBetweenGenes = 1 - calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, currentPopulationSize);
+
+			double linkageValue;
+			if (usePreprocessedLinkage) {
+				const double preprocessedLinkageValue = preprocessedLinkage[firstGeneIndex][secondGeneIndex];
+				const double calculatedLinkageValue = calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, currentPopulationSize);
+				linkageValue = 0.5 * (preprocessedLinkageValue + calculatedLinkageValue);
+			}
+			else {
+				linkageValue = calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, currentPopulationSize);
+			}
+			const double distanceBetweenGenes = 1 - linkageValue;
 			distanceMeasureMatrix[firstGeneIndex][secondGeneIndex] = distanceBetweenGenes;
 			distanceMeasureMatrix[secondGeneIndex][firstGeneIndex] = distanceBetweenGenes;
 		}

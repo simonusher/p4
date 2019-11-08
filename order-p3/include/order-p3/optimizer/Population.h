@@ -6,6 +6,7 @@
 #include <numeric>
 #include "solution/SolutionMixer.h"
 #include "OptimizedLinkage.h"
+#include "BosmanLinkage.h"
 
 
 class Population {
@@ -17,10 +18,11 @@ public:
     void improveUsingDonor(Solution* solution, Solution* donor);
 	void reEncode();
 private:
-    void recalculateLinkage(Solution* solution) const;
+    void recalculateLinkage(Solution* solution);
 	vector<Solution*> solutions;
 	Problem* problem;
     OptimizedLinkage *linkage;
+    // BosmanLinkage *linkage;
     vector<int> solutionCheckingOrder;
 	std::mt19937& randomGenerator;
 	SolutionMixer* solutionMixer;
