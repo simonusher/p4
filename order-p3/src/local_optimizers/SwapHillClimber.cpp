@@ -5,6 +5,12 @@ SwapHillClimber::SwapHillClimber(Problem* problem) : LocalOptimizer(problem) {
 	initialize();
 }
 
+SwapHillClimber::~SwapHillClimber() {
+	for (std::pair<int, int>* possibleIndexPair : possibleIndexPairs) {
+		delete possibleIndexPair;
+	}
+}
+
 void SwapHillClimber::initialize() {
 	generateAllIndexPairs();
 	initializeRandomGenerator();
@@ -52,8 +58,8 @@ void SwapHillClimber::runOptimizationIteration() {
 
 void SwapHillClimber::trySwappingPossiblePairs() {
 	for (int i = 0; i < possibleIndexPairs.size(); i++) {
-		std::unique_ptr<std::pair<int, int>>& indexPair = possibleIndexPairs.at(i);
-		if(triedIndexPairs.count(indexPair.get()) == 0) {
+		std::pair<int, int>* indexPair = possibleIndexPairs.at(i);
+		if(triedIndexPairs.count(indexPair) == 0) {
 			std::swap((*solutionPhenotypePtr)[(*indexPair).first], (*solutionPhenotypePtr)[(*indexPair).second]);
 			double newFitness = problem->evaluate(*solutionPhenotypePtr);
 			if (currentFitness < newFitness) {
@@ -62,7 +68,7 @@ void SwapHillClimber::trySwappingPossiblePairs() {
 			else {
 				std::swap((*solutionPhenotypePtr)[(*indexPair).first], (*solutionPhenotypePtr)[(*indexPair).second]);
 			}
-			triedIndexPairs.insert(indexPair.get());
+			triedIndexPairs.insert(indexPair);
 		}
 		
 	}
@@ -80,7 +86,7 @@ void SwapHillClimber::generateAllIndexPairs() {
 	possibleIndexPairs.clear();
 	for (size_t i = 0; i < numberOfGenes - 1; i++) {
 		for (size_t j = i + 1; j < numberOfGenes; j++) {
-			possibleIndexPairs.emplace_back(std::make_unique<std::pair<int, int>>(i, j));
+			possibleIndexPairs.emplace_back(new std::pair<int, int>(i, j));
 		}
 	}
 }

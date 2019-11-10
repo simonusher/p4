@@ -9,6 +9,7 @@
 class SwapHillClimber: public LocalOptimizer {
 public:
 	SwapHillClimber(Problem* problem);
+	~SwapHillClimber();
 	void optimizeLocally(Solution& solution) override;
 private:
 	void hillClimb(Solution& solution);
@@ -28,6 +29,6 @@ private:
 	bool improvementMadeLastIteration;
 	bool anyImprovementMade;
 	
-	std::vector<std::unique_ptr<std::pair<int, int>>> possibleIndexPairs;
+	std::vector<std::pair<int, int>*> possibleIndexPairs;
 	std::mt19937 randomGenerator;
 };

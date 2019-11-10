@@ -22,11 +22,13 @@ Pyramid::~Pyramid() {
 	for (Population* population : populations) {
 		delete population;
 	}
+	delete bestSolution;
 }
 
 void Pyramid::runSingleIteration() {
 	Solution* newSolution = solutionFactory->nextRandomSolution();
 	newSolution->evaluate(*problem);
+	checkIfBest(newSolution);
 	localOptimizer->optimizeLocally(newSolution);
 	tryAddSolutionToPyramid(newSolution);
 }
@@ -168,8 +170,8 @@ bool Pyramid::addSolutionToPyramidIfUnique(Solution* solution, int level) {
 void Pyramid::addSolutionToPyramid(Solution* solution, int level) {
 	solution->reEncode();
 	ensurePyramidCapacity(level);
-	populations[level]->addSolution(solution);
 	checkIfBest(solution);
+	populations[level]->addSolution(solution);
 }
 
 void Pyramid::ensurePyramidCapacity(int level) {
@@ -179,8 +181,13 @@ void Pyramid::ensurePyramidCapacity(int level) {
 }
 
 void Pyramid::checkIfBest(Solution* solution) {
-	if (bestSolution == nullptr || solution->getFitness() > bestSolution->getFitness()) {
-		bestSolution = solution;
+	if (bestSolution != nullptr) {
+		if(solution->getFitness() > bestSolution->getFitness()) {
+			delete bestSolution;
+			bestSolution = new Solution(*solution);
+		}
+	} else {
+		bestSolution = new Solution(*solution);
 	}
 }
 

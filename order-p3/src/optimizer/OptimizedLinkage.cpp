@@ -1,3 +1,4 @@
+
 #include "../../include/order-p3/optimizer/OptimizedLinkage.h"
 
 vector<vector<double>> OptimizedLinkage::preprocessedLinkage;
@@ -15,9 +16,6 @@ OptimizedLinkage::OptimizedLinkage(int problemSize, std::mt19937& randomGenerato
 	this->problemSize = problemSize;
 	this->randomGenerator = randomGenerator;
 
-	clusters.resize(2 * problemSize - 1);
-	clusterOrdering.resize(clusters.size());
-
 	for (size_t i = 0; i < problemSize; i++) {
 		clusters[i].push_back(i);
 	}
@@ -31,8 +29,7 @@ OptimizedLinkage::OptimizedLinkage(int problemSize, std::mt19937& randomGenerato
 
 void OptimizedLinkage::update(Solution* newSolution, int currentPopulationSize) {
 	updateLinkageInformation(newSolution, currentPopulationSize);
-	rebuildTree();
-}
+	rebuildTree();}
 
 void OptimizedLinkage::update(const std::vector<Solution*>& population) {
 	for (int firstGeneIndex = 0; firstGeneIndex < problemSize - 1; firstGeneIndex++) {
