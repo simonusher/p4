@@ -71,7 +71,7 @@ Solution* PyramidSizingP3::getBestSolution() {
 void PyramidSizingP3::ensureCapacity(int level) {
 	if(pyramids.size() <= level) {
 		pyramidSizes.push_back(nextSize);
-		pyramids.push_back(new Pyramid(problem, solutionFactory, populationFactory, localOptimizer, nextSize));
+		pyramids.push_back(new Pyramid(problem, solutionFactory, populationFactory, localOptimizer));
 		iterationsWithoutImprovement.push_back(0);
 		nextSize *= 2;
 	}

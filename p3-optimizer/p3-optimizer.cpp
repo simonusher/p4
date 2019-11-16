@@ -74,7 +74,7 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 		// localOptimizer = new SwapHillClimber(problem);
 	}
 
-	Pyramid finalPyramid(problem, &factoryImpl, &popFactoryImpl, localOptimizer, removeDuplicatesUpper, usePreprocessedLinkage);
+	Pyramid finalPyramid(problem, &factoryImpl, &popFactoryImpl, localOptimizer);
 
 	int i = 0;
 	while (!stopCondition(problem, &finalPyramid)) {

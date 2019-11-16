@@ -1,4 +1,5 @@
 #include "ExperimentTask.h"
+#include <utility>
 #include "../order-p3/include/order-p3/problem/FlowshopSchedulingProblem.h"
 #include "../order-p3/include/order-p3/local_optimizers/NullOptimizer.h"
 #include "../order-p3/include/order-p3/optimizer/solution/SolutionFactoryImpl.h"
@@ -6,11 +7,11 @@
 #include "../order-p3/include/order-p3/optimizer/PopulationFactoryImpl.h"
 
 ExperimentTask::ExperimentTask(int flowshopIndex, bool useRescaling, bool useReencoding,
-	const std::function<bool(Problem*, Pyramid*)>& stopCondition) :
+                               std::function<bool(Problem*, Pyramid*)> stopCondition) :
 	flowshopIndex(flowshopIndex),
 	useRescaling(useRescaling),
 	useReencoding(useReencoding),
-	stopCondition(stopCondition)
+	stopCondition(std::move(stopCondition))
 {}
 
 void ExperimentTask::execute() {
@@ -34,16 +35,16 @@ void ExperimentTask::execute() {
 	Pyramid pyramid(&problem, &factoryImpl, &popFactoryImpl, &optimizer);
 
 	int i = 0;
-	while (!stopCondition(problem, &finalPyramid)) {
+	while (!stopCondition(&problem, &pyramid)) {
 		i++;
-		finalPyramid.runSingleIteration();
-		if (best_fitness < finalPyramid.getBestFitness())
+		pyramid.runSingleIteration();
+		if (best_fitness < pyramid.getBestFitness())
 		{
-			best_fitness = finalPyramid.getBestFitness();
-			std::cout << ffeFound << " " << best_fitness << std::endl;
-			ffeFound = problem->getFitnessFunctionEvaluations();
+			best_fitness = pyramid.getBestFitness();
+			ffeFound = problem.getFitnessFunctionEvaluations();
 			myfile << ffeFound << ";" << best_fitness << std::endl;
 		}
 	}
-	delete localOptimizer;
 }
+
+int ExperimentTask::getFlowshopIndex() const { return flowshopIndex; }

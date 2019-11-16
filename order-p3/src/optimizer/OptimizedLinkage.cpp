@@ -2,7 +2,6 @@
 #include "../../include/order-p3/optimizer/OptimizedLinkage.h"
 
 vector<vector<double>> OptimizedLinkage::preprocessedLinkage;
-vector<vector<double>> OptimizedLinkage::distances;
 bool OptimizedLinkage::usePreprocessedLinkage;
 
 OptimizedLinkage::OptimizedLinkage(int problemSize, std::mt19937& randomGenerator) :

@@ -7,9 +7,11 @@ class ExperimentTask {
 public:
 
 	ExperimentTask(int flowshopIndex, bool useRescaling, bool useReencoding,
-		const std::function<bool(Problem*, Pyramid*)>& stopCondition);
+	               std::function<bool(Problem*, Pyramid*)> stopCondition);
 
 	void execute();
+
+	int getFlowshopIndex() const;
 private:
 	int flowshopIndex;
 	bool useRescaling;

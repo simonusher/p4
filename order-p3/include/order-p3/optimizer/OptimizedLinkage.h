@@ -75,5 +75,5 @@ private:
 	vector<vector<int>> clusters;
 	vector<int> clusterOrdering;
 
-	static vector<vector<double>> distances;
+	vector<vector<double>> distances;
 };
