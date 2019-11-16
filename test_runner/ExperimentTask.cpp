@@ -6,6 +6,19 @@
 #include "../order-p3/include/order-p3/optimizer/solution/RandomRescalingOptimalMixer.h"
 #include "../order-p3/include/order-p3/optimizer/PopulationFactoryImpl.h"
 
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
+	os << "[ ";
+	for (int i = 0; i < vec.size(); i++) {
+		os << vec[i];
+		if (i != vec.size() - 1) {
+			os << ", ";
+		}
+	}
+	os << " ]";
+	return os;
+}
+
 ExperimentTask::ExperimentTask(int flowshopIndex, bool useRescaling, bool useReencoding, int numberOfRuns,
 	int ffeBudget, const std::string& outputPath):
 	flowshopIndex(flowshopIndex),
@@ -17,13 +30,23 @@ ExperimentTask::ExperimentTask(int flowshopIndex, bool useRescaling, bool useRee
 {}
 
 void ExperimentTask::execute() {
+	for(int i = 0; i < numberOfRuns; i++) {
+		runExperiment(i);
+	}
+	writeSummary();
+}
+
+int ExperimentTask::getFlowshopIndex() const { return flowshopIndex; }
+
+void ExperimentTask::runExperiment(int experimentNumber) {
 	FlowshopSchedulingProblem problem;
 	problem.initializeProblem(flowshopIndex);
 	std::random_device device;
 	unsigned int seed = device();
 	std::mt19937 randomGenerator(seed);
 
-	std::ofstream myfile;
+	std::ofstream experimentFile(outputPath + std::to_string(experimentNumber) + ".csv");
+	experimentFile << "seed: " << seed << std::endl;
 	double best_fitness = std::numeric_limits<double>::lowest();
 	int ffeFound = 0;
 
@@ -34,21 +57,25 @@ void ExperimentTask::execute() {
 	RandomRescalingOptimalMixer mixerImpl(&problem, 0.1, 0, 1, randomGenerator);
 	PopulationFactoryImpl popFactoryImpl(&problem, &mixerImpl, randomGenerator);
 
-	Pyramid pyramid(&problem, &factoryImpl, &popFactoryImpl, &optimizer);
+	Pyramid pyramid(&problem, &factoryImpl, &popFactoryImpl, &optimizer, [&](Solution* solution) {
+		if(problem.getFitnessFunctionEvaluations() < ffeBudget) {
+			best_fitness = solution->getFitness();
+			ffeFound = problem.getFitnessFunctionEvaluations();
+			experimentFile << ffeFound << ";" << best_fitness << ";" << *solution->getPhenotypePtr() << std::endl;
+		}
+	});
 
 	int i = 0;
 	while (problem.getFitnessFunctionEvaluations() < ffeBudget) {
 		i++;
 		pyramid.runSingleIteration();
-		if (best_fitness < pyramid.getBestFitness())
-		{
-			best_fitness = pyramid.getBestFitness();
-			ffeFound = problem.getFitnessFunctionEvaluations();
-			myfile << ffeFound << ";" << best_fitness << std::endl;
-		}
-		
 	}
-	std::cout << flowshopIndex << std::endl;
+	bestSolutionsWithFfeFoundInRuns.emplace_back(ffeFound, best_fitness);
 }
 
-int ExperimentTask::getFlowshopIndex() const { return flowshopIndex; }
+void ExperimentTask::writeSummary() {
+	std::ofstream summaryFile(outputPath + "summary.csv");
+	for (std::pair<int, int>& bestSolutionsWithFfeFoundInRun : bestSolutionsWithFfeFoundInRuns) {
+		summaryFile << bestSolutionsWithFfeFoundInRun.first << ";" << bestSolutionsWithFfeFoundInRun.second << std::endl;
+	}
+}

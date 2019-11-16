@@ -13,10 +13,13 @@ public:
 	int getFlowshopIndex() const;
 	
 private:
+	void runExperiment(int experimentNumber);
+	void writeSummary();
 	int flowshopIndex;
 	bool useRescaling;
 	bool useReencoding;
 	int numberOfRuns;
 	int ffeBudget;
 	std::string outputPath;
+	std::vector<std::pair<int, int>> bestSolutionsWithFfeFoundInRuns;
 };
