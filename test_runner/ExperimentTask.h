@@ -6,15 +6,17 @@
 class ExperimentTask {
 public:
 
-	ExperimentTask(int flowshopIndex, bool useRescaling, bool useReencoding,
-	               std::function<bool(Problem*, Pyramid*)> stopCondition);
+	ExperimentTask(int flowshopIndex, bool useRescaling, bool useReencoding, int numberOfRuns, int ffeBudget, const std::string& outputPath);
 
 	void execute();
 
 	int getFlowshopIndex() const;
+	
 private:
 	int flowshopIndex;
 	bool useRescaling;
 	bool useReencoding;
-	std::function<bool(Problem*, Pyramid*)> stopCondition;
+	int numberOfRuns;
+	int ffeBudget;
+	std::string outputPath;
 };

@@ -6,12 +6,14 @@
 #include "../order-p3/include/order-p3/optimizer/solution/RandomRescalingOptimalMixer.h"
 #include "../order-p3/include/order-p3/optimizer/PopulationFactoryImpl.h"
 
-ExperimentTask::ExperimentTask(int flowshopIndex, bool useRescaling, bool useReencoding,
-                               std::function<bool(Problem*, Pyramid*)> stopCondition) :
+ExperimentTask::ExperimentTask(int flowshopIndex, bool useRescaling, bool useReencoding, int numberOfRuns,
+	int ffeBudget, const std::string& outputPath):
 	flowshopIndex(flowshopIndex),
 	useRescaling(useRescaling),
 	useReencoding(useReencoding),
-	stopCondition(std::move(stopCondition))
+	numberOfRuns(numberOfRuns),
+	ffeBudget(ffeBudget),
+	outputPath(outputPath)
 {}
 
 void ExperimentTask::execute() {
@@ -35,7 +37,7 @@ void ExperimentTask::execute() {
 	Pyramid pyramid(&problem, &factoryImpl, &popFactoryImpl, &optimizer);
 
 	int i = 0;
-	while (!stopCondition(&problem, &pyramid)) {
+	while (problem.getFitnessFunctionEvaluations() < ffeBudget) {
 		i++;
 		pyramid.runSingleIteration();
 		if (best_fitness < pyramid.getBestFitness())
@@ -44,7 +46,9 @@ void ExperimentTask::execute() {
 			ffeFound = problem.getFitnessFunctionEvaluations();
 			myfile << ffeFound << ";" << best_fitness << std::endl;
 		}
+		
 	}
+	std::cout << flowshopIndex << std::endl;
 }
 
 int ExperimentTask::getFlowshopIndex() const { return flowshopIndex; }
