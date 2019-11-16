@@ -4,16 +4,19 @@
 class RandomKeyEncoderTests : public ::testing::Test {
 protected:
 	void SetUp() override {
+		std::random_device d;
+		randomGenerator = std::mt19937(d());
 		lowerBound = 0;
 		upperBound = 1;
 		numberOfGenes = 6;
-		encoder = new RandomKeyEncoder(lowerBound, upperBound, numberOfGenes);
+		encoder = new RandomKeyEncoder(lowerBound, upperBound, numberOfGenes, randomGenerator);
 	}
 
 	void TearDown() override {
 		delete encoder;
 	}
-	
+
+	std::mt19937 randomGenerator;
 	double lowerBound;
 	double upperBound;
 	int numberOfGenes;

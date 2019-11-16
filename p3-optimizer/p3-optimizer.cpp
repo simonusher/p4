@@ -21,6 +21,7 @@
 #include <filesystem>
 #include "../order-p3/include/order-p3/optimizer/solution/ReencodingMixer.h"
 #include "../order-p3/include/order-p3/optimizer/encoding/MaskedEncoder.h"
+#include "../order-p3/include/order-p3/optimizer/PyramidSizingP3.h"
 
 
 template <typename T>
@@ -75,8 +76,9 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 
 	Pyramid finalPyramid(problem, &factoryImpl, &popFactoryImpl, localOptimizer, removeDuplicatesUpper, usePreprocessedLinkage);
 
-	
+	int i = 0;
 	while (!stopCondition(problem, &finalPyramid)) {
+		i++;
 		finalPyramid.runSingleIteration();
 		if(best_fitness < finalPyramid.getBestFitness())
 		{
@@ -87,6 +89,23 @@ void runTest(int problemIndex, Problem* problem, bool removeDuplicatesUpper, boo
 		} 
 	}
 	delete localOptimizer;
+}
+
+void runSizingTest(Problem* problem, std::function<bool(Problem*, PyramidSizingP3*)> stopCondition) {
+	double best_fitness = std::numeric_limits<double>::lowest();
+	int ffeFound = 0;
+	PyramidSizingP3	finalPyramid(problem);
+	int i = 0;
+	while (!stopCondition(problem, &finalPyramid)) {
+		i++;
+		finalPyramid.runSingleIteration();
+		if (best_fitness < finalPyramid.getBestFitness())
+		{
+			best_fitness = finalPyramid.getBestFitness();
+			ffeFound = problem->getFitnessFunctionEvaluations();
+			std::cout << ffeFound << " " << best_fitness << std::endl;
+		}
+	}
 }
 
 void run_tests() {
@@ -108,8 +127,8 @@ void run_tests() {
 			std::cout << j << std::endl;
 			FlowshopSchedulingProblem p;
 			p.initializeProblem(i);
+			// runTest(i, &p, false, false, j, stop_condition, false);
 			runTest(i, &p, false, false, j, stop_condition, false);
-			runTest(i, &p, false, false, j, stop_condition, true);
 		}
 	}
 }
@@ -118,25 +137,27 @@ void test2() {
 	std::random_device d;
 	std::mt19937 randomGenerator(d());
 	TtpProblem problem;
-	problem.initialize("medium_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
-	// AbsoluteOrderingProblem problem(8);
-	// RelativeOrderingProblem problem(8);
-	RandomKeyEncoder encoder(0, 1, problem.getProblemSize(), randomGenerator);
-	// MaskedEncoder encoder = MaskedEncoder::get8FunctionLooseCoding(0, 1, problem.getProblemSize(), randomGenerator);
-	// MaskedEncoder encoder = MaskedEncoder::get8FunctionLooseCoding(0, 1, problem.getProblemSize(), randomGenerator);
-	RandomKeyDecoder decoder;
-	// MaskedDecoder decoder = MaskedDecoder::get8FunctionLooseCoding();
-	NullOptimizer optimizer(&problem);
-	// SwapHillClimber optimizer(&problem);
-	// OptimalMixer mixer(&problem);
-	RandomRescalingOptimalMixer mixer(&problem, 0.1, 0, 1, randomGenerator);
-	// ReencodingMixer<RandomRescalingOptimalMixer> mixer(&problem, 0.1, 0, 1, randomGenerator);
-	SolutionFactoryImpl solutionFactory(encoder, decoder);
-	PopulationFactoryImpl populationFactory(&problem, &mixer, randomGenerator);
-	Pyramid pyramid(&problem, &solutionFactory, &populationFactory, &optimizer, false, false);
+	problem.initialize("hard_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
+	// // AbsoluteOrderingProblem problem(8);
+	// // RelativeOrderingProblem problem(8);
+	// RandomKeyEncoder encoder(0, 1, problem.getProblemSize(), randomGenerator);
+	// // MaskedEncoder encoder = MaskedEncoder::get8FunctionLooseCoding(0, 1, problem.getProblemSize(), randomGenerator);
+	// // MaskedEncoder encoder = MaskedEncoder::get8FunctionLooseCoding(0, 1, problem.getProblemSize(), randomGenerator);
+	// RandomKeyDecoder decoder;
+	// // MaskedDecoder decoder = MaskedDecoder::get8FunctionLooseCoding();
+	// NullOptimizer optimizer(&problem);
+	// // SwapHillClimber optimizer(&problem);
+	// // OptimalMixer mixer(&problem);
+	// RandomRescalingOptimalMixer mixer(&problem, 0.1, 0, 1, randomGenerator);
+	// // ReencodingMixer<RandomRescalingOptimalMixer> mixer(&problem, 0.1, 0, 1, randomGenerator);
+	// SolutionFactoryImpl solutionFactory(encoder, decoder);
+	// PopulationFactoryImpl populationFactory(&problem, &mixer, randomGenerator);
+	// Pyramid pyramid(&problem, &solutionFactory, &populationFactory, &optimizer, false, false);
 
 	double best_fitness = std::numeric_limits<double>::lowest();
 	int ffeFound = 0;
+
+	PyramidSizingP3 pyramid(&problem);
 
 	for (int i = 0; pyramid.getBestFitness() != 1; i++) {
 		pyramid.runSingleIteration();
@@ -150,8 +171,14 @@ void test2() {
 	std::cout << pyramid.getBestSolution()->getPhenotype();
 }
 
+auto test3() {
+	int budget = 220712150;
+	std::function<bool(Problem*, PyramidSizingP3*)> stop_condition = [&](Problem* problem, PyramidSizingP3* pyramid) { return problem->getFitnessFunctionEvaluations() >= budget;  };
+	FlowshopSchedulingProblem p;
+	p.initializeProblem(31);
+	runSizingTest(&p, stop_condition);
+}
+
 
 int main() {
-	test2();
-	return 0;
 }

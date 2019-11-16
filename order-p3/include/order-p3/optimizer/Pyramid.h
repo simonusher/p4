@@ -17,7 +17,8 @@ using std::vector;
 
 class Pyramid : public LocalOptimizer {
 public:
-	Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer, bool removeDuplicates = false,
+	Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer, int maxPopulations, 
+		bool removeDuplicates = false,
 		bool usePreprocessedLinkage = false);
 	virtual ~Pyramid();
     virtual void runSingleIteration();
@@ -25,7 +26,11 @@ public:
 	Solution* getBestSolution() const;
     double getBestFitness() const;
 
+	int getIterationsRun();
 
+	double mean();
+	int getNumberOfPopulations();
+	
 	void optimizeLocally(Solution& solution) override;
 	void preprocessProblem();
 protected:
@@ -38,7 +43,7 @@ protected:
 	void addSolutionToPyramid(Solution* solution, int level);
 	void ensurePyramidCapacity(int level);
 	void checkIfBest(Solution* solution);
-
+	int iterationsRun;
 	Solution* bestSolution;
     unordered_set<vector<int>, VectorHasher>::const_iterator seenSolution;
     unordered_set<vector<int>, VectorHasher> seen;
@@ -48,4 +53,6 @@ protected:
 	PopulationFactory* populationFactory;
 	LocalOptimizer* localOptimizer;
 	bool removeDuplicates;
+
+	int maxPopulations;
 };

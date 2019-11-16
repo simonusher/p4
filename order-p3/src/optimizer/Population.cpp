@@ -22,6 +22,13 @@ void Population::addSolution(Solution* solution) {
     recalculateLinkage(solution);
 }
 
+void Population::addMeanInformation(int& populationSizesSum, double& fitnessSum) {
+	populationSizesSum += solutions.size();
+	for (Solution* solution : solutions) {
+		fitnessSum += solution->getFitness();
+	}
+}
+
 void Population::recalculateLinkage(Solution* solution) {
 	this->linkage->update(solution, this->solutions.size());
 }

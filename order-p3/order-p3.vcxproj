@@ -29,6 +29,7 @@
     <ClInclude Include="include\order-p3\optimizer\OptimizedLinkage.h" />
     <ClInclude Include="include\order-p3\optimizer\PopulationFactory.h" />
     <ClInclude Include="include\order-p3\optimizer\PopulationFactoryImpl.h" />
+    <ClInclude Include="include\order-p3\optimizer\PyramidSizingP3.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\OptimalMixer.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\RandomRescalingOptimalMixer.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\ReencodingMixer.h" />
@@ -64,6 +65,7 @@
     <ClCompile Include="src\optimizer\Pyramid.cpp" />
     <ClCompile Include="src\optimizer\encoding\RandomKeyDecoder.cpp" />
     <ClCompile Include="src\optimizer\encoding\RandomKeyEncoder.cpp" />
+    <ClCompile Include="src\optimizer\PyramidSizingP3.cpp" />
     <ClCompile Include="src\optimizer\solution\OptimalMixer.cpp" />
     <ClCompile Include="src\optimizer\solution\RandomRescalingOptimalMixer.cpp" />
     <ClCompile Include="src\optimizer\solution\SolutionFactoryImpl.cpp" />

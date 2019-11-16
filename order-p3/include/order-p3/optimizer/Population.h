@@ -14,6 +14,7 @@ public:
     Population(Problem* problem, SolutionMixer* solutionMixer, std::mt19937& randomGenerator);
     ~Population();
     void addSolution(Solution* solution);
+	void addMeanInformation(int& populationSizesSum, double& fitnessSum);
     void improve(Solution* solution);
     void improveUsingDonor(Solution* solution, Solution* donor);
 	void reEncode();
@@ -22,7 +23,6 @@ private:
 	vector<Solution*> solutions;
 	Problem* problem;
     OptimizedLinkage *linkage;
-    // BosmanLinkage *linkage;
     vector<int> solutionCheckingOrder;
 	std::mt19937& randomGenerator;
 	SolutionMixer* solutionMixer;

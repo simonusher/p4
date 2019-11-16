@@ -21,9 +21,11 @@ protected:
 	}
 
 	void SetUp() override {
+		std::random_device d;
+		randomGenerator = std::mt19937(d());
 		decoder = new RandomKeyDecoder();
 		problem = new ProblemMock();
-		encoder = new RandomKeyEncoder(0.0, 1.0, SOURCE_GENOTYPE.size());
+		encoder = new RandomKeyEncoder(0.0, 1.0, SOURCE_GENOTYPE.size(), randomGenerator);
 		optimalMixer = new OptimalMixer(problem);
 		setUpSource();
 		setUpDestination();
@@ -68,6 +70,7 @@ protected:
 	RandomKeyDecoder* decoder;
 	RandomKeyEncoder* encoder;
 	OptimalMixer* optimalMixer;
+	std::mt19937 randomGenerator;
 };
 
 TEST_F(OptimalMixerTests, GivenTwoSolutionsWhenMixingImprovesFitnessThenSourceShouldBeUnchanged) {

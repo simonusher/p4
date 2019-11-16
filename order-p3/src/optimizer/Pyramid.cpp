@@ -4,10 +4,11 @@
 
 #include "../../include/order-p3/optimizer/Pyramid.h"
 
-Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer, bool removeDuplicates,
+Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer, int maxPopulations,
+	bool removeDuplicates,
 	bool usePreprocessedLinkage)
 	: LocalOptimizer(problem), problem(problem), solutionFactory(solutionFactory), populationFactory(populationFactory), localOptimizer(localOptimizer),
-		removeDuplicates(removeDuplicates)
+		removeDuplicates(removeDuplicates), iterationsRun(0), maxPopulations(maxPopulations)
 {
 	bestSolution = nullptr;
 	if(usePreprocessedLinkage) {
@@ -31,6 +32,14 @@ void Pyramid::runSingleIteration() {
 	checkIfBest(newSolution);
 	localOptimizer->optimizeLocally(newSolution);
 	tryAddSolutionToPyramid(newSolution);
+	iterationsRun++;
+	if(populations.size() > maxPopulations) {
+		int toDelete = populations.size() - maxPopulations;
+		for(int i = 0; i < toDelete; i++) {
+			delete populations[i];
+		}
+		populations.erase(populations.begin(), populations.begin() + toDelete);
+	}
 }
 
 void Pyramid::optimizeLocally(Solution& solution) {
@@ -205,4 +214,21 @@ double Pyramid::getBestFitness() const {
 	} else {
 		return 0;
 	}
+}
+
+int Pyramid::getIterationsRun() {
+	return iterationsRun;
+}
+
+double Pyramid::mean() {
+	int populationSizesSum = 0;
+	double fitnessSum = 0;
+	for (Population* population : populations) {
+		population->addMeanInformation(populationSizesSum, fitnessSum);
+	}
+	return fitnessSum / static_cast<double>(populationSizesSum);
+}
+
+int Pyramid::getNumberOfPopulations() {
+	return populations.size();
 }
