@@ -18,26 +18,26 @@ using std::string;
 using std::unordered_map;
 
 
-class OptimizedLinkage {
+class Linkage {
 public:
-	OptimizedLinkage(int problemSize, std::mt19937& randomGenerator);
+	Linkage(int problemSize, std::mt19937& randomGenerator);
 	void update(Solution* newSolution, int currentPopulationSize);
 	void update(const std::vector<Solution*>& population);
 
 	class ClusterIterator {
 		public:
-			ClusterIterator(size_t currentIndex, OptimizedLinkage& linkage);
+			ClusterIterator(size_t currentIndex, Linkage& linkage);
 			bool operator!=(const ClusterIterator& other) const;
 			std::vector<int>& operator*() const;
 			ClusterIterator& operator++();
 		private:
 			size_t currentClusterOrderingIndex;
-			OptimizedLinkage& linkage;
+			Linkage& linkage;
 	};
 
 	class RandomClusterIterator {
 		public:
-			RandomClusterIterator(OptimizedLinkage& linkage, bool end = false);
+			RandomClusterIterator(Linkage& linkage, bool end = false);
 			bool operator!=(const RandomClusterIterator& other) const;
 			std::vector<int>& operator*() const;
 			RandomClusterIterator& operator++();
@@ -47,7 +47,7 @@ public:
 			void generateNextIndex();
 			std::uniform_int_distribution<int> indexDistribution;
 			std::vector<int> options;
-			OptimizedLinkage& linkage;
+			Linkage& linkage;
 	};
 	
 	ClusterIterator begin();

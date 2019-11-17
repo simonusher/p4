@@ -2,11 +2,10 @@
 // Created by Szymon on 22.11.2018.
 //
 
-#include "../../include/order-p3/optimizer/Population.h"
+#include "../../../include/order-p3/optimizer/population/Population.h"
 
 Population::Population(Problem* problem, SolutionMixer* solutionMixer, std::mt19937& randomGenerator) : problem(problem), solutionMixer(solutionMixer), randomGenerator(randomGenerator) {
-    this->linkage = new OptimizedLinkage(problem->getProblemSize(), randomGenerator);
-    // this->linkage = new BosmanLinkage(problem, randomGenerator);
+    this->linkage = new Linkage(problem->getProblemSize(), randomGenerator);
 }
 
 Population::~Population() {

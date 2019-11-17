@@ -5,13 +5,12 @@
 #include <unordered_set>
 #include <vector>
 #include <random>
-#include "Population.h"
 #include "../util/VectorHasher.h"
 #include "solution/SolutionFactory.h"
 #include "../util/PairHasher.h"
 #include "../local_optimizers/LocalOptimizer.h"
-#include "PopulationFactory.h"
 #include <functional>
+#include "population/PopulationFactory.h"
 
 using std::unordered_set;
 using std::vector;

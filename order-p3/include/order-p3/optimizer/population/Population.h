@@ -4,9 +4,9 @@
 #pragma once
 #include <algorithm>
 #include <numeric>
-#include "solution/SolutionMixer.h"
-#include "OptimizedLinkage.h"
-#include "BosmanLinkage.h"
+#include "../../problem/Problem.h"
+#include "../solution/SolutionMixer.h"
+#include "../Linkage.h"
 
 
 class Population {
@@ -20,10 +20,10 @@ public:
 	void reEncode();
 private:
     void recalculateLinkage(Solution* solution);
-	vector<Solution*> solutions;
+    std::vector<Solution*> solutions;
 	Problem* problem;
-    OptimizedLinkage *linkage;
-    vector<int> solutionCheckingOrder;
+    Linkage *linkage;
+    std::vector<int> solutionCheckingOrder;
 	std::mt19937& randomGenerator;
 	SolutionMixer* solutionMixer;
 };

@@ -1,10 +1,10 @@
 
-#include "../../include/order-p3/optimizer/OptimizedLinkage.h"
+#include "../../include/order-p3/optimizer/Linkage.h"
 
-vector<vector<double>> OptimizedLinkage::preprocessedLinkage;
-bool OptimizedLinkage::usePreprocessedLinkage;
+vector<vector<double>> Linkage::preprocessedLinkage;
+bool Linkage::usePreprocessedLinkage;
 
-OptimizedLinkage::OptimizedLinkage(int problemSize, std::mt19937& randomGenerator) :
+Linkage::Linkage(int problemSize, std::mt19937& randomGenerator) :
 	randomGenerator(randomGenerator),
 	relativeOrderingInformationSum(problemSize, vector<double>(problemSize, 0)),
 	adjacencyInformationSum(problemSize, vector<double>(problemSize, 0)),
@@ -26,11 +26,11 @@ OptimizedLinkage::OptimizedLinkage(int problemSize, std::mt19937& randomGenerato
 	distances.resize(clusters.size(), vector<double>(clusters.size(), -1));
 }
 
-void OptimizedLinkage::update(Solution* newSolution, int currentPopulationSize) {
+void Linkage::update(Solution* newSolution, int currentPopulationSize) {
 	updateLinkageInformation(newSolution, currentPopulationSize);
 	rebuildTree();}
 
-void OptimizedLinkage::update(const std::vector<Solution*>& population) {
+void Linkage::update(const std::vector<Solution*>& population) {
 	for (int firstGeneIndex = 0; firstGeneIndex < problemSize - 1; firstGeneIndex++) {
 		for (int secondGeneIndex = firstGeneIndex + 1; secondGeneIndex < problemSize; secondGeneIndex++) {
 			relativeOrderingInformationSum[firstGeneIndex][secondGeneIndex] = 0;
@@ -62,24 +62,24 @@ void OptimizedLinkage::update(const std::vector<Solution*>& population) {
 	}
 }
 
-OptimizedLinkage::ClusterIterator::ClusterIterator(size_t currentIndex, OptimizedLinkage& linkage) :
+Linkage::ClusterIterator::ClusterIterator(size_t currentIndex, Linkage& linkage) :
 	currentClusterOrderingIndex(currentIndex), linkage(linkage) {
 }
 
-bool OptimizedLinkage::ClusterIterator::operator!=(const ClusterIterator& other) const {
+bool Linkage::ClusterIterator::operator!=(const ClusterIterator& other) const {
 	return this->currentClusterOrderingIndex != other.currentClusterOrderingIndex;
 }
 
-std::vector<int>& OptimizedLinkage::ClusterIterator::operator*() const {
+std::vector<int>& Linkage::ClusterIterator::operator*() const {
 	return linkage.clusters[linkage.clusterOrdering[currentClusterOrderingIndex]];
 }
 
-OptimizedLinkage::ClusterIterator& OptimizedLinkage::ClusterIterator::operator++() {
+Linkage::ClusterIterator& Linkage::ClusterIterator::operator++() {
 	currentClusterOrderingIndex++;
 	return *this;
 }
 
-OptimizedLinkage::RandomClusterIterator::RandomClusterIterator(OptimizedLinkage& linkage, bool end)
+Linkage::RandomClusterIterator::RandomClusterIterator(Linkage& linkage, bool end)
 : linkage(linkage), unused(linkage.clusterOrdering.size() - 1), options(linkage.clusterOrdering)
 {
 	if(end) {
@@ -89,20 +89,20 @@ OptimizedLinkage::RandomClusterIterator::RandomClusterIterator(OptimizedLinkage&
 	}
 }
 
-bool OptimizedLinkage::RandomClusterIterator::operator!=(const RandomClusterIterator& other) const {
+bool Linkage::RandomClusterIterator::operator!=(const RandomClusterIterator& other) const {
 	return this->unused != other.unused;
 }
 
-std::vector<int>& OptimizedLinkage::RandomClusterIterator::operator*() const {
+std::vector<int>& Linkage::RandomClusterIterator::operator*() const {
 	return linkage.clusters[currentIndex];
 }
 
-OptimizedLinkage::RandomClusterIterator& OptimizedLinkage::RandomClusterIterator::operator++() {
+Linkage::RandomClusterIterator& Linkage::RandomClusterIterator::operator++() {
 	generateNextIndex();
 	return *this;
 }
 
-void OptimizedLinkage::RandomClusterIterator::generateNextIndex() {
+void Linkage::RandomClusterIterator::generateNextIndex() {
 	if(unused > 0) {
 		indexDistribution = std::uniform_int_distribution<int>(0, unused);
 		int index = indexDistribution(linkage.randomGenerator);
@@ -112,30 +112,30 @@ void OptimizedLinkage::RandomClusterIterator::generateNextIndex() {
 	unused--;
 }
 
-OptimizedLinkage::ClusterIterator OptimizedLinkage::begin() {
+Linkage::ClusterIterator Linkage::begin() {
 	return { 0, *this };
 }
 
-OptimizedLinkage::ClusterIterator OptimizedLinkage::end() {
+Linkage::ClusterIterator Linkage::end() {
 	return { clusterOrdering.size(), *this };
 }
 
-OptimizedLinkage::RandomClusterIterator OptimizedLinkage::randomBegin() {
+Linkage::RandomClusterIterator Linkage::randomBegin() {
 	return { *this };
 }
 
-OptimizedLinkage::RandomClusterIterator OptimizedLinkage::randomEnd() {
+Linkage::RandomClusterIterator Linkage::randomEnd() {
 	return { *this, true };
 }
 
-double OptimizedLinkage::getDistance(int firstIndex, int secondIndex) {
+double Linkage::getDistance(int firstIndex, int secondIndex) {
 	if (firstIndex > secondIndex) {
 		std::swap(firstIndex, secondIndex);
 	}
 	return distanceMeasureMatrix[firstIndex][secondIndex];
 }
 
-void OptimizedLinkage::rebuildTree() {
+void Linkage::rebuildTree() {
 	// usable keeps track of which clusters can still be merged
 	vector<size_t> usable(problemSize);
 	// initialize it to just the clusters of size 1
@@ -262,7 +262,7 @@ void OptimizedLinkage::rebuildTree() {
 	clusterOrdering.resize(kept);
 }
 
-void OptimizedLinkage::updateLinkageInformation(Solution* solution, int currentPopulationSize) {
+void Linkage::updateLinkageInformation(Solution* solution, int currentPopulationSize) {
 	vector<double>* genotype = solution->getGenotypePtr();
 	for (int firstGeneIndex = 0; firstGeneIndex < problemSize - 1; firstGeneIndex++) {
 		const double firstGeneValue = genotype->at(firstGeneIndex);
@@ -287,13 +287,13 @@ void OptimizedLinkage::updateLinkageInformation(Solution* solution, int currentP
 	}
 }
 
-double OptimizedLinkage::calculateDependencyBetweenGenes(const int firstGeneIndex, const int secondGeneIndex, const int currentPopulationSize) {
+double Linkage::calculateDependencyBetweenGenes(const int firstGeneIndex, const int secondGeneIndex, const int currentPopulationSize) {
 	const double relativeOrderingMeasure = calculateRelativeOrderingMeasure(firstGeneIndex, secondGeneIndex, currentPopulationSize);
 	const double adjacencyMeasure = calculateAdjacencyMeasure(firstGeneIndex, secondGeneIndex, currentPopulationSize);
 	return relativeOrderingMeasure * adjacencyMeasure;
 }
 
-double OptimizedLinkage::calculateRelativeOrderingMeasure(const int firstGeneIndex, const int secondGeneIndex, const int currentPopulationSize) {
+double Linkage::calculateRelativeOrderingMeasure(const int firstGeneIndex, const int secondGeneIndex, const int currentPopulationSize) {
 	const double pij = relativeOrderingInformationSum[firstGeneIndex][secondGeneIndex] / static_cast<double>(currentPopulationSize);
 	double entropy;
 	if (pij == 0 || pij == 1) {
@@ -305,12 +305,12 @@ double OptimizedLinkage::calculateRelativeOrderingMeasure(const int firstGeneInd
 	return 1.0 - entropy;
 }
 
-double OptimizedLinkage::calculateAdjacencyMeasure(const int firstGeneIndex, const int secondGeneIndex, const int currentPopulationSize) {
+double Linkage::calculateAdjacencyMeasure(const int firstGeneIndex, const int secondGeneIndex, const int currentPopulationSize) {
 	const double adjacencyMeasure = adjacencyInformationSum[firstGeneIndex][secondGeneIndex] / static_cast<double>(currentPopulationSize);
 	return 1.0 - adjacencyMeasure;
 }
 
-double OptimizedLinkage::calculateRelativeOrderingInformation(const double firstGeneValue, const double secondGeneValue) {
+double Linkage::calculateRelativeOrderingInformation(const double firstGeneValue, const double secondGeneValue) {
 	if (firstGeneValue < secondGeneValue) {
 		return 1.0;
 	}
@@ -319,7 +319,7 @@ double OptimizedLinkage::calculateRelativeOrderingInformation(const double first
 	}
 }
 
-double OptimizedLinkage::calculateAdjacencyInformation(const double firstGeneValue, const double secondGeneValue) {
+double Linkage::calculateAdjacencyInformation(const double firstGeneValue, const double secondGeneValue) {
 	const double valuesDifference = firstGeneValue - secondGeneValue;
 	return valuesDifference * valuesDifference;
 }
