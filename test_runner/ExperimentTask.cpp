@@ -20,13 +20,14 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
 }
 
 ExperimentTask::ExperimentTask(int flowshopIndex, bool useRescaling, bool useReencoding, int numberOfRuns,
-	int ffeBudget, const std::string& outputPath):
+	int ffeBudget, const std::string& outputPath, double knownBestSolutionFitness):
 	flowshopIndex(flowshopIndex),
 	useRescaling(useRescaling),
 	useReencoding(useReencoding),
 	numberOfRuns(numberOfRuns),
 	ffeBudget(ffeBudget),
-	outputPath(outputPath)
+	outputPath(outputPath),
+	knownBestSolutionFitness(knownBestSolutionFitness)
 {}
 
 void ExperimentTask::execute() {
@@ -66,7 +67,7 @@ void ExperimentTask::runExperiment(int experimentNumber) {
 	});
 
 	int i = 0;
-	while (problem.getFitnessFunctionEvaluations() < ffeBudget) {
+	while (problem.getFitnessFunctionEvaluations() < ffeBudget && pyramid.getBestFitness() != knownBestSolutionFitness) {
 		i++;
 		pyramid.runSingleIteration();
 	}

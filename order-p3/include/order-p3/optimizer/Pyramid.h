@@ -11,13 +11,14 @@
 #include "../util/PairHasher.h"
 #include "../local_optimizers/LocalOptimizer.h"
 #include "PopulationFactory.h"
+#include <functional>
 
 using std::unordered_set;
 using std::vector;
 
 class Pyramid : public LocalOptimizer {
 public:
-	Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer);
+	Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer, std::function<void(Solution* solution)> bestSolutionReporter = nullptr);
 	virtual ~Pyramid();
     virtual void runSingleIteration();
     vector<int> getBestSolutionPhenotype() const;
@@ -46,4 +47,5 @@ protected:
 	SolutionFactory* solutionFactory;
 	PopulationFactory* populationFactory;
 	LocalOptimizer* localOptimizer;
+	std::function<void(Solution * solution)> bestSolutionReporter;
 };

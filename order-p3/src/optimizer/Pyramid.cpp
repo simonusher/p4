@@ -2,10 +2,13 @@
 // Created by Szymon on 24.11.2018.
 //
 
+#include <utility>
 #include "../../include/order-p3/optimizer/Pyramid.h"
 
-Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer)
-	: LocalOptimizer(problem), problem(problem), solutionFactory(solutionFactory), populationFactory(populationFactory), localOptimizer(localOptimizer), iterationsRun(0)
+Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer,
+	std::function<void(Solution * solution)> bestSolutionReporter)
+	: LocalOptimizer(problem), problem(problem), solutionFactory(solutionFactory), populationFactory(populationFactory), localOptimizer(localOptimizer), iterationsRun(0),
+	bestSolutionReporter(std::move(bestSolutionReporter))
 {
 	bestSolution = nullptr;
 }
@@ -106,6 +109,9 @@ void Pyramid::checkIfBest(Solution* solution) {
 		if(solution->getFitness() > bestSolution->getFitness()) {
 			delete bestSolution;
 			bestSolution = new Solution(*solution);
+			if(bestSolutionReporter) {
+				bestSolutionReporter(bestSolution);
+			}
 		}
 	} else {
 		bestSolution = new Solution(*solution);

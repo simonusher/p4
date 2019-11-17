@@ -6,7 +6,8 @@
 class ExperimentTask {
 public:
 
-	ExperimentTask(int flowshopIndex, bool useRescaling, bool useReencoding, int numberOfRuns, int ffeBudget, const std::string& outputPath);
+	ExperimentTask(int flowshopIndex, bool useRescaling, bool useReencoding, int numberOfRuns, int ffeBudget, const std::string& outputPath,
+		double knownBestSolutionFitness);
 
 	void execute();
 
@@ -20,6 +21,7 @@ private:
 	bool useReencoding;
 	int numberOfRuns;
 	int ffeBudget;
+	double knownBestSolutionFitness;
 	std::string outputPath;
 	std::vector<std::pair<int, int>> bestSolutionsWithFfeFoundInRuns;
 };

@@ -113,7 +113,7 @@ void FlowshopSchedulingProblem::loadTaillardFlowshop(int J, int M, char* fileNam
 	for (i = 1; i < instance; i++) {
 		for (c = 0; c < (3 + nMachines); c++) {
 			if (!std::getline(infile, line)) {
-				printf("%s\n", line);
+				printf("%s\n", line.c_str());
 				printf("Error: Something wrong with the format of file %s", fileName);
 				exit(0);
 			}

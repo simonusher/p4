@@ -137,27 +137,26 @@ void test2() {
 	std::random_device d;
 	std::mt19937 randomGenerator(d());
 	TtpProblem problem;
-	problem.initialize("hard_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
-	// // AbsoluteOrderingProblem problem(8);
-	// // RelativeOrderingProblem problem(8);
-	// RandomKeyEncoder encoder(0, 1, problem.getProblemSize(), randomGenerator);
-	// // MaskedEncoder encoder = MaskedEncoder::get8FunctionLooseCoding(0, 1, problem.getProblemSize(), randomGenerator);
-	// // MaskedEncoder encoder = MaskedEncoder::get8FunctionLooseCoding(0, 1, problem.getProblemSize(), randomGenerator);
-	// RandomKeyDecoder decoder;
-	// // MaskedDecoder decoder = MaskedDecoder::get8FunctionLooseCoding();
-	// NullOptimizer optimizer(&problem);
-	// // SwapHillClimber optimizer(&problem);
-	// // OptimalMixer mixer(&problem);
-	// RandomRescalingOptimalMixer mixer(&problem, 0.1, 0, 1, randomGenerator);
-	// // ReencodingMixer<RandomRescalingOptimalMixer> mixer(&problem, 0.1, 0, 1, randomGenerator);
-	// SolutionFactoryImpl solutionFactory(encoder, decoder);
-	// PopulationFactoryImpl populationFactory(&problem, &mixer, randomGenerator);
-	// Pyramid pyramid(&problem, &solutionFactory, &populationFactory, &optimizer, false, false);
+	problem.initialize("medium_0.ttp", ItemSelectionPolicy::ProfitWeightRatio);
+	// AbsoluteOrderingProblem problem(8);
+	// RelativeOrderingProblem problem(8);
+	RandomKeyEncoder encoder(0, 1, problem.getProblemSize(), randomGenerator);
+	// MaskedEncoder encoder = MaskedEncoder::get8FunctionLooseCoding(0, 1, problem.getProblemSize(), randomGenerator);
+	// MaskedEncoder encoder = MaskedEncoder::get8FunctionLooseCoding(0, 1, problem.getProblemSize(), randomGenerator);
+	RandomKeyDecoder decoder;
+	// MaskedDecoder decoder = MaskedDecoder::get8FunctionLooseCoding();
+	NullOptimizer optimizer(&problem);
+	// SwapHillClimber optimizer(&problem);
+	// OptimalMixer mixer(&problem);
+	RandomRescalingOptimalMixer mixer(&problem, 0.1, 0, 1, randomGenerator);
+	// ReencodingMixer<RandomRescalingOptimalMixer> mixer(&problem, 0.1, 0, 1, randomGenerator);
+	SolutionFactoryImpl solutionFactory(encoder, decoder);
+	PopulationFactoryImpl populationFactory(&problem, &mixer, randomGenerator);
+	Pyramid pyramid(&problem, &solutionFactory, &populationFactory, &optimizer);
 
 	double best_fitness = std::numeric_limits<double>::lowest();
 	int ffeFound = 0;
 
-	PyramidSizingP3 pyramid(&problem);
 
 	for (int i = 0; pyramid.getBestFitness() != 1; i++) {
 		pyramid.runSingleIteration();
@@ -181,4 +180,5 @@ auto test3() {
 
 
 int main() {
+	test2();
 }

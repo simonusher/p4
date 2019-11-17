@@ -14,9 +14,10 @@ void readTasksFromConfigFile(const std::string& fileName, std::vector<Experiment
 		bool useReencoding;
 		int numberOfRuns;
 		int budget;
-		lineStream >> flowshopIndex >> useRescaling >> useReencoding >> numberOfRuns >> budget;
+		double knownBestSolutionFitness;
+		lineStream >> flowshopIndex >> useRescaling >> useReencoding >> numberOfRuns >> budget >> knownBestSolutionFitness;
 		tasks.push_back(new ExperimentTask(flowshopIndex, useRescaling, useReencoding, numberOfRuns, budget,
-			"experiments/" + std::to_string(flowshopIndex) + "/"));
+			"experiments/" + std::to_string(flowshopIndex) + "/", -knownBestSolutionFitness));
 	}
 }
 
