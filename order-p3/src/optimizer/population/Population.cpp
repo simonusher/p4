@@ -4,12 +4,15 @@
 
 #include "../../../include/order-p3/optimizer/population/Population.h"
 
-Population::Population(Problem* problem, SolutionMixer* solutionMixer, std::mt19937& randomGenerator) : problem(problem), solutionMixer(solutionMixer), randomGenerator(randomGenerator) {
-    this->linkage = new Linkage(problem->getProblemSize(), randomGenerator);
+Population::Population(Problem& problem, SolutionMixer& solutionMixer, std::mt19937& randomGenerator) :
+	problem(problem),
+	linkage(problem.getProblemSize(), randomGenerator),
+	randomGenerator(randomGenerator),
+	solutionMixer(solutionMixer)
+{
 }
 
 Population::~Population() {
-    delete linkage;
     for (Solution* solution : solutions) {
 		delete solution;
     }
@@ -21,15 +24,8 @@ void Population::addSolution(Solution* solution) {
     recalculateLinkage(solution);
 }
 
-void Population::addMeanInformation(int& populationSizesSum, double& fitnessSum) {
-	populationSizesSum += solutions.size();
-	for (Solution* solution : solutions) {
-		fitnessSum += solution->getFitness();
-	}
-}
-
 void Population::recalculateLinkage(Solution* solution) {
-	this->linkage->update(solution, this->solutions.size());
+	linkage.update(solution, this->solutions.size());
 }
 
 void Population::improve(Solution* solution) {
@@ -39,7 +35,7 @@ void Population::improve(Solution* solution) {
 	int index, working = 0;
 
 
-	for (auto it = linkage->randomBegin(); it != linkage->randomEnd(); ++it) {
+	for (auto it = linkage.randomBegin(); it != linkage.randomEnd(); ++it) {
 	// for (auto it = linkage->begin(); it != linkage->end(); ++it) {
 		auto cluster = *it;
 		unused = options.size() - 1;
@@ -54,22 +50,8 @@ void Population::improve(Solution* solution) {
 			unused -= 1;
 
 			// Attempt the donation
-			different = solutionMixer->mix(solution, solutions[working], &cluster);
+			different = solutionMixer.mix(solution, solutions[working], &cluster);
 			// Break loop if configured to stop_after_one or donate returned true
 		} while (unused >= 0 and not different);
 	}
-}
-
-void Population::improveUsingDonor(Solution* solution, Solution* donor) {
-	for (auto it = linkage->randomBegin(); it != linkage->randomEnd(); ++it) {
-		auto cluster = *it;
-		solutionMixer->mix(solution, donor, &cluster);
-	}
-}
-
-void Population::reEncode() {
-	for (Solution* solution : solutions) {
-		solution->reEncode();
-	}
-	// linkage->update(solutions);
 }

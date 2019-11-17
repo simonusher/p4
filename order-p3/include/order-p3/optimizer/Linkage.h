@@ -22,7 +22,6 @@ class Linkage {
 public:
 	Linkage(int problemSize, std::mt19937& randomGenerator);
 	void update(Solution* newSolution, int currentPopulationSize);
-	void update(const std::vector<Solution*>& population);
 
 	class ClusterIterator {
 		public:
@@ -55,8 +54,6 @@ public:
 
 	RandomClusterIterator randomBegin();
 	RandomClusterIterator randomEnd();
-	static vector<vector<double>> preprocessedLinkage;
-	static bool usePreprocessedLinkage;
 	
 private:
 	double getDistance(int firstIndex, int secondIndex);

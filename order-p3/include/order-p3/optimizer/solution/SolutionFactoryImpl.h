@@ -4,7 +4,7 @@
 class SolutionFactoryImpl : public SolutionFactory {
 public:
 	SolutionFactoryImpl(RandomKeyEncoder& encoder, RandomKeyDecoder& decoder);
-	Solution* nextRandomSolution() override;
+	Solution* nextSolution() override;
 
 private:
 	RandomKeyEncoder& encoder;

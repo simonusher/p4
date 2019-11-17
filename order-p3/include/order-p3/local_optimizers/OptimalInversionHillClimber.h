@@ -3,7 +3,7 @@
 
 class OptimalInversionHillClimber : public LocalOptimizer {
 public:
-	OptimalInversionHillClimber(Problem* problem);
+	OptimalInversionHillClimber(Problem& problem);
 
 	void optimizeLocally(Solution& solution) override;
 };

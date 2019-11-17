@@ -3,7 +3,7 @@
 
 class NullOptimizer : public LocalOptimizer {
 public:
-	explicit NullOptimizer(Problem* problem)
+	explicit NullOptimizer(Problem& problem)
 		: LocalOptimizer(problem) {}
 
 	void optimizeLocally(Solution& solution) override

@@ -1,7 +1,10 @@
 #include "../../include/order-p3/local_optimizers/SwapHillClimber.h"
 #include <iostream>
 
-SwapHillClimber::SwapHillClimber(Problem* problem) : LocalOptimizer(problem) {
+SwapHillClimber::SwapHillClimber(Problem& problem, std::mt19937& randomGenerator) :
+	LocalOptimizer(problem),
+	randomGenerator(randomGenerator)
+{
 	initialize();
 }
 
@@ -61,7 +64,7 @@ void SwapHillClimber::trySwappingPossiblePairs() {
 		std::pair<int, int>* indexPair = possibleIndexPairs.at(i);
 		if(triedIndexPairs.count(indexPair) == 0) {
 			std::swap((*solutionPhenotypePtr)[(*indexPair).first], (*solutionPhenotypePtr)[(*indexPair).second]);
-			double newFitness = problem->evaluate(*solutionPhenotypePtr);
+			double newFitness = problem.evaluate(*solutionPhenotypePtr);
 			if (currentFitness < newFitness) {
 				noteImprovement(newFitness);
 			}
@@ -82,7 +85,7 @@ void SwapHillClimber::noteImprovement(double newFitness) {
 }
 
 void SwapHillClimber::generateAllIndexPairs() {
-	const size_t numberOfGenes = problem->getProblemSize();
+	const size_t numberOfGenes = problem.getProblemSize();
 	possibleIndexPairs.clear();
 	for (size_t i = 0; i < numberOfGenes - 1; i++) {
 		for (size_t j = i + 1; j < numberOfGenes; j++) {

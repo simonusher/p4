@@ -1,7 +1,7 @@
 #include "../../include/order-p3/local_optimizers/OptimalInversionHillClimber.h"
 #include <iostream>
 
-OptimalInversionHillClimber::OptimalInversionHillClimber(Problem* problem): LocalOptimizer(problem) {	}
+OptimalInversionHillClimber::OptimalInversionHillClimber(Problem& problem): LocalOptimizer(problem) {	}
 
 void OptimalInversionHillClimber::optimizeLocally(Solution& solution) {
 	std::vector<int>* solutionPhenotype = solution.getPhenotypePtr();
@@ -9,7 +9,7 @@ void OptimalInversionHillClimber::optimizeLocally(Solution& solution) {
 		for(int j = 0; j <= solutionPhenotype->size() - i; j++) {
 			double oldFitness = solution.getFitness();
 			std::reverse(solutionPhenotype->begin() + j, solutionPhenotype->begin() + j + i);
-			double newFitness = solution.evaluate(*problem);
+			double newFitness = solution.evaluate(problem);
 			if(newFitness <= oldFitness) {
 				std::reverse(solutionPhenotype->begin() + j, solutionPhenotype->begin() + j + i);
 			}

@@ -15,9 +15,15 @@
 using std::unordered_set;
 using std::vector;
 
-class Pyramid : public LocalOptimizer {
+class Pyramid {
 public:
-	Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer, std::function<void(Solution* solution)> bestSolutionReporter = nullptr);
+	Pyramid(
+		Problem& problem, 
+		SolutionFactory& solutionFactory, 
+		PopulationFactory& populationFactory, 
+		LocalOptimizer& localOptimizer, 
+		std::function<void(Solution* solution)> onBestSolutionFound = nullptr
+	);
 	virtual ~Pyramid();
     virtual void runSingleIteration();
     vector<int> getBestSolutionPhenotype() const;
@@ -26,12 +32,9 @@ public:
 
 	int getIterationsRun();
 
-	double mean();
 	int getNumberOfPopulations();
 	
-	void optimizeLocally(Solution& solution) override;
 protected:
-	void reEncode();
 	Solution* tryToAddImprovedSolutions(Solution* solution, int level);
     Solution* tryAddSolutionToPyramid(Solution* solution);
 	Solution* tryAddSolutionToPyramid(Solution* solution, int level);
@@ -42,9 +45,9 @@ protected:
 	int iterationsRun;
 	Solution* bestSolution;
     vector<Population*> populations;
-	Problem* problem;
-	SolutionFactory* solutionFactory;
-	PopulationFactory* populationFactory;
-	LocalOptimizer* localOptimizer;
-	std::function<void(Solution * solution)> bestSolutionReporter;
+	Problem& problem;
+	SolutionFactory& solutionFactory;
+	PopulationFactory& populationFactory;
+	LocalOptimizer& localOptimizer;
+	std::function<void(Solution * solution)> onBestSolutionFound;
 };

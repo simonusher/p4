@@ -4,11 +4,11 @@
 
 class LocalOptimizer {
 public:
-	LocalOptimizer(Problem* problem);
+	LocalOptimizer(Problem& problem);
 	virtual ~LocalOptimizer() = default;
 	
 	virtual void optimizeLocally(Solution& solution) = 0;
 	virtual void optimizeLocally(Solution* solution);
 protected:
-	Problem* problem;
+	Problem& problem;
 };

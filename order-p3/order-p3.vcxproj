@@ -46,7 +46,6 @@
     <ClInclude Include="include\order-p3\problem\Problem.h" />
     <ClInclude Include="include\order-p3\optimizer\encoding\RandomKeyDecoder.h" />
     <ClInclude Include="include\order-p3\optimizer\encoding\RandomKeyEncoder.h" />
-    <ClInclude Include="include\order-p3\util\Timer.h" />
     <ClInclude Include="include\order-p3\util\VectorHasher.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\Solution.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\SolutionFactory.h" />
@@ -73,7 +72,6 @@
     <ClCompile Include="src\problem\travelling_thief\City.cpp" />
     <ClCompile Include="src\problem\travelling_thief\KnapsackItem.cpp" />
     <ClCompile Include="src\problem\travelling_thief\TTPProblem.cpp" />
-    <ClCompile Include="src\util\Timer.cpp" />
     <ClCompile Include="src\util\VectorHasher.cpp" />
     <ClCompile Include="src\optimizer\solution\Solution.cpp" />
   </ItemGroup>

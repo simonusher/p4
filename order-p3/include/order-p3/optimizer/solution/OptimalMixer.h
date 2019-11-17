@@ -3,7 +3,7 @@
 
 class OptimalMixer : public SolutionMixer {
 public:
-	OptimalMixer(Problem* problem);
+	OptimalMixer(Problem& problem);
 	virtual ~OptimalMixer() = default;
 	bool mix(Solution* destination, Solution* source, std::vector<int>* cluster) override;
 
@@ -22,5 +22,5 @@ protected:
 	std::vector<double>* sourceGenotype;
 	std::vector<int>* cluster;
 	
-	Problem* problem;
+	Problem& problem;
 };

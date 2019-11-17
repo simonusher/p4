@@ -4,7 +4,8 @@
 #include "../order-p3/include/order-p3/local_optimizers/NullOptimizer.h"
 #include "../order-p3/include/order-p3/optimizer/solution/SolutionFactoryImpl.h"
 #include "../order-p3/include/order-p3/optimizer/solution/RandomRescalingOptimalMixer.h"
-#include "../order-p3/include/order-p3/optimizer/PopulationFactoryImpl.h"
+#include "../order-p3/include/order-p3/optimizer/population/PopulationFactoryImpl.h"
+
 
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
@@ -51,14 +52,14 @@ void ExperimentTask::runExperiment(int experimentNumber) {
 	double best_fitness = std::numeric_limits<double>::lowest();
 	int ffeFound = 0;
 
-	NullOptimizer optimizer(&problem);
+	NullOptimizer optimizer(problem);
 	RandomKeyEncoder encoder(0, 1, problem.getProblemSize(), randomGenerator);
 	RandomKeyDecoder decoder;
 	SolutionFactoryImpl factoryImpl(encoder, decoder);
-	RandomRescalingOptimalMixer mixerImpl(&problem, 0.1, 0, 1, randomGenerator);
-	PopulationFactoryImpl popFactoryImpl(&problem, &mixerImpl, randomGenerator);
+	RandomRescalingOptimalMixer mixerImpl(problem, 0.1, 0, 1, randomGenerator);
+	PopulationFactoryImpl popFactoryImpl(problem, mixerImpl, randomGenerator);
 
-	Pyramid pyramid(&problem, &factoryImpl, &popFactoryImpl, &optimizer, [&](Solution* solution) {
+	Pyramid pyramid(problem, factoryImpl, popFactoryImpl, optimizer, [&](Solution* solution) {
 		if(problem.getFitnessFunctionEvaluations() < ffeBudget) {
 			best_fitness = solution->getFitness();
 			ffeFound = problem.getFitnessFunctionEvaluations();

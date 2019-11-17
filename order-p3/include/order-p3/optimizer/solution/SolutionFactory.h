@@ -4,5 +4,5 @@
 class SolutionFactory {
 public:
 	virtual ~SolutionFactory() = default;
-	virtual Solution* nextRandomSolution() = 0;
+	virtual Solution* nextSolution() = 0;
 };

@@ -1,6 +1,6 @@
 #include "../../../include/order-p3/optimizer/solution/OptimalMixer.h"
 
-OptimalMixer::OptimalMixer(Problem* problem) : problem(problem) {}
+OptimalMixer::OptimalMixer(Problem& problem) : problem(problem) {}
 
 bool OptimalMixer::mix(Solution* destination, Solution* source, std::vector<int>* cluster) {
 	setSourceSolution(source);
@@ -31,7 +31,7 @@ bool OptimalMixer::mixGenotypes() {
 void OptimalMixer::handleGenotypeChange() {
 	double oldFitness = destinationSolution->getFitness();
 	std::vector<int> oldPhenotype(destinationSolution->getPhenotype());
-	double newFitness = destinationSolution->evaluate(*problem);
+	double newFitness = destinationSolution->evaluate(problem);
 
 	if (oldFitness <= newFitness) {
 		revertSource();

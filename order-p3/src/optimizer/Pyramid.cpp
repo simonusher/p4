@@ -5,12 +5,21 @@
 #include <utility>
 #include "../../include/order-p3/optimizer/Pyramid.h"
 
-Pyramid::Pyramid(Problem* problem, SolutionFactory* solutionFactory, PopulationFactory* populationFactory, LocalOptimizer* localOptimizer,
-	std::function<void(Solution * solution)> bestSolutionReporter)
-	: LocalOptimizer(problem), problem(problem), solutionFactory(solutionFactory), populationFactory(populationFactory), localOptimizer(localOptimizer), iterationsRun(0),
-	bestSolutionReporter(std::move(bestSolutionReporter))
+Pyramid::Pyramid(
+	Problem& problem, 
+	SolutionFactory& solutionFactory, 
+	PopulationFactory& populationFactory, 
+	LocalOptimizer& localOptimizer,
+	std::function<void(Solution * solution)> onBestSolutionFound
+) :
+	iterationsRun(0),
+	bestSolution(nullptr),
+	problem(problem),
+	solutionFactory(solutionFactory),
+	populationFactory(populationFactory),
+	localOptimizer(localOptimizer),
+	onBestSolutionFound(std::move(onBestSolutionFound))
 {
-	bestSolution = nullptr;
 }
 
 Pyramid::~Pyramid() {
@@ -21,27 +30,12 @@ Pyramid::~Pyramid() {
 }
 
 void Pyramid::runSingleIteration() {
-	Solution* newSolution = solutionFactory->nextRandomSolution();
-	newSolution->evaluate(*problem);
+	Solution* newSolution = solutionFactory.nextSolution();
+	newSolution->evaluate(problem);
 	checkIfBest(newSolution);
-	localOptimizer->optimizeLocally(newSolution);
+	localOptimizer.optimizeLocally(newSolution);
 	tryAddSolutionToPyramid(newSolution);
 	iterationsRun++;
-}
-
-void Pyramid::optimizeLocally(Solution& solution) {
-	Solution* copy = new Solution(solution);
-	localOptimizer->optimizeLocally(copy);
-	Solution* bestAddedSolution = tryAddSolutionToPyramid(copy);
-	if(bestAddedSolution != nullptr) {
-		solution = *bestAddedSolution;
-	}
-}
-
-void Pyramid::reEncode() {
-	for (Population* population : populations) {
-		population->reEncode();
-	}
 }
 
 Solution* Pyramid::tryAddSolutionToPyramid(Solution* solution) {
@@ -71,7 +65,6 @@ Solution* Pyramid::tryToAddImprovedSolutions(Solution* solution, int level) {
 		double previousFitness = currentlyImprovedSolution->getFitness();
 		populations[lev]->improve(currentlyImprovedSolution);
 		if (previousFitness < currentlyImprovedSolution->getFitness()) {
-			// anyImprovement = true;
 			addedImprovedSolution = addSolutionToPyramidIfUnique(currentlyImprovedSolution, lev + 1);
 			if (addedImprovedSolution) {
 				lastAddedSolution = currentlyImprovedSolution;
@@ -100,7 +93,7 @@ void Pyramid::addSolutionToPyramid(Solution* solution, int level) {
 
 void Pyramid::ensurePyramidCapacity(int level) {
 	if (populations.size() == level) {
-		populations.push_back(populationFactory->newPopulation());
+		populations.push_back(populationFactory.newPopulation());
 	}
 }
 
@@ -109,8 +102,8 @@ void Pyramid::checkIfBest(Solution* solution) {
 		if(solution->getFitness() > bestSolution->getFitness()) {
 			delete bestSolution;
 			bestSolution = new Solution(*solution);
-			if(bestSolutionReporter) {
-				bestSolutionReporter(bestSolution);
+			if(onBestSolutionFound) {
+				onBestSolutionFound(bestSolution);
 			}
 		}
 	} else {
@@ -136,15 +129,6 @@ double Pyramid::getBestFitness() const {
 
 int Pyramid::getIterationsRun() {
 	return iterationsRun;
-}
-
-double Pyramid::mean() {
-	int populationSizesSum = 0;
-	double fitnessSum = 0;
-	for (Population* population : populations) {
-		population->addMeanInformation(populationSizesSum, fitnessSum);
-	}
-	return fitnessSum / static_cast<double>(populationSizesSum);
 }
 
 int Pyramid::getNumberOfPopulations() {

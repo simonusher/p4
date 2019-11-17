@@ -1,8 +1,6 @@
 
 #include "../../include/order-p3/optimizer/Linkage.h"
 
-vector<vector<double>> Linkage::preprocessedLinkage;
-bool Linkage::usePreprocessedLinkage;
 
 Linkage::Linkage(int problemSize, std::mt19937& randomGenerator) :
 	randomGenerator(randomGenerator),
@@ -10,11 +8,9 @@ Linkage::Linkage(int problemSize, std::mt19937& randomGenerator) :
 	adjacencyInformationSum(problemSize, vector<double>(problemSize, 0)),
 	distanceMeasureMatrix(problemSize, vector<double>(problemSize, -1)),
 	clusters(2 * problemSize - 1),
-	clusterOrdering(2 * problemSize - 1)
+	clusterOrdering(2 * problemSize - 1),
+	problemSize(problemSize)
 	{
-	this->problemSize = problemSize;
-	this->randomGenerator = randomGenerator;
-
 	for (size_t i = 0; i < problemSize; i++) {
 		clusters[i].push_back(i);
 	}
@@ -29,38 +25,6 @@ Linkage::Linkage(int problemSize, std::mt19937& randomGenerator) :
 void Linkage::update(Solution* newSolution, int currentPopulationSize) {
 	updateLinkageInformation(newSolution, currentPopulationSize);
 	rebuildTree();}
-
-void Linkage::update(const std::vector<Solution*>& population) {
-	for (int firstGeneIndex = 0; firstGeneIndex < problemSize - 1; firstGeneIndex++) {
-		for (int secondGeneIndex = firstGeneIndex + 1; secondGeneIndex < problemSize; secondGeneIndex++) {
-			relativeOrderingInformationSum[firstGeneIndex][secondGeneIndex] = 0;
-			adjacencyInformationSum[firstGeneIndex][secondGeneIndex] = 0;
-			for(Solution* solution : population) {
-				std::vector<double>* genotype = solution->getGenotypePtr();
-				double firstGeneValue = genotype->at(firstGeneIndex);
-				double secondGeneValue = genotype->at(secondGeneIndex);
-				relativeOrderingInformationSum[firstGeneIndex][secondGeneIndex] += calculateRelativeOrderingInformation(firstGeneValue, secondGeneValue);
-				adjacencyInformationSum[firstGeneIndex][secondGeneIndex] += calculateAdjacencyInformation(firstGeneValue, secondGeneValue);
-			}
-
-			double linkageValue;
-			if(usePreprocessedLinkage) {
-				const double preprocessedLinkageValue = preprocessedLinkage[firstGeneIndex][secondGeneIndex];
-				const double calculatedLinkageValue = calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, population.size());
-				linkageValue = 0.5 * (preprocessedLinkageValue + calculatedLinkageValue);
-			} else {
-				linkageValue = calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, population.size());
-			}
-			// const double linkageValue = calculatedLinkageValue;
-			const double distanceBetweenGenes = 1 - linkageValue;
-			distanceMeasureMatrix[firstGeneIndex][secondGeneIndex] = distanceBetweenGenes;
-			distanceMeasureMatrix[secondGeneIndex][firstGeneIndex] = distanceBetweenGenes;
-		}
-	}
-	if (population.size() > 1) {
-		rebuildTree();
-	}
-}
 
 Linkage::ClusterIterator::ClusterIterator(size_t currentIndex, Linkage& linkage) :
 	currentClusterOrderingIndex(currentIndex), linkage(linkage) {
@@ -271,15 +235,7 @@ void Linkage::updateLinkageInformation(Solution* solution, int currentPopulation
 			relativeOrderingInformationSum[firstGeneIndex][secondGeneIndex] += calculateRelativeOrderingInformation(firstGeneValue, secondGeneValue);
 			adjacencyInformationSum[firstGeneIndex][secondGeneIndex] += calculateAdjacencyInformation(firstGeneValue, secondGeneValue);
 
-			double linkageValue;
-			if (usePreprocessedLinkage) {
-				const double preprocessedLinkageValue = preprocessedLinkage[firstGeneIndex][secondGeneIndex];
-				const double calculatedLinkageValue = calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, currentPopulationSize);
-				linkageValue = 0.5 * (preprocessedLinkageValue + calculatedLinkageValue);
-			}
-			else {
-				linkageValue = calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, currentPopulationSize);
-			}
+			double linkageValue = calculateDependencyBetweenGenes(firstGeneIndex, secondGeneIndex, currentPopulationSize);
 			const double distanceBetweenGenes = 1 - linkageValue;
 			distanceMeasureMatrix[firstGeneIndex][secondGeneIndex] = distanceBetweenGenes;
 			distanceMeasureMatrix[secondGeneIndex][firstGeneIndex] = distanceBetweenGenes;
