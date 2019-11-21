@@ -14,7 +14,7 @@
    <string>OrderP3GUI</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="start_button">
+   <widget class="QPushButton" name="bt_start">
     <property name="geometry">
      <rect>
       <x>280</x>
@@ -27,17 +27,7 @@
      <string>Start</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="text_edit">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>100</y>
-      <width>104</width>
-      <height>71</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="stop_button">
+   <widget class="QPushButton" name="bt_stop">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -53,18 +43,76 @@
      <string>Stop</string>
     </property>
    </widget>
-   <widget class="QListView" name="test_cases_list">
+   <widget class="QPushButton" name="bt_select_file">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>80</y>
-      <width>256</width>
-      <height>192</height>
+      <x>430</x>
+      <y>160</y>
+      <width>75</width>
+      <height>23</height>
      </rect>
+    </property>
+    <property name="text">
+     <string>Wczytaj plik</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>241</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="vl_best_solution_data">
+     <property name="leftMargin">
+      <number>10</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="lb_best_solution">
+       <property name="text">
+        <string>Najlepsze rozwiązanie:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lb_ffe">
+       <property name="text">
+        <string>Ewaluacje funkcji celu:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lb_time">
+       <property name="text">
+        <string>Czas znalezienia:</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="lb_time_passed">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>10</y>
+      <width>191</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Czas działania:</string>
     </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -90,14 +138,14 @@
  </resources>
  <connections>
   <connection>
-   <sender>start_button</sender>
+   <sender>bt_start</sender>
    <signal>clicked()</signal>
    <receiver>OrderP3GUIClass</receiver>
    <slot>onStartButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>336</x>
-     <y>124</y>
+     <y>353</y>
     </hint>
     <hint type="destinationlabel">
      <x>395</x>
@@ -106,14 +154,14 @@
    </hints>
   </connection>
   <connection>
-   <sender>stop_button</sender>
+   <sender>bt_stop</sender>
    <signal>clicked()</signal>
    <receiver>OrderP3GUIClass</receiver>
    <slot>onStopButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>421</x>
-     <y>123</y>
+     <y>353</y>
     </hint>
     <hint type="destinationlabel">
      <x>559</x>
@@ -121,9 +169,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>bt_select_file</sender>
+   <signal>clicked()</signal>
+   <receiver>OrderP3GUIClass</receiver>
+   <slot>onSelectFileButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>465</x>
+     <y>199</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>555</x>
+     <y>278</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onStartButtonClicked()</slot>
   <slot>onStopButtonClicked()</slot>
+  <slot>onSelectFileButtonClicked()</slot>
  </slots>
 </ui>

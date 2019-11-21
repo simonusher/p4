@@ -32,17 +32,19 @@ bool FlowshopSchedulingProblem::readFromFile(const std::string& fileName) {
 		try {
 			if(std::getline(infile, line)) {
 				std::istringstream iss(line);
-				int nJobs;
-				int nMachines;
 				int time;
 				iss >> nJobs >> nMachines;
+				problemSize = nJobs;
+				processingTimes = std::vector<std::vector<int>>(nJobs, std::vector<int>(nMachines));
 				for (int m = 0; m < nMachines; m++) {
 					std::getline(infile, line);
+					std::istringstream iss(line);
 					for (int j = 0; j < nJobs; j++) {
 						iss >> time;
 						processingTimes[j][m] = time;
 					}
 				}
+				fitnessCalculationCache = std::vector<std::vector<int>>(nJobs, std::vector<int>(nMachines));
 				return true;
 			} else {
 				return false;
@@ -54,7 +56,6 @@ bool FlowshopSchedulingProblem::readFromFile(const std::string& fileName) {
 	} else {
 		return false;
 	}
-	fitnessCalculationCache = std::vector<std::vector<int>>(nJobs, std::vector<int>(nMachines));
 }
 
 void FlowshopSchedulingProblem::initializeProblem(int index)

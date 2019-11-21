@@ -11,16 +11,18 @@
 class WorkerThread : public QThread
 {
     Q_OBJECT
+public:
+	WorkerThread(Problem* problem) : problem(problem) {
+		
+	}
 	~WorkerThread()
     {
     	delete optimizer;
 	    qDebug() << "done";
     }
     void run() override {
-        FlowshopSchedulingProblem problem;
-		problem.initializeProblem(31);
     	int maxffe = 256896400;
-    	optimizer = P3Optimizer::createOptimizerWithFfeConstraint(&problem, 
+    	optimizer = P3Optimizer::createOptimizerWithFfeConstraint(problem, 
 			[&](BestSolutionFoundData* bestSolutionData){ emit newBestFound(bestSolutionData); },
 			maxffe);
         while (!isInterruptionRequested() && !optimizer->finished()) {
@@ -33,6 +35,7 @@ signals:
 	void newBestFound(BestSolutionFoundData* newBestSolutionData);
 private:
 	P3Optimizer* optimizer;
+	Problem* problem;
 };
 
 class OrderP3GUI : public QMainWindow
@@ -41,11 +44,14 @@ class OrderP3GUI : public QMainWindow
 
 public:
 	OrderP3GUI(QWidget *parent = Q_NULLPTR);
-	P3Optimizer* optimizer;
 private slots:
 	void onStartButtonClicked();
 	void onStopButtonClicked();
+	void onSelectFileButtonClicked();
+	void loadSelectedFile(const QString& fileName);
 private:
+	Problem* problem;
+	bool problemLoaded;
 	Ui::OrderP3GUIClass ui;
 	bool running;
 	void updateTextField(BestSolutionFoundData* bestSolutionData);
