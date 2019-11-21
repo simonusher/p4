@@ -8,6 +8,7 @@
 
 class FlowshopSchedulingProblem : public Problem {
 public:
+	bool readFromFile(const std::string& fileName);
 	void initializeProblem(int index);
 	double evaluate(std::vector<int>& solution) override;
 	

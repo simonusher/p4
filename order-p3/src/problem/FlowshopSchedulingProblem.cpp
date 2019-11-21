@@ -1,4 +1,5 @@
 #include "../../include/order-p3/problem/FlowshopSchedulingProblem.h"
+#include <iostream>
 
 double FlowshopSchedulingProblem::evaluate(std::vector<int>& solution)
 {
@@ -22,6 +23,38 @@ double FlowshopSchedulingProblem::evaluate(std::vector<int>& solution)
 	for (i = 0; i < nJobs; i++)
 		objectiveValue += -fitnessCalculationCache[i][nMachines - 1];
 	return objectiveValue;
+}
+
+bool FlowshopSchedulingProblem::readFromFile(const std::string& fileName) {
+	std::ifstream infile(fileName);
+	if(infile.is_open()) {
+		std::string line;
+		try {
+			if(std::getline(infile, line)) {
+				std::istringstream iss(line);
+				int nJobs;
+				int nMachines;
+				int time;
+				iss >> nJobs >> nMachines;
+				for (int m = 0; m < nMachines; m++) {
+					std::getline(infile, line);
+					for (int j = 0; j < nJobs; j++) {
+						iss >> time;
+						processingTimes[j][m] = time;
+					}
+				}
+				return true;
+			} else {
+				return false;
+			}
+		} catch (std::exception& exception) {
+			std::cout << exception.what();
+			return false;
+		}
+	} else {
+		return false;
+	}
+	fitnessCalculationCache = std::vector<std::vector<int>>(nJobs, std::vector<int>(nMachines));
 }
 
 void FlowshopSchedulingProblem::initializeProblem(int index)
