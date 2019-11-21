@@ -19,7 +19,7 @@ public:
 	}
 
 	bool finished() override {
-		return std::chrono::steady_clock::now() < endTime;
+		return std::chrono::steady_clock::now() > endTime;
 	}
 private:
 	std::chrono::steady_clock::time_point endTime;
@@ -34,7 +34,7 @@ public:
 
 
 	bool finished() override {
-		return getElapsedFfe() < ffeThreshold;
+		return getElapsedFfe() > ffeThreshold;
 	}
 private:
 	std::function<int()> getElapsedFfe;

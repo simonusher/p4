@@ -8,26 +8,33 @@ namespace chrono = std::chrono;
 using timePoint = std::chrono::steady_clock::time_point;
 using stdClock = std::chrono::steady_clock;
 
+struct BestSolutionFoundData {
+	std::vector<int>* newBestPhenotype;
+	std::vector<double>* newBestGenotype;
+	double newSolutionFitness;
+	int fitnessFunctionEvaluationsPassedWhenFound;
+	long long elapsedTimeInSeconds;
+};
+
 class P3Optimizer {
 public:
-	struct BestSolutionFoundData {
-		const std::vector<int>& newBestPhenotype;
-		const std::vector<double>& newBestGenotype;
-		const double newSolutionFitness;
-		const int fitnessFunctionEvaluationsPassedWhenFound;
-		const long long elapsedTimeInSeconds;
-	};
-	static P3Optimizer* createOptimizer(Problem* problem, std::function<void(const BestSolutionFoundData&)> onNewBestSolutionFound);
-	void runForTime(unsigned long long timeInSeconds);
-	void runForFitnessFunctionEvaluations(int fitnessFunctionEvaluationsThreshold);
-	void run();
-	void stop();
-	~P3Optimizer();
-private:
-	P3Optimizer(Problem& problem, std::function<void(const BestSolutionFoundData&)> onNewBestSolutionFound);
-	void updateBest(Solution* solution);
-	long getElapsedTimeInSeconds();
 	
+	static P3Optimizer* createOptimizerWithTimeConstraint(Problem* problem, const std::function<void(BestSolutionFoundData*)>
+	                                                      & onNewBestSolutionFound, unsigned long long executionTimeInSeconds);
+	static P3Optimizer* createOptimizerWithFfeConstraint(Problem* problem, const std::function<void(BestSolutionFoundData*)>& onNewBestSolutionFound, int ffeThreshold);
+	void runIteration();
+	bool finished();
+	~P3Optimizer();
+	BestSolutionFoundData* getLastFoundBestData();
+private:
+	P3Optimizer(Problem& problem, std::function<void(BestSolutionFoundData*)> onNewBestSolutionFound);
+	void initializeTimeStopCondition(unsigned long long executionTimeInSeconds);
+	void initializeFfeStopCondition(int fitnessFunctionEvaluationsThreshold);
+	void updateBest(Solution* solution);
+	BestSolutionFoundData getSolutionData(Solution* solution);
+	long getElapsedTimeInSeconds();
+
+	BestSolutionFoundData lastBestSolutionData;
 	Problem& problem;
 	std::mt19937* randomGenerator;
 	Pyramid* pyramid;
@@ -37,9 +44,8 @@ private:
 	SolutionFactory* solutionFactory;
 	PopulationFactory* populationFactory;
 	SolutionMixer* solutionMixer;
-	std::function<void(const BestSolutionFoundData&)> onNewBestSolutionFound;
+	std::function<void(BestSolutionFoundData*)> onNewBestSolutionFound;
 	StopCondition* stopCondtion;
-	bool interrupted;
 	constexpr static double DEFAULT_RESCALING_PROBABILITY = 0.1;
 	timePoint startTime;
 };

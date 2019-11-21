@@ -1,9 +1,4 @@
 #include "OrderP3GUI.h"
-#include "../order-p3/include/order-p3/local_optimizers/NullOptimizer.h"
-#include "../order-p3/include/order-p3/optimizer/solution/SolutionFactoryImpl.h"
-#include "../order-p3/include/order-p3/optimizer/solution/RandomRescalingOptimalMixer.h"
-#include "../order-p3/include/order-p3/optimizer/population/PopulationFactoryImpl.h"
-#include "../order-p3/include/order-p3/problem/FlowshopSchedulingProblem.h"
 
 OrderP3GUI::OrderP3GUI(QWidget *parent)
 	: QMainWindow(parent)
@@ -38,7 +33,7 @@ void OrderP3GUI::onStopButtonClicked()
 	}
 }
 
-void OrderP3GUI::updateTextField(Solution* solution)
+void OrderP3GUI::updateTextField(BestSolutionFoundData* bestSolutionData)
 {
-	ui.text_edit->setText(QString::number(solution->getFitness()));
+	ui.text_edit->setText(QString::number(bestSolutionData->newSolutionFitness));
 }

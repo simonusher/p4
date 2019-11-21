@@ -6,26 +6,37 @@
 #include "solution/RandomRescalingOptimalMixer.h"
 #include "population/PopulationFactoryImpl.h"
 
-void P3Optimizer::runForTime(unsigned long long timeInSeconds) {
+void P3Optimizer::initializeTimeStopCondition(unsigned long long timeInSeconds) {
 	startTime = stdClock::now();
 	timePoint endTime = startTime + chrono::seconds(timeInSeconds);
 	stopCondtion = new TimePassedStopCondition(endTime);
-	run();
 }
 
-void P3Optimizer::runForFitnessFunctionEvaluations(int fitnessFunctionEvaluationsThreshold) {
+void P3Optimizer::initializeFfeStopCondition(int fitnessFunctionEvaluationsThreshold) {
 	stopCondtion = new FfeStopCondition([&]() { return problem.getFitnessFunctionEvaluations(); }, fitnessFunctionEvaluationsThreshold);
-	run();
 }
 
-void P3Optimizer::run() {
-	while(!stopCondtion->finished() && !interrupted) {
-		pyramid->runSingleIteration();
-	}
+P3Optimizer* P3Optimizer::createOptimizerWithTimeConstraint(Problem* problem, 
+	const std::function<void(BestSolutionFoundData*)>& onNewBestSolutionFound, 
+	unsigned long long executionTimeInSeconds)
+{
+	P3Optimizer* optimizer = new P3Optimizer(*problem, onNewBestSolutionFound);
+	optimizer->initializeTimeStopCondition(executionTimeInSeconds);
+	return optimizer;
 }
 
-void P3Optimizer::stop() {
-	interrupted = true;
+P3Optimizer* P3Optimizer::createOptimizerWithFfeConstraint(Problem* problem, const std::function<void(BestSolutionFoundData*)> & onNewBestSolutionFound, int ffeThreshold) {
+	P3Optimizer* optimizer = new P3Optimizer(*problem, onNewBestSolutionFound);
+	optimizer->initializeFfeStopCondition(ffeThreshold);
+	return optimizer;
+}
+
+void P3Optimizer::runIteration() {
+	pyramid->runSingleIteration();
+}
+
+bool P3Optimizer::finished() {
+	return stopCondtion->finished();
 }
 
 P3Optimizer::~P3Optimizer() {
@@ -40,10 +51,9 @@ P3Optimizer::~P3Optimizer() {
 	delete stopCondtion;
 }
 
-P3Optimizer::P3Optimizer(Problem& problem, std::function<void(const BestSolutionFoundData&)> onNewBestSolutionFound) :
+P3Optimizer::P3Optimizer(Problem& problem, std::function<void(BestSolutionFoundData*)> onNewBestSolutionFound) :
 	problem(problem),
 	onNewBestSolutionFound(std::move(onNewBestSolutionFound)),
-	interrupted(false),
 	stopCondtion(nullptr)
 {
 	std::random_device random_device;
@@ -58,14 +68,23 @@ P3Optimizer::P3Optimizer(Problem& problem, std::function<void(const BestSolution
 }
 
 void P3Optimizer::updateBest(Solution* solution) {
+	lastBestSolutionData = getSolutionData(solution);
+	onNewBestSolutionFound(&lastBestSolutionData);
+}
+
+BestSolutionFoundData* P3Optimizer::getLastFoundBestData() {
+	return &lastBestSolutionData;
+}
+
+BestSolutionFoundData P3Optimizer::getSolutionData(Solution* solution) {
 	BestSolutionFoundData data {
-		*solution->getPhenotypePtr(),
-		*solution->getGenotypePtr(),
+		solution->getPhenotypePtr(),
+		solution->getGenotypePtr(),
 		solution->getFitness(),
 		problem.getFitnessFunctionEvaluations(),
 		getElapsedTimeInSeconds()
 	};
-	onNewBestSolutionFound(data);
+	return data;
 }
 
 long P3Optimizer::getElapsedTimeInSeconds() {
