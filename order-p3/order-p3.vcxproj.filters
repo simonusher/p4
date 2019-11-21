@@ -108,6 +108,9 @@
     <ClInclude Include="include\order-p3\optimizer\P3Optimizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\order-p3\optimizer\StopCondition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\local_optimizers\SwapHillClimber.cpp">

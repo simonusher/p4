@@ -34,6 +34,7 @@
     <ClInclude Include="include\order-p3\optimizer\solution\ReencodingMixer.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\SolutionFactoryImpl.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\SolutionMixer.h" />
+    <ClInclude Include="include\order-p3\optimizer\StopCondition.h" />
     <ClInclude Include="include\order-p3\problem\deceptive_ordering\AbsoluteOrderingProblem.h" />
     <ClInclude Include="include\order-p3\problem\deceptive_ordering\RelativeOrderingProblem.h" />
     <ClInclude Include="include\order-p3\problem\FlowshopSchedulingProblem.h" />
