@@ -26,6 +26,7 @@
     <ClInclude Include="include\order-p3\optimizer\encoding\MaskedDecoder.h" />
     <ClInclude Include="include\order-p3\optimizer\encoding\MaskedEncoder.h" />
     <ClInclude Include="include\order-p3\optimizer\Linkage.h" />
+    <ClInclude Include="include\order-p3\optimizer\P3Optimizer.h" />
     <ClInclude Include="include\order-p3\optimizer\population\PopulationFactory.h" />
     <ClInclude Include="include\order-p3\optimizer\population\PopulationFactoryImpl.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\OptimalMixer.h" />
@@ -51,6 +52,7 @@
     <ClInclude Include="include\order-p3\optimizer\solution\SolutionFactory.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\order-p3\optimizer\P3Optimizer.cpp" />
     <ClCompile Include="src\local_optimizers\LocalOptimizer.cpp" />
     <ClCompile Include="src\local_optimizers\OptimalInversionHillClimber.cpp" />
     <ClCompile Include="src\local_optimizers\SwapHillClimber.cpp" />
