@@ -3,11 +3,28 @@
 #include <QTime>
 #include <QDateTime>
 #include <QChartView>
+#include <filesystem>
+#include <QMessageBox>
+
+template <typename T>
+QTextStream& operator<<(QTextStream& os, const std::vector<T>& vec) {
+	os << "[ ";
+	for (int i = 0; i < vec.size(); i++) {
+		os << vec[i];
+		if(i != vec.size() - 1) {
+			os << ", ";
+		}
+	}
+	os << " ]";
+	return os;
+}
+
 
 OrderP3GUI::OrderP3GUI(QWidget *parent)
 	: QMainWindow(parent), problem(nullptr), running(false), problemLoaded(false), elapsedTimer(nullptr)
 {
 	qRegisterMetaType<IterationData>();
+	qRegisterMetaType<FinalSolutionData>();
 	ui.setupUi(this);
 	running = false;
 	problemLoaded = false;
@@ -15,30 +32,43 @@ OrderP3GUI::OrderP3GUI(QWidget *parent)
 	chartSeries = new QtCharts::QLineSeries();
 	QtCharts::QChartView *chartView = new QtCharts::QChartView(chart);
     chart->addSeries(chartSeries);
-	QtCharts::QValueAxis *axisX = new QtCharts::QValueAxis;
-    axisX->setRange(0, 1000);
-    axisX->setLabelFormat("%g");
-    axisX->setTitleText("Samples");
-	QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis;
-    axisY->setRange(-1, 1);
-    axisY->setTitleText("Audio level");
-    chart->addAxis(axisX, Qt::AlignBottom);
-    chartSeries->attachAxis(axisX);
-    chart->addAxis(axisY, Qt::AlignLeft);
-    chartSeries->attachAxis(axisY);
+	xAxis = new QtCharts::QValueAxis;
+    xAxis ->setRange(0, 1000);
+    xAxis ->setLabelFormat("%g");
+    xAxis ->setTitleText("Iteration number");
+	yAxis = new QtCharts::QValueAxis;
+    yAxis->setRange(-1, 1);
+    yAxis->setTitleText(tr("Solution fitness"));
+    chart->addAxis(xAxis, Qt::AlignBottom);
+    chartSeries->attachAxis(xAxis);
+    chart->addAxis(yAxis, Qt::AlignLeft);
+    chartSeries->attachAxis(yAxis);
     chart->legend()->hide();
-    chart->setTitle("Data from the microphone ()");
+    chart->setTitle("Optimization");
 	ui.chart_layout->addWidget(chartView);
 }
 
 void OrderP3GUI::onStartButtonClicked()
 {
-	if(!running && problemLoaded)
+	if(!problemLoaded) {
+		QMessageBox::information(this, tr("Error"), tr("Please select a problem definition file first."));
+		return;
+	}
+	int selectedTimeInSeconds = getSelectedTimeInSeconds();
+	if(selectedTimeInSeconds <= 0) {
+		QMessageBox::information(this, tr("Error"), tr("Specified running time is incorrect"));
+		return;
+	}
+	if(!running)
 	{
 		running = true;
-		worker = new WorkerThread(problem, 20);
+		resetChart();
+		problem->reset();
+		executionTimeInSeconds = selectedTimeInSeconds;
+		worker = new WorkerThread(problem, selectedTimeInSeconds);
 		connect(worker, &WorkerThread::newBestFound, this, &OrderP3GUI::updateBestSolutionData);
 		connect(worker, &WorkerThread::iterationPassed, this, &OrderP3GUI::updateIterationData);
+		connect(worker, &WorkerThread::lastBestSolution, this, &OrderP3GUI::updateFinalSolutionData);
 		connect(worker, &WorkerThread::finished, this, &OrderP3GUI::stopExecution);
 		elapsedTimer = new QTimer(this);
 		startTime = std::chrono::steady_clock::now();
@@ -48,6 +78,8 @@ void OrderP3GUI::onStartButtonClicked()
 		ui.bt_start->setEnabled(false);
 		ui.bt_stop->setEnabled(true);
 		ui.bt_select_file->setEnabled(false);
+		ui.bt_save_best_solution->setEnabled(false);
+		ui.time_passed_progress_bar->setEnabled(true);
 	}
 }
 
@@ -69,23 +101,51 @@ void OrderP3GUI::stopExecution() {
 		ui.bt_start->setEnabled(true);
 		ui.bt_stop->setEnabled(false);
 		ui.bt_select_file->setEnabled(true);
+		ui.time_passed_progress_bar->setEnabled(false);
+		ui.time_passed_progress_bar->setValue(0);
 	}
 }
 
 void OrderP3GUI::onSelectFileButtonClicked() {
-	QString selectedFileName = QFileDialog::getOpenFileName(this, tr("Wybierz plik z definicj¹ problemu"), ".", tr("Pliki definicji problemu (*.txt)"));
-	if(!selectedFileName.isEmpty()) {
-		loadSelectedFile(selectedFileName);
+	QString selectedFilePath = QFileDialog::getOpenFileName(this, tr("Select problem definition file"), "", tr("Problem definition file (*.txt)"));
+	if(!selectedFilePath.isEmpty()) {
+		loadSelectedFile(selectedFilePath);
 	}
 }
 
-void OrderP3GUI::loadSelectedFile(const QString& fileName) {
+void OrderP3GUI::saveBestInSelectedLocation(const QString& saveFilePath) {
+	QFile file(saveFilePath);
+    if (!file.open(QIODevice::WriteOnly)) {
+        QMessageBox::information(this, tr("File couldn't be loaded"), file.errorString());
+    } else {
+	    QTextStream fileStream(&file);
+    	fileStream << "Problem: \n\t";
+    	fileStream << ui.lb_loaded_file_value->text() << "\n";
+    	fileStream << "Best found solution: \n\t";
+    	fileStream << finalSolutionData.phenotype;
+    	fileStream << "\n";
+    	fileStream << "Solution fitness: \n\t";
+    	fileStream << finalSolutionData.solutionFitness;
+        QMessageBox::information(this, tr("Success"), tr("Saved successfully"));
+    }
+}
+
+void OrderP3GUI::onSaveFileButtonClicked() {
+	QString selectedFilePath = QFileDialog::getSaveFileName(this, tr("Select where to save best solution"), "", tr("Text files (*.txt);;All files(*)"));
+	if(!selectedFilePath.isEmpty()) {
+		saveBestInSelectedLocation(selectedFilePath);
+	}
+}
+
+void OrderP3GUI::loadSelectedFile(const QString& filePath) {
 	FlowshopSchedulingProblem* problem = new FlowshopSchedulingProblem();
-	bool readCorrectly = problem->readFromFile(fileName.toStdString());
+	bool readCorrectly = problem->readFromFile(filePath.toStdString());
 	if(readCorrectly) {
 		delete this->problem;
 		this->problem = problem;
 		problemLoaded = true;
+		std::string fileName = std::filesystem::path(filePath.toStdString()).filename().string();
+		ui.lb_loaded_file_value->setText(QString::fromStdString(fileName));
 	} else {
 		qDebug() << "failed";
 		delete problem;
@@ -99,6 +159,14 @@ void OrderP3GUI::updateTimer() {
 	QTime time(0,0);
 	time = time.addSecs(seconds);
 	ui.lb_elapsed_time_value->setText(time.toString("mm:ss"));
+	double progress = static_cast<double>(seconds) / executionTimeInSeconds;
+	ui.time_passed_progress_bar->setValue(static_cast<int>(progress * 100));
+}
+
+int OrderP3GUI::getSelectedTimeInSeconds() {
+	QTime selectedTime = ui.timeEdit->time();
+	int timeInSeconds = selectedTime.hour() * 3600 + selectedTime.minute() * 60 + selectedTime.second();
+	return timeInSeconds;
 }
 
 void OrderP3GUI::updateBestSolutionData(BestSolutionData* bestSolutionData) {
@@ -108,9 +176,25 @@ void OrderP3GUI::updateBestSolutionData(BestSolutionData* bestSolutionData) {
 	QTime time(0, 0);
 	time = time.addSecs(seconds);
 	ui.lb_time_passed_value->setText(time.toString("mm:ss"));
+	if(!minFitnessSet) {
+		minFitnessSet = true;
+		yAxis->setMax(bestSolutionData->solutionFitness + 100);
+		yAxis->setMin(bestSolutionData->solutionFitness);
+	}
 }
 
 void OrderP3GUI::updateIterationData(const IterationData& iterationData) {
-	qDebug() << iterationData.bestFitness;
-	qDebug() << iterationData.ffeWhenFound;
+	chartSeries->append(iterationData.iterationNumber, iterationData.bestFitness);
+	xAxis->setMax(iterationData.iterationNumber);
+	yAxis->setMax(iterationData.bestFitness + 100);
+}
+
+void OrderP3GUI::updateFinalSolutionData(FinalSolutionData finalSolutionData) {
+	this->finalSolutionData = finalSolutionData;
+	ui.bt_save_best_solution->setEnabled(true);
+}
+
+void OrderP3GUI::resetChart() {
+	chartSeries->clear();
+	minFitnessSet = false;
 }

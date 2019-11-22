@@ -19,7 +19,7 @@ struct FinalSolutionData {
 
 struct IterationData {
 	double bestFitness;
-	int ffeWhenFound;
+	int iterationNumber;
 };
 
 struct BestSolutionData {

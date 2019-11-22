@@ -15,6 +15,9 @@ public:
 	virtual int getFitnessFunctionEvaluations() {
 		return ffe;
 	}
+	virtual void reset() {
+		ffe = 0;
+	}
 protected:
 	int problemSize;
 	int ffe;

@@ -40,7 +40,7 @@ void P3Optimizer::runIteration() {
 	if(onIterationPassed) {
 		onIterationPassed(IterationData{
 			lastBestSolutionData.solutionFitness,
-			lastBestSolutionData.fitnessFunctionEvaluationsPassedWhenFound
+			lastBestSolutionData.iterationNumber
 		});
 	}
 }

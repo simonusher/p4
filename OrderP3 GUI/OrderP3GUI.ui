@@ -14,13 +14,13 @@
    <string>OrderP3GUI</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout" rowstretch="1,2" columnstretch="0,0,0">
+   <layout class="QGridLayout" name="gridLayout" rowstretch="0,2" columnstretch="0,2,4">
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QPushButton" name="bt_select_file">
         <property name="text">
-         <string>Wczytaj plik</string>
+         <string>Load file</string>
         </property>
        </widget>
       </item>
@@ -41,14 +41,24 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="bt_save_best_solution">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Save best solution</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item row="0" column="1">
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0,0">
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="time_running">
         <property name="text">
-         <string>Czas działania[hh:mm:ss]</string>
+         <string>Set runnnig time[hh:mm:ss]</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -57,15 +67,74 @@
       </item>
       <item>
        <widget class="QTimeEdit" name="timeEdit">
+        <property name="maximumTime">
+         <time>
+          <hour>23</hour>
+          <minute>59</minute>
+          <second>59</second>
+         </time>
+        </property>
         <property name="displayFormat">
          <string>HH:mm:ss</string>
+        </property>
+        <property name="time">
+         <time>
+          <hour>0</hour>
+          <minute>1</minute>
+          <second>0</second>
+         </time>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Time passed progress</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QProgressBar" name="time_passed_progress_bar">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+        <property name="textVisible">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
      </layout>
     </item>
     <item row="0" column="2">
-     <layout class="QGridLayout" name="metadata_grid_layout" rowstretch="0,0,0,0,0" columnstretch="0,0">
+     <layout class="QGridLayout" name="metadata_grid_layout" rowstretch="0,0,0,0,0" columnstretch="0,1" columnminimumwidth="0,100">
       <property name="leftMargin">
        <number>10</number>
       </property>
@@ -85,7 +154,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="lb_time">
         <property name="text">
-         <string>Czas znalezienia:</string>
+         <string>Time when found:</string>
         </property>
        </widget>
       </item>
@@ -99,14 +168,14 @@
       <item row="2" column="0">
        <widget class="QLabel" name="lb_best_solution">
         <property name="text">
-         <string>Najlepsze rozwiązanie</string>
+         <string>Best solution:</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="lb_ffe">
         <property name="text">
-         <string>Ewaluacje funkcji celu:</string>
+         <string>FFE:</string>
         </property>
        </widget>
       </item>
@@ -120,7 +189,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="lb_time_passed">
         <property name="text">
-         <string>Czas działania:</string>
+         <string>Elapsed time:</string>
         </property>
        </widget>
       </item>
@@ -134,7 +203,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="lb_loaded_file">
         <property name="text">
-         <string>Wczytany plik:</string>
+         <string>Loaded file:</string>
         </property>
        </widget>
       </item>
@@ -166,8 +235,8 @@
    <slot>onStartButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>660</x>
-     <y>165</y>
+     <x>243</x>
+     <y>69</y>
     </hint>
     <hint type="destinationlabel">
      <x>395</x>
@@ -182,8 +251,8 @@
    <slot>onStopButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>670</x>
-     <y>195</y>
+     <x>243</x>
+     <y>102</y>
     </hint>
     <hint type="destinationlabel">
      <x>559</x>
@@ -198,12 +267,28 @@
    <slot>onSelectFileButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>650</x>
-     <y>135</y>
+     <x>243</x>
+     <y>36</y>
     </hint>
     <hint type="destinationlabel">
      <x>555</x>
      <y>278</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bt_save_best_solution</sender>
+   <signal>clicked()</signal>
+   <receiver>OrderP3GUIClass</receiver>
+   <slot>onSaveFileButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>128</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>508</x>
+     <y>362</y>
     </hint>
    </hints>
   </connection>
@@ -212,5 +297,6 @@
   <slot>onStartButtonClicked()</slot>
   <slot>onStopButtonClicked()</slot>
   <slot>onSelectFileButtonClicked()</slot>
+  <slot>onSaveFileButtonClicked()</slot>
  </slots>
 </ui>

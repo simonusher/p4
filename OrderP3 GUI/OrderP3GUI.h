@@ -14,6 +14,7 @@
 #include <QtCharts/QValueAxis>
 
 Q_DECLARE_METATYPE(IterationData)
+Q_DECLARE_METATYPE(FinalSolutionData)
 class WorkerThread : public QThread
 {
     Q_OBJECT
@@ -54,20 +55,30 @@ private slots:
 	void onStartButtonClicked();
 	void onStopButtonClicked();
 	void onSelectFileButtonClicked();
-	void loadSelectedFile(const QString& fileName);
+	void saveBestInSelectedLocation(const QString& saveFilePath);
+	void onSaveFileButtonClicked();
+	void loadSelectedFile(const QString& filePath);
 	void updateTimer();
 	void stopExecution();
 private:
 	std::chrono::steady_clock::time_point startTime;
 	QtCharts::QChart* chart;
 	QtCharts::QLineSeries* chartSeries;
+	QtCharts::QValueAxis* xAxis;
+	QtCharts::QValueAxis* yAxis;
+	bool minFitnessSet = false;
 	
 	QTimer* elapsedTimer;
 	Problem* problem;
 	bool problemLoaded;
 	Ui::OrderP3GUIClass ui;
 	bool running;
+	int executionTimeInSeconds;
+	int getSelectedTimeInSeconds();
 	void updateBestSolutionData(BestSolutionData* bestSolutionData);
 	void updateIterationData(const IterationData& iterationData);
+	void updateFinalSolutionData(FinalSolutionData finalSolutionData);
+	void resetChart();
 	WorkerThread* worker;
+	FinalSolutionData finalSolutionData;
 };
