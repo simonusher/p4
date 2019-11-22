@@ -17,22 +17,32 @@ void P3Optimizer::initializeFfeStopCondition(int fitnessFunctionEvaluationsThres
 }
 
 P3Optimizer* P3Optimizer::createOptimizerWithTimeConstraint(Problem* problem, 
-	const std::function<void(BestSolutionFoundData*)>& onNewBestSolutionFound, 
-	unsigned long long executionTimeInSeconds)
+	const std::function<void(BestSolutionData*)>& onNewBestSolutionFound, 
+	unsigned long long executionTimeInSeconds,
+	const std::function<void(const IterationData&)>& onIterationPassed)
 {
-	P3Optimizer* optimizer = new P3Optimizer(*problem, onNewBestSolutionFound);
+	P3Optimizer* optimizer = new P3Optimizer(*problem, onNewBestSolutionFound, onIterationPassed);
 	optimizer->initializeTimeStopCondition(executionTimeInSeconds);
 	return optimizer;
 }
 
-P3Optimizer* P3Optimizer::createOptimizerWithFfeConstraint(Problem* problem, const std::function<void(BestSolutionFoundData*)> & onNewBestSolutionFound, int ffeThreshold) {
-	P3Optimizer* optimizer = new P3Optimizer(*problem, onNewBestSolutionFound);
+P3Optimizer* P3Optimizer::createOptimizerWithFfeConstraint(Problem* problem, const std::function<void(BestSolutionData*)> & onNewBestSolutionFound, int ffeThreshold,
+	const std::function<void(const IterationData&)>& onIterationPassed) {
+	P3Optimizer* optimizer = new P3Optimizer(*problem, onNewBestSolutionFound, onIterationPassed);
 	optimizer->initializeFfeStopCondition(ffeThreshold);
+	optimizer->startTime = stdClock::now();
 	return optimizer;
 }
 
 void P3Optimizer::runIteration() {
 	pyramid->runSingleIteration();
+	iterationsPassed++;
+	if(onIterationPassed) {
+		onIterationPassed(IterationData{
+			lastBestSolutionData.solutionFitness,
+			lastBestSolutionData.fitnessFunctionEvaluationsPassedWhenFound
+		});
+	}
 }
 
 bool P3Optimizer::finished() {
@@ -51,10 +61,11 @@ P3Optimizer::~P3Optimizer() {
 	delete stopCondtion;
 }
 
-P3Optimizer::P3Optimizer(Problem& problem, std::function<void(BestSolutionFoundData*)> onNewBestSolutionFound) :
+P3Optimizer::P3Optimizer(Problem& problem, std::function<void(BestSolutionData*)> onNewBestSolutionFound, std::function<void(const IterationData&)> onIterationPassed) :
 	problem(problem),
 	onNewBestSolutionFound(std::move(onNewBestSolutionFound)),
-	stopCondtion(nullptr)
+	stopCondtion(nullptr),
+	onIterationPassed(std::move(onIterationPassed))
 {
 	std::random_device random_device;
 	randomGenerator = new std::mt19937(random_device());
@@ -72,23 +83,29 @@ void P3Optimizer::updateBest(Solution* solution) {
 	onNewBestSolutionFound(&lastBestSolutionData);
 }
 
-BestSolutionFoundData* P3Optimizer::getLastFoundBestData() {
-	return &lastBestSolutionData;
+FinalSolutionData P3Optimizer::getLastFoundBestData() {
+	return FinalSolutionData {
+		pyramid->getBestSolution()->getGenotype(),
+		pyramid->getBestSolution()->getPhenotype(),
+		pyramid->getBestSolution()->getFitness(),
+		lastBestSolutionData.fitnessFunctionEvaluationsPassedWhenFound,
+		lastBestSolutionData.elapsedTimeInSeconds,
+		lastBestSolutionData.iterationNumber
+	};
 }
 
-BestSolutionFoundData P3Optimizer::getSolutionData(Solution* solution) {
-	BestSolutionFoundData data {
-		solution->getPhenotypePtr(),
-		solution->getGenotypePtr(),
+BestSolutionData P3Optimizer::getSolutionData(Solution* solution) {
+	BestSolutionData data {
 		solution->getFitness(),
 		problem.getFitnessFunctionEvaluations(),
-		getElapsedTimeInSeconds()
+		getElapsedTimeInSeconds(),
+		iterationsPassed
 	};
 	return data;
 }
 
-long P3Optimizer::getElapsedTimeInSeconds() {
+double P3Optimizer::getElapsedTimeInSeconds() {
 	auto now = stdClock::now();
-	auto elapsed = chrono::duration_cast<chrono::seconds>(now - startTime);
+	chrono::duration<double> elapsed = now - startTime;
 	return elapsed.count();
 }
