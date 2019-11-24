@@ -55,7 +55,7 @@ void runTest(int problemIndex, Problem& problem, bool removeDuplicatesUpper, boo
 	RandomKeyDecoder decoder;
 	SolutionFactory factoryImpl(encoder, decoder);
 	RandomRescalingOptimalMixer mixerImpl(problem, 0.1, 0, 1, randomGenerator);
-	PopulationFactory popFactoryImpl(problem, mixerImpl, randomGenerator);
+	PopulationFactory popFactoryImpl(problem.getProblemSize(), mixerImpl, randomGenerator);
 
 	LocalOptimizer* localOptimizer;
 	if (useLocalOptimizer)
@@ -111,7 +111,7 @@ void test2() {
 	NullOptimizer optimizer(problem);
 	RandomRescalingOptimalMixer mixer(problem, 0.1, 0, 1, randomGenerator);
 	SolutionFactory solutionFactory(encoder, decoder);
-	PopulationFactory populationFactory(problem, mixer, randomGenerator);
+	PopulationFactory populationFactory(problem.getProblemSize(), mixer, randomGenerator);
 	double best_fitness = std::numeric_limits<double>::lowest();
 	int ffeFound = 0;
 	

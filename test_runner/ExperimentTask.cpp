@@ -56,7 +56,7 @@ void ExperimentTask::runExperiment(int experimentNumber) {
 	RandomKeyDecoder decoder;
 	SolutionFactory factoryImpl(encoder, decoder);
 	RandomRescalingOptimalMixer mixerImpl(problem, 0.1, 0, 1, randomGenerator);
-	PopulationFactory popFactoryImpl(problem, mixerImpl, randomGenerator);
+	PopulationFactory popFactoryImpl(problem.getProblemSize(), mixerImpl, randomGenerator);
 
 	Pyramid pyramid(problem, factoryImpl, popFactoryImpl, optimizer, [&](Solution* solution) {
 		if(problem.getFitnessFunctionEvaluations() < ffeBudget) {
