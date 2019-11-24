@@ -5,6 +5,7 @@
 #include "../order-p3/include/order-p3/optimizer/solution/SolutionFactoryImpl.h"
 #include "../order-p3/include/order-p3/optimizer/solution/RandomRescalingOptimalMixer.h"
 #include "../order-p3/include/order-p3/optimizer/population/PopulationFactoryImpl.h"
+#include "../order-p3/include/order-p3/local_optimizers/SwapHillClimber.h"
 
 
 template <typename T>

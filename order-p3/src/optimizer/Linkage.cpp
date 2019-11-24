@@ -24,7 +24,8 @@ Linkage::Linkage(int problemSize, std::mt19937& randomGenerator) :
 
 void Linkage::update(Solution* newSolution, int currentPopulationSize) {
 	updateLinkageInformation(newSolution, currentPopulationSize);
-	rebuildTree();}
+	rebuildTree();
+}
 
 Linkage::ClusterIterator::ClusterIterator(size_t currentIndex, Linkage& linkage) :
 	currentClusterOrderingIndex(currentIndex), linkage(linkage) {
@@ -180,7 +181,7 @@ void Linkage::rebuildTree() {
 		// merge the two clusters
 		clusters[index].insert(clusters[index].end(), clusters[second].begin(),
 			clusters[second].end());
-
+      
 		// Calculate distances from all clusters to the newly created cluster
 		int i = 0;
 		int end = usable.size() - 1;
