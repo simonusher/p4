@@ -3,10 +3,10 @@
 
 class PopulationFactory {
 public:
-	PopulationFactory(Problem& problem, SolutionMixer& solutionMixer, std::mt19937& randomGenerator);
+	PopulationFactory(int problemSize, SolutionMixer& solutionMixer, std::mt19937& randomGenerator);
 	Population* newPopulation();
 private:
 	std::mt19937& randomGenerator;
 	SolutionMixer& solutionMixer;
-	Problem& problem;
+	int problemSize;
 };

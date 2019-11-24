@@ -72,7 +72,7 @@ P3Optimizer::P3Optimizer(Problem& problem, std::function<void(BestSolutionData*)
 	decoder = new RandomKeyDecoder();
 	solutionFactory = new SolutionFactory(*encoder, *decoder);
 	solutionMixer = new RandomRescalingOptimalMixer(problem, DEFAULT_RESCALING_PROBABILITY, 0.0, 1.0, *randomGenerator);
-	populationFactory = new PopulationFactory(problem, *solutionMixer, *randomGenerator);
+	populationFactory = new PopulationFactory(problem.getProblemSize(), *solutionMixer, *randomGenerator);
 	pyramid = new Pyramid(problem, *solutionFactory, *populationFactory, *localOptimizer, [&](Solution* solution) { this->updateBest(solution); });
 }
 
