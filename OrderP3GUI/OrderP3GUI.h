@@ -17,27 +17,27 @@ Q_DECLARE_METATYPE(IterationData)
 Q_DECLARE_METATYPE(FinalSolutionData)
 class WorkerThread : public QThread
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 	WorkerThread(Problem* problem, unsigned long long executionTimeInSeconds) : problem(problem), optimizer(nullptr) {
-    	optimizer = P3Optimizer::createOptimizerWithTimeConstraint(problem, 
-			[&](BestSolutionData* bestSolutionData){ emit newBestFound(bestSolutionData); }, executionTimeInSeconds,
-							 [&](const IterationData& iterationData) { emit iterationPassed(iterationData); });
+		optimizer = P3Optimizer::createOptimizerWithTimeConstraint(problem,
+			[&](BestSolutionData* bestSolutionData) { emit newBestFound(bestSolutionData); }, executionTimeInSeconds,
+			[&](const IterationData& iterationData) { emit iterationPassed(iterationData); });
 	}
 	~WorkerThread()
-    {
-    	delete optimizer;
-	    qDebug() << "done";
-    }
-    void run() override {
-    	
-        while (!isInterruptionRequested() && !optimizer->finished()) {
-	        optimizer->runIteration();
-        }
-        emit lastBestSolution(optimizer->getLastFoundBestData());
-    }
+	{
+		delete optimizer;
+		qDebug() << "done";
+	}
+	void run() override {
+
+		while (!isInterruptionRequested() && !optimizer->finished()) {
+			optimizer->runIteration();
+		}
+		emit lastBestSolution(optimizer->getLastFoundBestData());
+	}
 signals:
-    void lastBestSolution(FinalSolutionData bestSolutionData);
+	void lastBestSolution(FinalSolutionData bestSolutionData);
 	void newBestFound(BestSolutionData* newBestSolutionData);
 	void iterationPassed(const IterationData& iterationData);
 private:
@@ -50,7 +50,7 @@ class OrderP3GUI : public QMainWindow
 	Q_OBJECT
 
 public:
-	OrderP3GUI(QWidget *parent = Q_NULLPTR);
+	OrderP3GUI(QWidget* parent = Q_NULLPTR);
 private slots:
 	void onStartButtonClicked();
 	void onStopButtonClicked();
@@ -67,7 +67,7 @@ private:
 	QtCharts::QValueAxis* xAxis;
 	QtCharts::QValueAxis* yAxis;
 	bool minFitnessSet = false;
-	
+
 	QTimer* elapsedTimer;
 	Problem* problem;
 	bool problemLoaded;

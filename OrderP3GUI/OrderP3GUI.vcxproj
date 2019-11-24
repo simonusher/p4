@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
+    <ProjectGuid>{09F72439-3CD3-490B-B1C2-9F52AA2387E2}</ProjectGuid>
     <Keyword>QtVS_v301</Keyword>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -67,7 +67,6 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -97,10 +96,10 @@
     <QtMoc Include="OrderP3GUI.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="OrderP3GUI.ui" />
+    <QtRcc Include="OrderP3GUI.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="OrderP3GUI.qrc" />
+    <QtUic Include="OrderP3GUI.ui" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\order-p3\order-p3.vcxproj">
