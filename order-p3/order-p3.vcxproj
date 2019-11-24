@@ -28,11 +28,9 @@
     <ClInclude Include="include\order-p3\optimizer\Linkage.h" />
     <ClInclude Include="include\order-p3\optimizer\P3Optimizer.h" />
     <ClInclude Include="include\order-p3\optimizer\population\PopulationFactory.h" />
-    <ClInclude Include="include\order-p3\optimizer\population\PopulationFactoryImpl.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\OptimalMixer.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\RandomRescalingOptimalMixer.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\ReencodingMixer.h" />
-    <ClInclude Include="include\order-p3\optimizer\solution\SolutionFactoryImpl.h" />
     <ClInclude Include="include\order-p3\optimizer\solution\SolutionMixer.h" />
     <ClInclude Include="include\order-p3\optimizer\StopCondition.h" />
     <ClInclude Include="include\order-p3\problem\deceptive_ordering\AbsoluteOrderingProblem.h" />
@@ -61,13 +59,13 @@
     <ClCompile Include="src\optimizer\encoding\MaskedEncoder.cpp" />
     <ClCompile Include="src\optimizer\Linkage.cpp" />
     <ClCompile Include="src\optimizer\population\Population.cpp" />
-    <ClCompile Include="src\optimizer\population\PopulationFactoryImpl.cpp" />
+    <ClCompile Include="src\optimizer\population\PopulationFactory.cpp" />
     <ClCompile Include="src\optimizer\Pyramid.cpp" />
     <ClCompile Include="src\optimizer\encoding\RandomKeyDecoder.cpp" />
     <ClCompile Include="src\optimizer\encoding\RandomKeyEncoder.cpp" />
     <ClCompile Include="src\optimizer\solution\OptimalMixer.cpp" />
     <ClCompile Include="src\optimizer\solution\RandomRescalingOptimalMixer.cpp" />
-    <ClCompile Include="src\optimizer\solution\SolutionFactoryImpl.cpp" />
+    <ClCompile Include="src\optimizer\solution\SolutionFactory.cpp" />
     <ClCompile Include="src\problem\deceptive_ordering\AbsoluteOrderingProblem.cpp" />
     <ClCompile Include="src\problem\deceptive_ordering\RelativeOrderingProblem.cpp" />
     <ClCompile Include="src\problem\FlowshopSchedulingProblem.cpp" />

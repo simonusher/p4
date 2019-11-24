@@ -3,6 +3,10 @@
 
 class PopulationFactory {
 public:
-	virtual ~PopulationFactory() = default;
-	virtual Population* newPopulation() = 0;
+	PopulationFactory(Problem& problem, SolutionMixer& solutionMixer, std::mt19937& randomGenerator);
+	Population* newPopulation();
+private:
+	std::mt19937& randomGenerator;
+	SolutionMixer& solutionMixer;
+	Problem& problem;
 };

@@ -3,6 +3,10 @@
 
 class SolutionFactory {
 public:
-	virtual ~SolutionFactory() = default;
-	virtual Solution* nextSolution() = 0;
+	SolutionFactory(RandomKeyEncoder& encoder, RandomKeyDecoder& decoder);
+	Solution* nextSolution();
+
+private:
+	RandomKeyEncoder& encoder;
+	RandomKeyDecoder& decoder;
 };

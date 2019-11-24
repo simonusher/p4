@@ -1,7 +1,6 @@
 #include "../order-p3/include/order-p3/optimizer/encoding/RandomKeyEncoder.h"
 #include "../order-p3/include/order-p3/optimizer/encoding/RandomKeyDecoder.h"
 #include "../order-p3/include/order-p3/optimizer/solution/SolutionFactory.h"
-#include "../order-p3/include/order-p3/optimizer/solution/SolutionFactoryImpl.h"
 #include "../order-p3/include/order-p3/problem/travelling_thief/TTPProblem.h"
 #include "../order-p3/include/order-p3/local_optimizers/LocalOptimizer.h"
 #include "../order-p3/include/order-p3/local_optimizers/SwapHillClimber.h"
@@ -19,7 +18,6 @@
 #include <filesystem>
 #include "../order-p3/include/order-p3/optimizer/solution/ReencodingMixer.h"
 #include "../order-p3/include/order-p3/optimizer/encoding/MaskedEncoder.h"
-#include "../order-p3/include/order-p3/optimizer/population/PopulationFactoryImpl.h"
 
 
 template <typename T>
@@ -55,9 +53,9 @@ void runTest(int problemIndex, Problem& problem, bool removeDuplicatesUpper, boo
 	NullOptimizer optimizer(problem);
 	RandomKeyEncoder encoder(0, 1, problem.getProblemSize(), randomGenerator);
 	RandomKeyDecoder decoder;
-	SolutionFactoryImpl factoryImpl(encoder, decoder);
+	SolutionFactory factoryImpl(encoder, decoder);
 	RandomRescalingOptimalMixer mixerImpl(problem, 0.1, 0, 1, randomGenerator);
-	PopulationFactoryImpl popFactoryImpl(problem, mixerImpl, randomGenerator);
+	PopulationFactory popFactoryImpl(problem, mixerImpl, randomGenerator);
 
 	LocalOptimizer* localOptimizer;
 	if (useLocalOptimizer)
@@ -112,8 +110,8 @@ void test2() {
 	RandomKeyDecoder decoder;
 	NullOptimizer optimizer(problem);
 	RandomRescalingOptimalMixer mixer(problem, 0.1, 0, 1, randomGenerator);
-	SolutionFactoryImpl solutionFactory(encoder, decoder);
-	PopulationFactoryImpl populationFactory(problem, mixer, randomGenerator);
+	SolutionFactory solutionFactory(encoder, decoder);
+	PopulationFactory populationFactory(problem, mixer, randomGenerator);
 	double best_fitness = std::numeric_limits<double>::lowest();
 	int ffeFound = 0;
 	

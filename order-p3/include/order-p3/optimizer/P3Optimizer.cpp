@@ -2,9 +2,7 @@
 #include "../../../include/order-p3/optimizer/P3Optimizer.h"
 #include "../problem/FlowshopSchedulingProblem.h"
 #include "../local_optimizers/NullOptimizer.h"
-#include "solution/SolutionFactoryImpl.h"
 #include "solution/RandomRescalingOptimalMixer.h"
-#include "population/PopulationFactoryImpl.h"
 
 void P3Optimizer::initializeTimeStopCondition(unsigned long long timeInSeconds) {
 	startTime = stdClock::now();
@@ -72,9 +70,9 @@ P3Optimizer::P3Optimizer(Problem& problem, std::function<void(BestSolutionData*)
 	localOptimizer = new NullOptimizer(problem);
 	encoder = new RandomKeyEncoder(0, 1, problem.getProblemSize(), *randomGenerator);
 	decoder = new RandomKeyDecoder();
-	solutionFactory = new SolutionFactoryImpl(*encoder, *decoder);
+	solutionFactory = new SolutionFactory(*encoder, *decoder);
 	solutionMixer = new RandomRescalingOptimalMixer(problem, DEFAULT_RESCALING_PROBABILITY, 0.0, 1.0, *randomGenerator);
-	populationFactory = new PopulationFactoryImpl(problem, *solutionMixer, *randomGenerator);
+	populationFactory = new PopulationFactory(problem, *solutionMixer, *randomGenerator);
 	pyramid = new Pyramid(problem, *solutionFactory, *populationFactory, *localOptimizer, [&](Solution* solution) { this->updateBest(solution); });
 }
 

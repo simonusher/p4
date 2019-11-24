@@ -51,9 +51,6 @@
     <ClInclude Include="include\order-p3\optimizer\solution\OptimalMixer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\order-p3\optimizer\solution\SolutionFactoryImpl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\order-p3\problem\travelling_thief\City.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -99,9 +96,6 @@
     <ClInclude Include="include\order-p3\optimizer\population\PopulationFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\order-p3\optimizer\population\PopulationFactoryImpl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\order-p3\optimizer\Linkage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -135,9 +129,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\optimizer\solution\OptimalMixer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\optimizer\solution\SolutionFactoryImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\problem\travelling_thief\City.cpp">
@@ -176,13 +167,16 @@
     <ClCompile Include="src\optimizer\population\Population.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\optimizer\population\PopulationFactoryImpl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\optimizer\Linkage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="include\order-p3\optimizer\P3Optimizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\optimizer\solution\SolutionFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\optimizer\population\PopulationFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
