@@ -91,6 +91,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OrderP3GUI.cpp" />
+    <ClCompile Include="WorkerThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="OrderP3GUI.h" />
@@ -105,6 +106,12 @@
     <ProjectReference Include="..\order-p3\order-p3.vcxproj">
       <Project>{2ee83da6-4853-4a15-876e-dcf89af66d03}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="WorkerThread.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

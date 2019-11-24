@@ -108,7 +108,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Time passed progress</string>
+         <string>Optimization progress</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -127,7 +127,7 @@
          <number>0</number>
         </property>
         <property name="textVisible">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>

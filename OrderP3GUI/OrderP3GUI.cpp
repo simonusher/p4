@@ -1,51 +1,25 @@
 #include "OrderP3GUI.h"
 #include <QFileDialog>
 #include <QTime>
-#include <QDateTime>
 #include <QChartView>
 #include <filesystem>
 #include <QMessageBox>
+#include "Utils.h"
+using namespace utils;
 
-template <typename T>
-QTextStream& operator<<(QTextStream& os, const std::vector<T>& vec) {
-	os << "[ ";
-	for (int i = 0; i < vec.size(); i++) {
-		os << vec[i];
-		if (i != vec.size() - 1) {
-			os << ", ";
-		}
-	}
-	os << " ]";
-	return os;
-}
-
-
-OrderP3GUI::OrderP3GUI(QWidget* parent)
-	: QMainWindow(parent), problem(nullptr), running(false), problemLoaded(false), elapsedTimer(nullptr)
+OrderP3GUI::OrderP3GUI(QWidget* parent) :
+	QMainWindow(parent),
+	elapsedTimer(nullptr),
+	problem(nullptr),
+	problemLoaded(false),
+	running(false)
 {
 	qRegisterMetaType<IterationData>();
 	qRegisterMetaType<FinalSolutionData>();
 	ui.setupUi(this);
+	initializeChart();
 	running = false;
 	problemLoaded = false;
-	chart = new QtCharts::QChart();
-	chartSeries = new QtCharts::QLineSeries();
-	QtCharts::QChartView* chartView = new QtCharts::QChartView(chart);
-	chart->addSeries(chartSeries);
-	xAxis = new QtCharts::QValueAxis;
-	xAxis->setRange(0, 1000);
-	xAxis->setLabelFormat("%g");
-	xAxis->setTitleText("Iteration number");
-	yAxis = new QtCharts::QValueAxis;
-	yAxis->setRange(-1, 1);
-	yAxis->setTitleText(tr("Solution fitness"));
-	chart->addAxis(xAxis, Qt::AlignBottom);
-	chartSeries->attachAxis(xAxis);
-	chart->addAxis(yAxis, Qt::AlignLeft);
-	chartSeries->attachAxis(yAxis);
-	chart->legend()->hide();
-	chart->setTitle("Optimization");
-	ui.chart_layout->addWidget(chartView);
 }
 
 void OrderP3GUI::onStartButtonClicked()
@@ -102,7 +76,7 @@ void OrderP3GUI::stopExecution() {
 		ui.bt_stop->setEnabled(false);
 		ui.bt_select_file->setEnabled(true);
 		ui.time_passed_progress_bar->setEnabled(false);
-		ui.time_passed_progress_bar->setValue(0);
+		ui.time_passed_progress_bar->setValue(100);
 	}
 }
 
@@ -149,7 +123,6 @@ void OrderP3GUI::loadSelectedFile(const QString& filePath) {
 		ui.lb_loaded_file_value->setText(QString::fromStdString(fileName));
 	}
 	else {
-		qDebug() << "failed";
 		delete problem;
 	}
 }
@@ -194,6 +167,27 @@ void OrderP3GUI::updateIterationData(const IterationData& iterationData) {
 void OrderP3GUI::updateFinalSolutionData(FinalSolutionData finalSolutionData) {
 	this->finalSolutionData = finalSolutionData;
 	ui.bt_save_best_solution->setEnabled(true);
+}
+
+void OrderP3GUI::initializeChart() {
+	chart = new QtCharts::QChart();
+	chartSeries = new QtCharts::QLineSeries();
+	QtCharts::QChartView* chartView = new QtCharts::QChartView(chart);
+	chart->addSeries(chartSeries);
+	xAxis = new QtCharts::QValueAxis;
+	xAxis->setRange(0, 1000);
+	xAxis->setLabelFormat("%d");
+	xAxis->setTitleText("Iteration number");
+	yAxis = new QtCharts::QValueAxis;
+	yAxis->setRange(-1, 1);
+	yAxis->setTitleText(tr("Solution fitness"));
+	chart->addAxis(xAxis, Qt::AlignBottom);
+	chartSeries->attachAxis(xAxis);
+	chart->addAxis(yAxis, Qt::AlignLeft);
+	chartSeries->attachAxis(yAxis);
+	chart->legend()->hide();
+	chart->setTitle("Optimization");
+	ui.chart_layout->addWidget(chartView);
 }
 
 void OrderP3GUI::resetChart() {
