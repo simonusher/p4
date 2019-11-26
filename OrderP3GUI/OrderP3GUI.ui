@@ -67,6 +67,16 @@
       </item>
       <item>
        <widget class="QTimeEdit" name="timeEdit">
+        <property name="minimumDateTime">
+         <datetime>
+          <hour>0</hour>
+          <minute>0</minute>
+          <second>1</second>
+          <year>2000</year>
+          <month>1</month>
+          <day>1</day>
+         </datetime>
+        </property>
         <property name="maximumTime">
          <time>
           <hour>23</hour>

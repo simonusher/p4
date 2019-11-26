@@ -90,7 +90,7 @@ void OrderP3GUI::onSelectFileButtonClicked() {
 void OrderP3GUI::saveBestInSelectedLocation(const QString& saveFilePath) {
 	QFile file(saveFilePath);
 	if (!file.open(QIODevice::WriteOnly)) {
-		QMessageBox::information(this, tr("File couldn't be loaded"), file.errorString());
+		QMessageBox::critical(this, tr("File couldn't be saved"), file.errorString());
 	}
 	else {
 		QTextStream fileStream(&file);
@@ -124,6 +124,7 @@ void OrderP3GUI::loadSelectedFile(const QString& filePath) {
 	}
 	else {
 		delete problem;
+		QMessageBox::critical(this, tr("Incorrect file format"), tr("Provided file couln't be loaded due to incorrect format"));
 	}
 }
 

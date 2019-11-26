@@ -1,5 +1,6 @@
 #include "../../include/order-p3/problem/FlowshopSchedulingProblem.h"
 #include <iostream>
+#include <regex>
 
 double FlowshopSchedulingProblem::evaluate(std::vector<int>& solution)
 {
@@ -31,17 +32,31 @@ bool FlowshopSchedulingProblem::readFromFile(const std::string& fileName) {
 		std::string line;
 		try {
 			if(std::getline(infile, line)) {
+				std::regex headerRegex(R"(^\s*\d+\s+\d+\s*$)");
+				if(!std::regex_match(line, headerRegex)) {
+					return false;
+				}
 				std::istringstream iss(line);
 				int time;
 				iss >> nJobs >> nMachines;
 				problemSize = nJobs;
+				std::stringstream lineRegexStream;
+				lineRegexStream << R"(^\s*(\d+\s+){)" << (nJobs - 1) << "}" << R"(\d+\s*$)";
+				std::cout << lineRegexStream.str() << std::endl;
+				std::regex lineRegex(lineRegexStream.str());
 				processingTimes = std::vector<std::vector<int>>(nJobs, std::vector<int>(nMachines));
 				for (int m = 0; m < nMachines; m++) {
-					std::getline(infile, line);
-					std::istringstream iss(line);
-					for (int j = 0; j < nJobs; j++) {
-						iss >> time;
-						processingTimes[j][m] = time;
+					if(std::getline(infile, line)) {
+						if (!std::regex_match(line, lineRegex)) {
+							return false;
+						}
+						std::istringstream iss(line);
+						for (int j = 0; j < nJobs; j++) {
+							iss >> time;
+							processingTimes[j][m] = time;
+						}
+					} else {
+						return false;
 					}
 				}
 				fitnessCalculationCache = std::vector<std::vector<int>>(nJobs, std::vector<int>(nMachines));
