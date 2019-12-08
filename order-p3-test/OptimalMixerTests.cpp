@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "../order-p3/include/order-p3/problem/Problem.h"
 #include "../order-p3/include/order-p3/optimizer/solution/OptimalMixer.h"
-#include "gmock/gmock.h"
 
 class ProblemMock: public Problem {
 public:

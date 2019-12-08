@@ -40,14 +40,22 @@ bool FlowshopSchedulingProblem::readFromFile(const std::string& fileName) {
 				int time;
 				iss >> nJobs >> nMachines;
 				problemSize = nJobs;
-				std::stringstream lineRegexStream;
-				lineRegexStream << R"(^\s*(\d+\s+){)" << (nJobs - 1) << "}" << R"(\d+\s*$)";
-				std::cout << lineRegexStream.str() << std::endl;
-				std::regex lineRegex(lineRegexStream.str());
+				std::regex itemRegex(R"(^(\d+\s+))");
+				std::regex lastItemRegex(R"(^(\d+\s*))");
 				processingTimes = std::vector<std::vector<int>>(nJobs, std::vector<int>(nMachines));
 				for (int m = 0; m < nMachines; m++) {
 					if(std::getline(infile, line)) {
-						if (!std::regex_match(line, lineRegex)) {
+						std::string lineCopy(line);
+						for(int i = 0; i < nJobs - 1; i++) {
+							std::smatch match;
+							bool matched = std::regex_search(lineCopy, match, itemRegex);
+							if(matched) {
+								lineCopy = lineCopy.substr(match.length());
+							} else {
+								return false;
+							}
+						}
+						if(!std::regex_match(lineCopy, lastItemRegex)) {
 							return false;
 						}
 						std::istringstream iss(line);
