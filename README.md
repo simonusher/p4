@@ -89,15 +89,15 @@ Project Link: [https://github.com/simonusher/p4](https://github.com/simonusher/p
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/simonusher/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/simonusher/repo/graphs/contributors
+[contributors-url]: https://github.com/simonusher/p4/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/simonusher/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/simonusher/repo/network/members
+[forks-url]: https://github.com/simonusher/p4/network/members
 [stars-shield]: https://img.shields.io/github/stars/simonusher/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/simonusher/repo/stargazers
+[stars-url]: https://github.com/simonusher/p4/stargazers
 [issues-shield]: https://img.shields.io/github/issues/simonusher/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/simonusher/repo/issues
+[issues-url]: https://github.com/simonusher/p4/issues
 [license-shield]: https://img.shields.io/github/license/simonusher/repo.svg?style=for-the-badge
-[license-url]: https://github.com/simonusher/repo/blob/master/LICENSE.txt
+[license-url]: https://github.com/simonusher/p4/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/szymon-wo%C5%BAniak-00505318a/
 [p4-paper]: https://link.springer.com/chapter/10.1007/978-3-030-58112-1_29
