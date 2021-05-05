@@ -71,7 +71,7 @@ The code includes a simple UI in Qt, but the core optimizer parts are located in
 <!-- LICENSE -->
 ## License
 
-Distributed under the GNU GPLv3 License. See `LICENSE` for more information.
+Distributed under the GNU GPLv3 License. See `COPYING` for more information.
 
 
 
@@ -97,7 +97,7 @@ Project Link: [https://github.com/simonusher/p4](https://github.com/simonusher/p
 [issues-shield]: https://img.shields.io/github/issues/simonusher/p4.svg?style=for-the-badge
 [issues-url]: https://github.com/simonusher/p4/issues
 [license-shield]: https://img.shields.io/github/license/simonusher/p4.svg?style=for-the-badge
-[license-url]: https://github.com/simonusher/p4/blob/master/LICENSE.txt
+[license-url]: https://github.com/simonusher/p4/blob/master/COPYING
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/szymon-wo%C5%BAniak-00505318a/
 [p4-paper]: https://link.springer.com/chapter/10.1007/978-3-030-58112-1_29
